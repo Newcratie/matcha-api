@@ -1,4 +1,4 @@
-package exec
+package matcha_api
 
 import (
 	"fmt"
@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-
 	fmt.Println("Run Api")
 	api.Run()
 }
