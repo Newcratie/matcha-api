@@ -1,8 +1,8 @@
-package matcha_api
+package main
 
 import (
 	"fmt"
-	"github.com/Newcratie/matcha-api"
+	"github.com/Newcratie/matcha-api/api"
 )
 
 func main() {
