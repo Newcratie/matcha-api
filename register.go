@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-const vUsers = `(:username, :email, :lastname, :firstname, :password, :random_token, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :online, :rating, :admin)`
-
 func Register(c *gin.Context) {
 	admin := false
 	if c.PostForm("admin") == "true" {
@@ -38,7 +36,7 @@ func Register(c *gin.Context) {
 	//c.JSON(200, user)
 }
 
-func (app *App) checkRegister(rf registerForm) (error) {
+func (app *App) checkRegister(rf registerForm) error {
 	// here rf should not exist on DB, password must match confirm, validity of all datas.
 	u := User{}
 	err := app.Db.Get(&u, `SELECT * FROM users WHERE username=$1 OR email=$2`, rf.Username, rf.Email)

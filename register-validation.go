@@ -43,7 +43,7 @@ func validateUser(rf registerForm) (User, error) {
 		for _, err := range err.(validator.ValidationErrors) {
 			switch err.Field() {
 			case "Username":
-				if  err.Tag() == "alphanumunicode" {
+				if err.Tag() == "alphanumunicode" {
 					errs = errors.New(errs.Error() + "Username must contain only alpha numeric characters!")
 				} else {
 					errs = errors.New(errs.Error() + "Username should be between 6 and 20 characters long\n")
@@ -53,7 +53,7 @@ func validateUser(rf registerForm) (User, error) {
 				errs = errors.New(errs.Error() + "Invalid email\n")
 				break
 			case "Password":
-				errs = errors.New(errs.Error() + "Password Invalid\n")
+				errs = errors.New(errs.Error() + "Invalid password\n")
 				break
 			case "Confirm":
 				errs = errors.New(errs.Error() + "Passwords don't match\n")
@@ -77,7 +77,6 @@ func validateUser(rf registerForm) (User, error) {
 }
 
 func validateVariable() {
-
 	myEmail := "joeybloggs.gmail.com"
 
 	errs := app.validate.Var(myEmail, "required,email")

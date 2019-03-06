@@ -56,3 +56,5 @@ type registerForm struct {
 	Birthday  string `db:"birthday" validate:"required"`
 	Admin     bool   `db:"admin"`
 }
+
+const vUsers = `(:username, :email, :lastname, :firstname, :password, :random_token, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :online, :rating, :admin)`

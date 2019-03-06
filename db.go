@@ -1,19 +1,23 @@
 package api
 
 import (
-	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"log"
+	"os"
 )
 
 func (app *App) fetchUsers() {
 	err := app.Db.Select(&app.Users, `SELECT * FROM users`)
-	fmt.Println("FetchUser", err)
+	if err != nil {
+		panic(err)
+	}
 }
 
-func pSql() *sqlx.DB {
-	connStr := "user=postgres password=secret dbname=matcha sslmode=disable"
+func dbConnect() *sqlx.DB {
+	connStr := "user=matcha password=secret dbname=matcha host=" +
+		os.Getenv("POSTGRES_HOST") +
+		" port=5432 sslmode=disable"
 	db, err := sqlx.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
