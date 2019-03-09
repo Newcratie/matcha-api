@@ -1,7 +1,7 @@
 package api
 
 import (
-	"fmt"
+	"github.com/Newcratie/matcha-api/api/logprint"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/go-playground/validator.v9"
 )
@@ -14,9 +14,9 @@ func (app *App) newApp() {
 func Run() {
 	app.newApp()
 	go app.routerAPI()
-	fmt.Println("ITS WORK!! here again and again")
 	app.Db = dbConnect()
 	app.fetchUsers()
 	app.validate = validator.New()
+	logprint.PrettyPrint(app.Users)
 	app.R.Run(":81")
 }

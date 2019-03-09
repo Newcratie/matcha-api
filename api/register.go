@@ -1,8 +1,8 @@
 package api
 
 import (
-	"errors"
 	"fmt"
+	"github.com/Newcratie/matcha-api/api/logprint"
 	"github.com/gin-gonic/gin"
 	"log"
 	"regexp"
@@ -11,6 +11,7 @@ import (
 )
 
 func Register(c *gin.Context) {
+	logprint.Title("Register")
 	admin := false
 	if c.PostForm("admin") == "true" {
 		admin = true
@@ -25,66 +26,23 @@ func Register(c *gin.Context) {
 		c.PostForm("birthday"),
 		admin,
 	}
-	user, err := validateUser(rf)
-	if err != nil {
-		c.JSON(401, gin.H{"err": err.Error()})
+	user, res := validateUser(rf)
+	if res.Valid != true {
+		logprint.PrettyPrint(res)
+		c.JSON(401, res)
 	} else {
 		fmt.Println("register success", user)
-		c.JSON(401, gin.H{"err": "good"})
+		c.JSON(200, gin.H{})
 	}
-	//app.insertUser(user)
-	//c.JSON(200, user)
-}
-
-func (app *App) checkRegister(rf registerForm) error {
-	// here rf should not exist on DB, password must match confirm, validity of all datas.
-	u := User{}
-	err := app.Db.Get(&u, `SELECT * FROM users WHERE username=$1 OR email=$2`, rf.Username, rf.Email)
-	fmt.Println("checkRegister: >>", u.Id, "<<", err)
-	if u.Id != 0 {
-		return errors.New("Username or Email already exist")
-	}
-	return nil
+	app.insertUser(user)
+	logprint.End()
 }
 
 func parseTime(str string) (time.Time, error) {
 	var re = regexp.MustCompile(`\s\((.*)\)`)
 	s := re.ReplaceAllString(str, ``)
-	t, err := time.Parse("Mon Jan 02 2006 15:04:05 GMT-0700", s)
+	t, err := time.Parse(timeLayout, s)
 	return t, err
-}
-
-func NewUser(rf registerForm) User {
-	birthday, _ := parseTime(rf.Birthday)
-	u := User{0,
-		rf.Username,
-		rf.Email,
-		rf.Lastname,
-		rf.Firstname,
-		rf.Password,
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		birthday,
-		"",
-		"",
-		"",
-		"",
-		"",
-		0,
-		0,
-		false,
-		false,
-		0,
-		false,
-		"",
-	}
-	return u
 }
 
 func tableOf(values string) string {

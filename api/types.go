@@ -19,7 +19,7 @@ type App struct {
 type User struct {
 	Id          int16     `json:"id" db:"id"`
 	Username    string    `json:"username" db:"username"`
-	EMail       string    `json:"e_mail" db:"email"`
+	Email       string    `json:"e_mail" db:"email"`
 	LastName    string    `json:"last_name" db:"lastname"`
 	FirstName   string    `json:"first_name" db:"firstname"`
 	Password    string    `json:"password" db:"password"`

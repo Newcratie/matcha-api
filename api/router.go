@@ -4,13 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//func apiMiddleware(app *App) gin.HandlerFunc {
-//	return func(c *gin.Context) {
-//		c.Set("app", *app)
-//		c.Next()
-//	}
-//}
-
 func (app *App) routerAPI() {
 	auth := app.R.Group("/auth")
 	{

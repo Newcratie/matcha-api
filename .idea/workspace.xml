@@ -2,20 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36822d56-41dc-4c86-a674-facbf7b2587e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/admin.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/api_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exec/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handlers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/jwt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/login.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/register-validation.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/register-validation.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/register.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/login_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/tests/login_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/utils.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/logprint/logprint.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/messages.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/tests/db_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/tests/generic_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/api_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/api_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/register-validation.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/register-validation.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/tests/login_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/utils.go" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,32 +27,36 @@
     <session id="1539745550">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="go" value="15" />
+          <entry key="go" value="39" />
           <entry key="yaml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Go" value="15" />
+          <entry key="Go" value="39" />
           <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="go" value="3666" />
+          <entry key="go" value="34342" />
           <entry key="txt" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Go" value="3666" />
+          <entry key="Go" value="34342" />
           <entry key="PLAIN_TEXT" value="14" />
         </counts>
       </usages-collector>
@@ -64,30 +68,42 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/login.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/api/api.go">
+        <entry file="file://$PROJECT_DIR$/api/register.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+            <state relative-caret-position="464">
+              <caret line="58" column="23" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/types.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1071">
+              <caret line="56" column="32" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/register-validation.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="42">
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+              <folding>
+                <element signature="e#13#69#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/logprint/logprint.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -105,6 +121,7 @@
     <findStrings>
       <find>online_status_update_date</find>
       <find>FetchUser</find>
+      <find>ret</find>
     </findStrings>
   </component>
   <component name="GOROOT" path="/usr/local/Cellar/go/1.12/libexec" />
@@ -126,7 +143,21 @@
         <option value="$PROJECT_DIR$/exec/run.go" />
         <option value="$PROJECT_DIR$/api.go" />
         <option value="$PROJECT_DIR$/run.go" />
+        <option value="$PROJECT_DIR$/api/router.go" />
+        <option value="$PROJECT_DIR$/api/messages.go" />
+        <option value="$PROJECT_DIR$/api/tests/login_test.go" />
+        <option value="$PROJECT_DIR$/api/utils.go" />
+        <option value="$PROJECT_DIR$/api/print/utils.go" />
+        <option value="$PROJECT_DIR$/api/logprint/utils.go" />
+        <option value="$PROJECT_DIR$/api/tests/db_test.go" />
+        <option value="$PROJECT_DIR$/api/db.go" />
         <option value="$PROJECT_DIR$/api/api.go" />
+        <option value="$PROJECT_DIR$/api/api_test.go" />
+        <option value="$PROJECT_DIR$/api/logprint/logprint.go" />
+        <option value="$PROJECT_DIR$/api/tests/generic_test.go" />
+        <option value="$PROJECT_DIR$/api/types.go" />
+        <option value="$PROJECT_DIR$/api/register-validation.go" />
+        <option value="$PROJECT_DIR$/api/register.go" />
       </list>
     </option>
   </component>
@@ -145,6 +176,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -157,11 +189,22 @@
               <item name="matcha-api" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="matcha-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="matcha-api" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="logprint" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="matcha-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="matcha-api" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -173,14 +216,15 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/api/print" />
       <recent name="$PROJECT_DIR$/api" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/tests" />
       <recent name="$PROJECT_DIR$/exec" />
-      <recent name="$PROJECT_DIR$/running" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -195,32 +239,20 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.DEV DEBUG">
-    <configuration name="DEV DEBUG" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
+  <component name="RunManager" selected="Go Test.api_test.go">
+    <configuration name="go build db.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="matcha-api" />
       <working_directory value="$PROJECT_DIR$/" />
       <go_parameters value="-i" />
-      <envs>
-        <env name="POSTGRES_HOST" value="localhost" />
-      </envs>
-      <EXTENSION ID="net.ashald.envfile">
-        <option name="IS_ENABLED" value="false" />
-        <option name="IS_SUBST" value="false" />
-        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
-        <option name="IS_IGNORE_MISSING_FILES" value="false" />
-        <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
-        </ENTRIES>
-      </EXTENSION>
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/exec/run.go" />
+      <filePath value="$PROJECT_DIR$/api/db.go" />
       <package value="github.com/Newcratie/matcha-api" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="DEV" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <configuration name="api_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="matcha-api" />
-      <working_directory value="$PROJECT_DIR$/exec" />
+      <working_directory value="$PROJECT_DIR$/api" />
       <go_parameters value="-i" />
       <envs>
         <env name="POSTGRES_HOST" value="localhost" />
@@ -234,10 +266,52 @@
           <ENTRY IS_ENABLED="true" PARSER="runconfig" />
         </ENTRIES>
       </EXTENSION>
-      <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/" />
+      <framework value="gotest" />
+      <kind value="FILE" />
       <package value="github.com/Newcratie/matcha-api" />
       <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/api/api_test.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="db_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="matcha-api" />
+      <working_directory value="$PROJECT_DIR$/api/tests" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/Newcratie/matcha-api" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/api/tests/db_test.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="generic_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="matcha-api" />
+      <working_directory value="$PROJECT_DIR$/api/tests" />
+      <go_parameters value="-i" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </EXTENSION>
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/Newcratie/matcha-api" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/api/tests/generic_test.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test tests" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="matcha-api" />
+      <working_directory value="$PROJECT_DIR$/api/tests" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/Newcratie/matcha-api" />
+      <directory value="$PROJECT_DIR$/api/tests" />
+      <filePath value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
     <configuration name="test" type="GoTestRunConfiguration" factoryName="Go Test">
@@ -264,74 +338,90 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Go Build.DEV" />
       <item itemvalue="Go Test.test" />
-      <item itemvalue="Go Build.DEV DEBUG" />
+      <item itemvalue="Go Test.generic_test.go" />
+      <item itemvalue="Go Test.go test tests" />
+      <item itemvalue="Go Test.db_test.go" />
+      <item itemvalue="Go Test.api_test.go" />
+      <item itemvalue="Go Build.go build db.go" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.DEV DEBUG" />
+        <item itemvalue="Go Test.api_test.go" />
+        <item itemvalue="Go Test.generic_test.go" />
+        <item itemvalue="Go Build.go build db.go" />
+        <item itemvalue="Go Test.db_test.go" />
+        <item itemvalue="Go Test.go test tests" />
       </list>
     </recent_temporary>
   </component>
   <component name="TestHistory">
-    <history-entry file="test - 2019.03.06 at 03h 02m 28s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 14h 55m 09s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 33m 41s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 14h 55m 27s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 35m 12s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 14h 55m 41s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 35m 40s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 14h 58m 26s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 36m 41s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 14h 59m 34s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 36m 42s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 14h 59m 57s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 41m 53s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 15h 00m 14s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 41m 55s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 15h 01m 22s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 03h 44m 28s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 15h 06m 40s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="test - 2019.03.06 at 12h 19m 24s.xml">
-      <configuration name="test" configurationId="GoTestRunConfiguration" />
+    <history-entry file="api_test_go - 2019.03.08 at 16h 51m 47s.xml">
+      <configuration name="api_test.go" configurationId="GoTestRunConfiguration" />
     </history-entry>
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="6" />
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="DB Browser" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22103004" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2657512" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="DB Execution Console" />
-      <window_info anchor="bottom" id="Docker" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="DB Browser" order="2" />
+      <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" x="147" y="930" width="1210" height="737" id="Run" order="2" type="FLOATING" weight="0.49936467" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39898348" />
+      <window_info anchor="bottom" x="108" y="923" width="1249" height="757" id="Debug" order="3" type="FLOATING" weight="0.5565438" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Cargo" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32909784" />
+      <window_info anchor="bottom" id="Docker" order="7" visible="true" weight="0.30713245" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="DB Execution Console" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32909784" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Cargo" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,60 +435,29 @@
     <option name="LAST_COMMIT_MESSAGE" value="Unit Test Init" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/api/tests/login_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-          <folding>
-            <element signature="e#15#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/Cellar/go/1.12/libexec/src/runtime/panic.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10960">
-          <caret line="689" selection-start-line="689" selection-end-line="689" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/types.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
-          <caret line="59" column="35" selection-start-line="59" selection-start-column="35" selection-end-line="59" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/db.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="17" column="65" selection-start-line="17" selection-start-column="65" selection-end-line="17" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/register.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="94" column="17" selection-start-line="94" selection-start-column="17" selection-end-line="94" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/api_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/login.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.realize.yaml">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/router.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/messages.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/handlers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run.go">
       <provider selected="true" editor-type-id="text-editor">
@@ -407,10 +466,83 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/api.go">
+    <entry file="file://$PROJECT_DIR$/api/login.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
-          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.12/libexec/src/runtime/panic.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="712">
+          <caret line="689" selection-start-line="689" selection-end-line="689" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/tests/db_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/api.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/tests/generic_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/api_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/logprint/logprint.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/types.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="56" column="32" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/db.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/register-validation.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#13#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/register.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="464">
+          <caret line="58" column="23" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
         </state>
       </provider>
     </entry>
