@@ -7,13 +7,6 @@ import (
 	"os"
 )
 
-func (app *App) fetchUsers() {
-	err := app.Db.Select(&app.Users, `SELECT * FROM users`)
-	if err != nil {
-		panic(err)
-	}
-}
-
 func dbConnect() *sqlx.DB {
 	connStr := "user=matcha password=secret dbname=matcha host=" +
 		os.Getenv("POSTGRES_HOST") +

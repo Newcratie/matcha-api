@@ -5,17 +5,13 @@ import (
 	"github.com/Newcratie/matcha-api/api/logprint"
 	"github.com/gin-gonic/gin"
 	"log"
-	"regexp"
 	"strings"
 	"time"
 )
 
 func Register(c *gin.Context) {
 	logprint.Title("Register")
-	admin := false
-	if c.PostForm("admin") == "true" {
-		admin = true
-	}
+	bd, _ := time.Parse(time.RFC3339, c.PostForm("birthday"))
 	rf := registerForm{
 		c.PostForm("username"),
 		c.PostForm("email"),
@@ -23,26 +19,17 @@ func Register(c *gin.Context) {
 		c.PostForm("confirm"),
 		c.PostForm("lastname"),
 		c.PostForm("firstname"),
-		c.PostForm("birthday"),
-		admin,
+		bd,
 	}
 	user, res := validateUser(rf)
-	if res.Valid != true {
-		logprint.PrettyPrint(res)
+	if !res.Valid {
 		c.JSON(401, res)
 	} else {
 		fmt.Println("register success", user)
+		app.insertUser(user)
 		c.JSON(200, gin.H{})
 	}
-	app.insertUser(user)
 	logprint.End()
-}
-
-func parseTime(str string) (time.Time, error) {
-	var re = regexp.MustCompile(`\s\((.*)\)`)
-	s := re.ReplaceAllString(str, ``)
-	t, err := time.Parse(timeLayout, s)
-	return t, err
 }
 
 func tableOf(values string) string {
@@ -54,7 +41,5 @@ func (app *App) insertUser(u User) {
 	_, err := app.Db.NamedExec(query, u)
 	if err != nil {
 		log.Fatalln(err)
-	} else {
-		app.Users = append(app.Users, u)
 	}
 }

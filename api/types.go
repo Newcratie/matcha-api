@@ -3,27 +3,24 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"gopkg.in/go-playground/validator.v9"
 	"time"
 )
 
 var app App
 
 type App struct {
-	Db       *sqlx.DB
-	R        *gin.Engine
-	Users    []User
-	validate *validator.Validate
+	Db *sqlx.DB
+	R  *gin.Engine
 }
 
 type User struct {
 	Id          int16     `json:"id" db:"id"`
 	Username    string    `json:"username" db:"username"`
-	Email       string    `json:"e_mail" db:"email"`
-	LastName    string    `json:"last_name" db:"lastname"`
-	FirstName   string    `json:"first_name" db:"firstname"`
+	Email       string    `json:"email" db:"email"`
+	LastName    string    `json:"lastname" db:"lastname"`
+	FirstName   string    `json:"firstname" db:"firstname"`
 	Password    string    `json:"password" db:"password"`
-	CreatedAt   string    `json:"created_at" db:"created_at"`
+	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	RandomToken string    `json:"random_token" db:"random_token"`
 	Img1        string    `json:"img1" db:"img1"`
 	Img2        string    `json:"img2" db:"img2"`
@@ -35,7 +32,7 @@ type User struct {
 	Genre       string    `json:"genre" db:"genre"`
 	Interest    string    `json:"interest" db:"interest"`
 	City        string    `json:"city" db:"city"`
-	Zip         string    `json:"zip" db:"zip"`
+	Zip         int       `json:"zip" db:"zip"`
 	Country     string    `json:"country" db:"country"`
 	Latitude    float32   `json:"latitude" db:"latitude"`
 	Longitude   float32   `json:"longitude" db:"longitude"`
@@ -47,14 +44,24 @@ type User struct {
 }
 
 type registerForm struct {
-	Username  string `db:"username" validate:"required,min=6,max=20,alphanumunicode"`
-	Email     string `db:"email" validate:"required,email"`
-	Password  string `db:"password" validate:"required,min=6,max=32"`
-	Confirm   string `db:"confirm" validate:"required,eqfield=Password"`
-	Lastname  string `db:"lastname" validate:"required,min=2,max=32,alphaunicode"`
-	Firstname string `db:"firstname" validate:"required,min=2,max=32,alphaunicode"`
-	Birthday  string `db:"birthday" validate:"required"`
-	Admin     bool   `db:"admin"`
+	Username  string    `db:"username"`
+	Email     string    `db:"email"`
+	Password  string    `db:"password"`
+	Confirm   string    `db:"confirm"`
+	Lastname  string    `db:"lastname"`
+	Firstname string    `db:"firstname"`
+	Birthday  time.Time `db:"birthday"`
+}
+
+type ErrorField struct {
+	Status  bool   `json:"status"`
+	Message string `json:"message"`
+}
+
+type validationResponse struct {
+	Valid bool         `json:"valid"`
+	Fail  bool         `json:"fail"`
+	Errs  []ErrorField `json:"errs"`
 }
 
 const vUsers = `(:username, :email, :lastname, :firstname, :password, :random_token, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :online, :rating, :admin)`
