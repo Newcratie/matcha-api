@@ -41,6 +41,7 @@ type User struct {
 	Rating      float32   `json:"rating" db:"rating"`
 	Admin       bool      `json:"admin" db:"admin"`
 	Token       string    `json:"token" db:"token"`
+	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
 }
 
 type registerForm struct {

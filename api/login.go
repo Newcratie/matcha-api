@@ -26,6 +26,8 @@ func Login(c *gin.Context) {
 		c.JSON(401, gin.H{"err": "User doesn't exist"})
 	} else if password != hash.Decrypt(hashKey, u.Password) {
 		c.JSON(401, gin.H{"err": "Wrong password"})
+	} else if u.AccessLvl == 0 {
+		c.JSON(401, gin.H{"err": "You must validate your Email first"})
 	} else {
 		c.JSON(200, u)
 	}
