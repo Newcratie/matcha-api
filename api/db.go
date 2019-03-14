@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"os"
+	"strings"
 )
 
 func dbConnect() *sqlx.DB {
@@ -31,6 +32,9 @@ func (app *App) validToken(randomToken string) error {
 	return err
 }
 
+func tableOf(values string) string {
+	return strings.Replace(values, ":", "", 99999)
+}
 func (app *App) insertUser(u User) {
 	var query = `INSERT INTO public.users ` + tableOf(vUsers) + ` VALUES ` + vUsers
 	_, err := app.Db.NamedExec(query, u)
