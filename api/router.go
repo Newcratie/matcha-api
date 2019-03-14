@@ -5,6 +5,7 @@ func (app *App) routerAPI() {
 	{
 		auth.POST("/login", Login)
 		auth.POST("/register", Register)
+		auth.GET("/valid_email/:token", Token)
 	}
 	api := app.R.Group("/api")
 	{

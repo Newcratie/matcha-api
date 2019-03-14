@@ -39,10 +39,11 @@ type User struct {
 	GeoAllowed  bool      `json:"geo_allowed" db:"geo_allowed"`
 	Online      bool      `json:"online" db:"online"`
 	Rating      float32   `json:"rating" db:"rating"`
-	Admin       bool      `json:"admin" db:"admin"`
 	Token       string    `json:"token" db:"token"`
 	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
 }
+
+const vUsers = `(:username, :email, :lastname, :firstname, :password, :random_token, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :online, :rating, :access_lvl)`
 
 type registerForm struct {
 	Username  string    `db:"username"`
@@ -64,5 +65,3 @@ type validationResponse struct {
 	Fail  bool         `json:"fail"`
 	Errs  []ErrorField `json:"errs"`
 }
-
-const vUsers = `(:username, :email, :lastname, :firstname, :password, :random_token, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :online, :rating, :admin)`

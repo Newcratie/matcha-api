@@ -10,7 +10,7 @@ import (
 func TestAddFakeData(t *testing.T) {
 	app.newApp()
 	app.Db = dbConnect()
-	data, err := ioutil.ReadFile("fake_data.json")
+	data, err := ioutil.ReadFile("./tests/fake_data.json")
 	if err != nil {
 		fmt.Println("File reading error", err)
 		return
