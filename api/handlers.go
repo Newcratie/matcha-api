@@ -13,6 +13,8 @@ func Token(c *gin.Context) {
 	err := app.validToken(c.Param("token"))
 	if err != nil {
 		c.JSON(401, gin.H{"err": err.Error()})
+	} else {
+		c.JSON(200, gin.H{"status": "Email validated"})
 	}
 	logprint.End()
 }

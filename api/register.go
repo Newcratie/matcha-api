@@ -30,15 +30,17 @@ func validateUser(rf registerForm) (User, validationResponse) {
 	if len(rf.Firstname) < min || len(rf.Firstname) > max {
 		res.failure("Firstname must contain between " + string(min) + " and " + string(max) + " characters")
 	}
-
 	if res.Valid {
-		return user(rf), res
-	} else {
-		return User{}, res
+		u, err := userFactory(rf)
+		if err != nil {
+			res.failure(err.Error())
+		}
+		return u, res
 	}
+	return User{}, res
 }
 
-func user(rf registerForm) (u User) {
+func userFactory(rf registerForm) (u User, err error) {
 	u.Username = rf.Username
 	u.Email = rf.Email
 	u.Password = hash.Encrypt(hashKey, rf.Password)
@@ -46,7 +48,7 @@ func user(rf registerForm) (u User) {
 	u.FirstName = rf.Firstname
 	u.Birthday = rf.Birthday
 	u.RandomToken = newToken()
-	sendToken(u.Username, u.Email, u.RandomToken)
+	err = SendEmailValidation(u.Username, u.Email, u.RandomToken)
 	return
 }
 
