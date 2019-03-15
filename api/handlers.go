@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/Newcratie/matcha-api/api/logprint"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"math"
 	"time"
 )
 
@@ -26,19 +28,40 @@ func Next(c *gin.Context) {
 	})
 }
 
+func Start(c *gin.Context) {
+	tokenString := c.Request.Header["Authorization"][0]
+
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(hashKey), nil
+	})
+	if err != nil {
+
+	} else if checkJwt(tokenString) {
+		id := int(math.Round(claims["id"].(float64)))
+		u, err := app.getBasic(id)
+		fmt.Println(u)
+		if err != nil {
+		}
+		c.JSON(200, u)
+	}
+}
 func Login(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 
 	u, err := app.getUser(username)
-	if err != nil {
-		c.JSON(401, gin.H{"err": "User doesn't exist"})
-	} else if password != hash.Decrypt(hashKey, u.Password) {
-		c.JSON(401, gin.H{"err": "Wrong password"})
+	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
+		c.JSON(401, gin.H{"err": "Wrong password or username"})
 	} else if u.AccessLvl == 0 {
 		c.JSON(401, gin.H{"err": "You must validate your Email first"})
 	} else {
-		c.JSON(200, u)
+		jwt, err := u.GenerateJwt()
+		if err != nil {
+			c.JSON(401, gin.H{"err": "Internal server error: " + err.Error()})
+		} else {
+			c.JSON(200, jwt)
+		}
 	}
 }
 

@@ -56,3 +56,10 @@ func (app *App) getUser(Username string) (u User, err error) {
 	err = app.Db.Get(&u, `SELECT * FROM users WHERE username=$1`, Username)
 	return
 }
+
+const vBasic = `(:username, :email, :lastname, :firstname, :password, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :rating)`
+
+func (app *App) getBasic(Id int) (u User, err error) {
+	err = app.Db.Get(&u, `SELECT `+tableOf(vBasic)+` FROM users WHERE id = $1`, Id)
+	return
+}
