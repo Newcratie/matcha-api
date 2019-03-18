@@ -2,6 +2,8 @@ package api
 
 import (
 	"errors"
+	"fmt"
+	"github.com/fatih/structs"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"log"
@@ -39,20 +41,21 @@ func tableOf(values string) string {
 }
 
 func (app *App) insertUser(u User) {
-	const vUsers = `(:username, :email, :lastname, :firstname, :password, :random_token, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :online, :rating, :access_lvl)`
-	var query = `INSERT INTO public.users ` + tableOf(vUsers) + ` VALUES ` + vUsers
-	_, err := app.Db.NamedExec(query, u)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	m := structs.Map(u)
+	//var query = `CREATE (np:Person { Username: {Username}, Password: {Password}})`
+	fmt.Println(m)
+	result, _ := app.Neo.ExecNeo("CREATE (n:NODE {name: {Username}})", m)
+	numResult, _ := result.RowsAffected()
+	fmt.Printf("CREATED ROWS: %d\n", numResult) // CREATED ROWS: 1
+
+	//_, err := app.Neo.ExecNeo(query, structs.Map(User{Username: "test2"}))
 }
 func (app *App) accountExist(rf registerForm) bool {
-	u := User{}
-	err := app.Db.Get(&u, `SELECT * FROM users WHERE username=$1 OR email=$2`, rf.Username, rf.Email)
-	if u.Id != 0 || err == nil {
-		return true
-	} else {
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:Person) WHERE n.username = "`+rf.Username+`" RETURN n`, nil)
+	if len(data) == 0 {
 		return false
+	} else {
+		return true
 	}
 }
 

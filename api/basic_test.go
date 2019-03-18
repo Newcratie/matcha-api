@@ -3,11 +3,20 @@ package api
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"math"
+	"os"
 	"testing"
 )
 
-func TestParseClaims(t *testing.T) {
+func TestNeo(t *testing.T) {
+	driver := bolt.NewDriver()
+	host := os.Getenv("NEO_HOST")
+	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
+
+	app.insertUser(User{Username: "Test"})
+}
+func testParseClaims(t *testing.T) {
 	tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTI3Mzk1MDYsImlkIjoxLCJsb2dnZWRJbiI6dHJ1ZSwidXNlcm5hbWUiOiJCTksifQ.SG7Hc7ukC46L0xLYq5FPJzrzGF4fbFE_h6qErIOsb9s"
 
 	claims := jwt.MapClaims{}
