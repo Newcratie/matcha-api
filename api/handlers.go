@@ -32,20 +32,31 @@ func Start(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
 
 	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
 	if err != nil {
-
+		fmt.Println(err)
+		c.JSON(401, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
-		u, err := app.getBasic(id)
+		u, err := app.getBasicUser(id)
 		fmt.Println(u)
 		if err != nil {
+			fmt.Println(err)
+			c.JSON(401, gin.H{"err": err.Error()})
+		} else {
+			d, err := app.getBasicDates(id)
+			if err != nil {
+				fmt.Println(err)
+				c.JSON(401, gin.H{"err": err.Error()})
+			} else {
+				c.JSON(200, ResStart{u, d})
+			}
 		}
-		c.JSON(200, u)
 	}
 }
+
 func Login(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")

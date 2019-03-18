@@ -3,14 +3,21 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"time"
 )
 
 var app App
 
 type App struct {
-	Db *sqlx.DB
-	R  *gin.Engine
+	Db  *sqlx.DB
+	R   *gin.Engine
+	Neo bolt.Conn
+}
+
+type ResStart struct {
+	User  User   `json:"user"`
+	Dates []User `json:"dates"`
 }
 
 type User struct {
@@ -42,8 +49,6 @@ type User struct {
 	Token       string    `json:"token" db:"token"`
 	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
 }
-
-const vUsers = `(:username, :email, :lastname, :firstname, :password, :random_token, :img1, :img2, :img3, :img4, :img5, :biography, :birthday, :genre, :interest, :city, :zip, :country, :latitude, :longitude, :geo_allowed, :online, :rating, :access_lvl)`
 
 type registerForm struct {
 	Username  string    `db:"username"`
