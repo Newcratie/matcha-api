@@ -10,7 +10,6 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"os"
-	"strings"
 )
 
 func (app *App) insertUser(u User) {
@@ -23,6 +22,44 @@ email: {email}})`
 	executeStatement(st, MapOf(u))
 }
 
+func (app *App) getUser(Username string) (u User, err error) {
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{username : "`+Username+`"}) SET n.online = true RETURN id(n), n`, nil)
+	if len(data) == 0 {
+		err = errors.New("wrong username or password")
+		return
+	} else {
+		jso, _ := json.Marshal(data[0][0].(graph.Node).Properties)
+		_ = json.Unmarshal(jso, &u)
+		return
+	}
+}
+
+func (app *App) getBasicUser(Id int) (u User, err error) {
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE id(n)= `+string(Id)+`}) RETURN id(n), n`, nil)
+	fmt.Println("basic: ", data)
+	if len(data) == 0 {
+		err = errors.New("wrong username or password")
+		return
+	} else {
+		jso, _ := json.Marshal(data[0][0].(graph.Node).Properties)
+		_ = json.Unmarshal(jso, &u)
+		return
+	}
+}
+
+func (app *App) getBasicDates(Id int) (u []graph.Node, err error) {
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) RETURN n`, nil)
+	fmt.Println("dates: ", data)
+	if len(data) == 0 {
+		err = errors.New("wrong username or password")
+		return
+	} else {
+		jso, _ := json.Marshal(data[0])
+		_ = json.Unmarshal(jso, &u)
+		fmt.Println("graph.Node ===> ", u)
+		return
+	}
+}
 func (app *App) accountExist(rf registerForm) bool {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:Person) WHERE n.username = "`+rf.Username+`" RETURN n`, nil)
 	if len(data) == 0 {
@@ -37,6 +74,7 @@ func (app *App) prepareStatement(query string) bolt.Stmt {
 	handleError(err)
 	return st
 }
+
 func executeStatement(st bolt.Stmt, m map[string]interface{}) {
 	result, err := st.ExecNeo(m)
 	handleError(err)
@@ -76,52 +114,9 @@ func dbConnect() *sqlx.DB {
 //	return nil
 //}
 
-func tableOf(values string) string {
-	return strings.Replace(values, ":", "", 99999)
-}
-
 func MapOf(u interface{}) (m map[string]interface{}) {
 	m = make(map[string]interface{})
 	jso, _ := json.Marshal(u)
 	_ = json.Unmarshal(jso, &m)
 	return m
-}
-
-func (app *App) getUser(Username string) (u User, err error) {
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{username : "`+Username+`"}) SET n.online = true RETURN n`, nil)
-	if len(data) == 0 {
-		err = errors.New("wrong username or password")
-		return
-	} else {
-		jso, _ := json.Marshal(data[0][0].(graph.Node).Properties)
-		_ = json.Unmarshal(jso, &u)
-		return
-	}
-}
-
-func (app *App) getBasicUser(Id int) (u User, err error) {
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE id(n)= `+string(Id)+`}) RETURN n`, nil)
-	fmt.Println("basic: ", data)
-	if len(data) == 0 {
-		err = errors.New("wrong username or password")
-		return
-	} else {
-		jso, _ := json.Marshal(data[0][0].(graph.Node).Properties)
-		_ = json.Unmarshal(jso, &u)
-		return
-	}
-}
-
-func (app *App) getBasicDates(Id int) (u []graph.Node, err error) {
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) RETURN n`, nil)
-	fmt.Println("dates: ", data)
-	if len(data) == 0 {
-		err = errors.New("wrong username or password")
-		return
-	} else {
-		jso, _ := json.Marshal(data[0])
-		_ = json.Unmarshal(jso, &u)
-		fmt.Println("graph.Node ===> ", u)
-		return
-	}
 }
