@@ -2,7 +2,6 @@ package tests
 
 import (
 	"errors"
-	"github.com/Newcratie/matcha-api/api"
 	"github.com/Newcratie/matcha-api/api/logprint"
 	"testing"
 )

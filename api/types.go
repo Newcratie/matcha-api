@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
+	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"time"
 )
 
@@ -16,8 +17,8 @@ type App struct {
 }
 
 type ResStart struct {
-	User  User   `json:"user"`
-	Dates []User `json:"dates"`
+	User  User         `json:"user"`
+	Dates []graph.Node `json:"dates"`
 }
 
 type User struct {
@@ -39,10 +40,10 @@ type User struct {
 	Genre       string    `json:"genre" db:"genre"`
 	Interest    string    `json:"interest" db:"interest"`
 	City        string    `json:"city" db:"city"`
-	Zip         int       `json:"zip" db:"zip"`
+	Zip         string    `json:"zip" db:"zip"`
 	Country     string    `json:"country" db:"country"`
-	Latitude    float32   `json:"latitude" db:"latitude"`
-	Longitude   float32   `json:"longitude" db:"longitude"`
+	Latitude    float64   `json:"latitude" db:"latitude"`
+	Longitude   float64   `json:"longitude" db:"longitude"`
 	GeoAllowed  bool      `json:"geo_allowed" db:"geo_allowed"`
 	Online      bool      `json:"online" db:"online"`
 	Rating      float32   `json:"rating" db:"rating"`

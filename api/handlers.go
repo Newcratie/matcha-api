@@ -6,19 +6,20 @@ import (
 	"github.com/Newcratie/matcha-api/api/logprint"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"math"
 	"time"
 )
 
 func Token(c *gin.Context) {
-	logprint.Title("Token Handler")
-	err := app.validToken(c.Param("token"))
-	if err != nil {
-		c.JSON(401, gin.H{"err": err.Error()})
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{random_token : "`+c.Param("token")+`"}) SET n.access_lvl = 1 RETURN n`, nil)
+	if len(data) == 0 {
+		c.JSON(401, gin.H{"err": "Wrong token"})
+	} else if data[0][0].(graph.Node).Properties["access_lvl"] == int64(1) {
+		c.JSON(401, gin.H{"err": "Email already validated"})
 	} else {
 		c.JSON(200, gin.H{"status": "Email validated"})
 	}
-	logprint.End()
 }
 
 func Next(c *gin.Context) {
@@ -35,6 +36,7 @@ func Start(c *gin.Context) {
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
+	fmt.Println(claims)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(401, gin.H{"err": err.Error()})
@@ -62,6 +64,7 @@ func Login(c *gin.Context) {
 	password := c.PostForm("password")
 
 	u, err := app.getUser(username)
+	fmt.Println(u, err)
 	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
 		c.JSON(401, gin.H{"err": "Wrong password or username"})
 	} else if u.AccessLvl == 0 {
