@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"os"
@@ -16,8 +17,10 @@ func Run() {
 	app.newApp()
 	driver := bolt.NewDriver()
 	host := os.Getenv("NEO_HOST")
-	//host := "localhost"
-	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
+
+	var err error
+	app.Neo, err = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
+	fmt.Println(err)
 
 	go app.routerAPI()
 	app.Db = dbConnect()

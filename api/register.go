@@ -7,33 +7,73 @@ import (
 	"regexp"
 )
 
-const min = 2
-const max = 20
+const (
+	min     = 2
+	max     = 20
+	passMin = 6
+	passMax = 30
+)
 
 func validateUser(rf registerForm) (User, validationResponse) {
-	res := validationResponse{true, false, make([]ErrorField, 0)}
-	if app.accountExist(rf) {
-		res.failure("Account already exist")
+	res := validationResponse{
+		true,
+		false,
+		ErrorField{true, ""},
+		ErrorField{true, ""},
+		ErrorField{true, ""},
+		ErrorField{true, ""},
+		ErrorField{true, ""},
+		ErrorField{true, ""},
+		ErrorField{true, ""},
+		ErrorField{true, ""},
+		"REGISTER",
+	}
+	if app.usernameExist(rf) {
+		fmt.Println("HEEERRRRe")
+		res.failure()
+		res.Username.Status = false
+		res.Username.Message = res.Username.Message + "Username already exist\n"
+	}
+	if app.emailExist(rf) {
+		fmt.Println("HEEERRRRe")
+		res.failure()
+		res.Email.Status = false
+		res.Email.Message = res.Email.Message + "Email already exist\n"
+	}
+	if len(rf.Password) < passMin || len(rf.Password) > passMax {
+		res.failure()
+		res.Password.Status = false
+		res.Password.Message = "Password must contain between " + string(passMin) + " and " + string(passMax) + " characters\n"
 	}
 	if rf.Password != rf.Confirm {
-		res.failure("Passwords don't match")
+		res.failure()
+		res.Confirm.Status = false
+		res.Confirm.Message = "Passwords don't match\n"
 	}
 	if !emailIsValid(rf.Email) {
-		res.failure("Invalid email")
+		res.failure()
+		res.Email.Status = false
+		res.Email.Message = "Invalid Email\n"
 	}
 	if len(rf.Username) < min || len(rf.Username) > max {
-		res.failure("Username must contain between " + string(min) + " and " + string(max) + " characters")
+		res.failure()
+		res.Username.Status = false
+		res.Username.Message = "Username must contain between " + string(min) + " and " + string(max) + " characters\n"
 	}
 	if len(rf.Lastname) < min || len(rf.Lastname) > max {
-		res.failure("Lastname must contain between " + string(min) + " and " + string(max) + " characters")
+		res.failure()
+		res.Lastname.Message = "Lastname must contain between " + string(min) + " and " + string(max) + " characters\n"
+		res.Lastname.Status = false
 	}
 	if len(rf.Firstname) < min || len(rf.Firstname) > max {
-		res.failure("Firstname must contain between " + string(min) + " and " + string(max) + " characters")
+		res.failure()
+		res.Firstname.Status = false
+		res.Firstname.Message = "Firstname must contain between " + string(min) + " and " + string(max) + " characters\n"
 	}
 	if res.Valid {
 		u, err := userFactory(rf)
 		if err != nil {
-			res.failure(err.Error())
+			res.failure()
 		}
 		return u, res
 	}
@@ -52,10 +92,10 @@ func userFactory(rf registerForm) (u User, err error) {
 	return
 }
 
-func (res *validationResponse) failure(msg string) {
+func (res *validationResponse) failure() {
 	res.Valid = false
 	res.Fail = true
-	res.Errs = append(res.Errs, ErrorField{false, msg})
+	res.Type = "REGISTER_FAIL"
 }
 
 func newToken() string {

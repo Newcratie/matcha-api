@@ -22,7 +22,7 @@ type ResStart struct {
 }
 
 type User struct {
-	Id          int16     `json:"id" db:"id"`
+	Id          int64     `json:"id" db:"id"`
 	Username    string    `json:"username" db:"username"`
 	Email       string    `json:"email" db:"email"`
 	LastName    string    `json:"lastname" db:"lastname"`
@@ -67,7 +67,15 @@ type ErrorField struct {
 }
 
 type validationResponse struct {
-	Valid bool         `json:"valid"`
-	Fail  bool         `json:"fail"`
-	Errs  []ErrorField `json:"errs"`
+	Valid     bool       `json:"valid"`
+	Fail      bool       `json:"fail"`
+	Username  ErrorField `json:"username"`
+	Email     ErrorField `json:"email"`
+	Password  ErrorField `json:"password"`
+	Confirm   ErrorField `json:"confirm"`
+	Lastname  ErrorField `json:"lastname"`
+	Firstname ErrorField `json:"firstname"`
+	Birthday  ErrorField `json:"birthday"`
+	Other     ErrorField `json:"other"`
+	Type      string     `json:"type"`
 }
