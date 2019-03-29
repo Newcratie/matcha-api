@@ -61,7 +61,7 @@ func Self(c *gin.Context) {
 	fmt.Println(claims)
 	if err != nil {
 		fmt.Println(err)
-		c.JSON(401, gin.H{"err": err.Error()})
+		c.JSON(201, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
 		fmt.Println(id)
@@ -75,13 +75,13 @@ func Login(c *gin.Context) {
 	u, err := app.getUser(username)
 	fmt.Println(u, err)
 	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
-		c.JSON(401, gin.H{"err": "Wrong password or username"})
+		c.JSON(201, gin.H{"err": "Wrong password or username"})
 	} else if u.AccessLvl == 0 {
-		c.JSON(401, gin.H{"err": "You must validate your Email first"})
+		c.JSON(201, gin.H{"err": "You must validate your Email first"})
 	} else {
 		jwt, err := u.GenerateJwt()
 		if err != nil {
-			c.JSON(401, gin.H{"err": "Internal server error: " + err.Error()})
+			c.JSON(201, gin.H{"err": "Internal server error: " + err.Error()})
 		} else {
 			c.JSON(200, jwt)
 		}
@@ -91,6 +91,7 @@ func Login(c *gin.Context) {
 func Register(c *gin.Context) {
 	logprint.Title("Register")
 	bd, _ := time.Parse(time.RFC3339, c.PostForm("birthday"))
+
 	rf := registerForm{
 		c.PostForm("username"),
 		c.PostForm("email"),

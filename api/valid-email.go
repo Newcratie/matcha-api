@@ -25,7 +25,7 @@ func SendEmailValidation(username, email, token string) error {
 		URL  string
 	}{
 		Name: username,
-		URL:  "http://localhost:3000/valid_email?token=" + token,
+		URL:  "http://localhost:8080/valid_email?token=" + token,
 	}
 
 	from := mail.Address{"", smtpLogin}

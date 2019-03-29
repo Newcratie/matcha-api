@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"regexp"
+	"strconv"
 )
 
 const (
@@ -43,7 +44,7 @@ func validateUser(rf registerForm) (User, validationResponse) {
 	if len(rf.Password) < passMin || len(rf.Password) > passMax {
 		res.failure()
 		res.Password.Status = false
-		res.Password.Message = "Password must contain between " + string(passMin) + " and " + string(passMax) + " characters\n"
+		res.Password.Message = "Password must contain between " + strconv.Itoa(passMin) + " and " + strconv.Itoa(passMax) + " characters\n"
 	}
 	if rf.Password != rf.Confirm {
 		res.failure()
@@ -58,17 +59,17 @@ func validateUser(rf registerForm) (User, validationResponse) {
 	if len(rf.Username) < min || len(rf.Username) > max {
 		res.failure()
 		res.Username.Status = false
-		res.Username.Message = "Username must contain between " + string(min) + " and " + string(max) + " characters\n"
+		res.Username.Message = "Username must contain between " + strconv.Itoa(min) + " and " + strconv.Itoa(max) + " characters\n"
 	}
 	if len(rf.Lastname) < min || len(rf.Lastname) > max {
 		res.failure()
-		res.Lastname.Message = "Lastname must contain between " + string(min) + " and " + string(max) + " characters\n"
+		res.Lastname.Message = "Lastname must contain between " + strconv.Itoa(min) + " and " + strconv.Itoa(max) + " characters\n"
 		res.Lastname.Status = false
 	}
 	if len(rf.Firstname) < min || len(rf.Firstname) > max {
 		res.failure()
 		res.Firstname.Status = false
-		res.Firstname.Message = "Firstname must contain between " + string(min) + " and " + string(max) + " characters\n"
+		res.Firstname.Message = "Firstname must contain between " + strconv.Itoa(min) + " and " + strconv.Itoa(max) + " characters\n"
 	}
 	if res.Valid {
 		u, err := userFactory(rf)

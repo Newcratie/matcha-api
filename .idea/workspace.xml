@@ -3,16 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="36822d56-41dc-4c86-a674-facbf7b2587e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/basic_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/basic_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/fake_data_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/fake_data_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handlers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/register.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/types.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/valid-email.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/valid-email.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seedfaker.js" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,20 +35,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/handlers.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
+            <state relative-caret-position="276">
+              <caret line="99" column="28" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/router.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/fake_data_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
+            <state relative-caret-position="11">
               <caret line="63" column="60" selection-start-line="63" selection-start-column="60" selection-end-line="63" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/register.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-273">
+              <caret line="26" column="25" lean-forward="true" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
+              <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
+              <caret line="36" column="4" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -81,7 +94,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/types.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
+            <state relative-caret-position="882">
               <caret line="48" column="19" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="19" />
             </state>
           </provider>
@@ -153,13 +166,13 @@
         <option value="$PROJECT_DIR$/api/tests/generic_test.go" />
         <option value="$PROJECT_DIR$/api/types.go" />
         <option value="$PROJECT_DIR$/api/api.go" />
-        <option value="$PROJECT_DIR$/api/register.go" />
         <option value="$PROJECT_DIR$/api/valid-email.go" />
         <option value="$PROJECT_DIR$/api/router.go" />
         <option value="$PROJECT_DIR$/api/basic_test.go" />
-        <option value="$PROJECT_DIR$/api/handlers.go" />
         <option value="$PROJECT_DIR$/api/db.go" />
         <option value="$PROJECT_DIR$/api/fake_data_test.go" />
+        <option value="$PROJECT_DIR$/api/register.go" />
+        <option value="$PROJECT_DIR$/api/handlers.go" />
       </list>
     </option>
   </component>
@@ -441,7 +454,7 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21418338" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2170487" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="DB Browser" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -455,7 +468,7 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.22279587" side_tool="true" weight="0.35069886" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" x="1527" y="34" width="1412" height="866" id="Docker" maximized="true" order="10" sideWeight="0.55019057" type="FLOATING" visible="true" weight="0.8700265" />
+      <window_info active="true" anchor="bottom" x="1547" y="70" width="1258" height="699" id="Docker" maximized="true" order="10" sideWeight="0.55019057" type="FLOATING" visible="true" weight="0.8700265" />
       <window_info anchor="bottom" id="Graph Database Console" order="11" weight="0.6010165" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3288835" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -466,7 +479,7 @@
       <window_info anchor="right" id="Coverage" order="5" side_tool="true" weight="0.32942328" />
       <window_info anchor="right" x="131" y="923" width="1206" height="757" id="Debug" order="6" type="FLOATING" weight="0.32546496" />
       <window_info anchor="right" id="Graph Database" order="7" weight="0.3297568" />
-      <window_info active="true" anchor="right" x="1455" y="31" width="1324" height="760" id="Run" order="8" sideWeight="0.4498094" side_tool="true" type="FLOATING" visible="true" weight="0.74641836" />
+      <window_info anchor="right" x="1455" y="31" width="1324" height="760" id="Run" order="8" sideWeight="0.4498094" side_tool="true" type="FLOATING" weight="0.74641836" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21418338" />
@@ -509,7 +522,8 @@
     <MESSAGE value="gmx --&gt; gmail" />
     <MESSAGE value="Auth work great" />
     <MESSAGE value="Get basic must return id with datas." />
-    <option name="LAST_COMMIT_MESSAGE" value="Get basic must return id with datas." />
+    <MESSAGE value="Home started" />
+    <option name="LAST_COMMIT_MESSAGE" value="Home started" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.realize.yaml">
@@ -535,13 +549,7 @@
     <entry file="file://$PROJECT_DIR$/api/admin.go" />
     <entry file="file://$PROJECT_DIR$/api/login.go" />
     <entry file="file://$PROJECT_DIR$/api/register-validation.go" />
-    <entry file="file://$PROJECT_DIR$/seedfaker.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="25" column="48" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/seedfaker.js" />
     <entry file="file://$PROJECT_DIR$/api/hash/hash.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -604,20 +612,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/router.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/register.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="37" column="8" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/valid-email.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -632,13 +626,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/basic_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/structures/graph/node.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -646,17 +633,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/handlers.go">
+    <entry file="file://$PROJECT_DIR$/api/basic_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/types.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="48" column="19" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="19" />
+        <state relative-caret-position="189">
+          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
         </state>
       </provider>
     </entry>
@@ -667,10 +647,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/api/types.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="882">
+          <caret line="48" column="19" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/api/fake_data_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
+        <state relative-caret-position="11">
           <caret line="63" column="60" selection-start-line="63" selection-start-column="60" selection-end-line="63" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/router.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/register.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-273">
+          <caret line="26" column="25" lean-forward="true" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
+          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
+          <caret line="36" column="4" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/handlers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="99" column="28" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
         </state>
       </provider>
     </entry>
