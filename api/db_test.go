@@ -1,7 +1,10 @@
 package api
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestNull(t *testing.T) {
-
+	fmt.Println("working")
 }

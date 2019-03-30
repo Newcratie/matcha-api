@@ -60,10 +60,10 @@ func (app *App) getBasicUser(Id int) (u User, err error) {
 	}
 }
 
-func (app *App) getBasicDates(Id int) ([]graph.Node, error) {
+func (app *App) dbGetPeople(Id int) ([]graph.Node, error) {
 	var g []graph.Node
 	var err error
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) RETURN n LIMIT 40`, nil)
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE ID(n) <> `+strconv.Itoa(Id)+` RETURN n LIMIT 40`, nil)
 	if len(data) == 0 {
 		err = errors.New("wrong username or password")
 		return g, err
@@ -74,6 +74,7 @@ func (app *App) getBasicDates(Id int) ([]graph.Node, error) {
 		return g, err
 	}
 }
+
 func (app *App) usernameExist(rf registerForm) bool {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {username: {username}}) RETURN n`, map[string]interface{}{"username": rf.Username})
 	if len(data) == 0 {

@@ -14,7 +14,7 @@ func TestNeo(t *testing.T) {
 	driver := bolt.NewDriver()
 	host := os.Getenv("NEO_HOST")
 	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
-	u, err := app.getBasicDates(81)
+	u, err := app.dbGetPeople(81)
 	fmt.Println(err, u)
 }
 

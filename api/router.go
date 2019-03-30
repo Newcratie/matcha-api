@@ -9,6 +9,6 @@ func (app *App) routerAPI() {
 	}
 	api := app.R.Group("/api")
 	{
-		api.GET("/home", Home)
+		api.GET("/get_people", GetPeople)
 	}
 }

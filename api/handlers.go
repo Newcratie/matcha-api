@@ -30,7 +30,7 @@ func Next(c *gin.Context) {
 	})
 }
 
-func Home(c *gin.Context) {
+func GetPeople(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
 
 	claims := jwt.MapClaims{}
@@ -39,11 +39,11 @@ func Home(c *gin.Context) {
 	})
 	fmt.Println(claims)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
-		g, err := app.getBasicDates(id)
+		g, err := app.dbGetPeople(id)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
@@ -51,6 +51,7 @@ func Home(c *gin.Context) {
 		}
 	}
 }
+
 func Self(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
 
