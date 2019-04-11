@@ -41,7 +41,6 @@ func (app *App) getUser(Username string) (u User, err error) {
 		return
 	} else {
 		jso, _ := json.Marshal(data[0][0].(graph.Node).Properties)
-		fmt.Println("jso ===>", jso)
 		_ = json.Unmarshal(jso, &u)
 		u.Id = data[0][0].(graph.Node).NodeIdentity
 		return
