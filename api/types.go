@@ -46,9 +46,15 @@ type User struct {
 	Longitude   float64   `json:"longitude" db:"longitude"`
 	GeoAllowed  bool      `json:"geo_allowed" db:"geo_allowed"`
 	Online      bool      `json:"online" db:"online"`
-	Rating      float32   `json:"rating" db:"rating"`
+	Rating      int       `json:"rating" db:"rating"`
 	Token       string    `json:"token" db:"token"`
 	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
+}
+
+type Filters struct {
+	age      []int32 `json:"age"`
+	score    []int32 `json:"score"`
+	location []int32 `json:"location"`
 }
 
 type registerForm struct {

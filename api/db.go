@@ -59,9 +59,13 @@ func (app *App) getBasicUser(Id int) (u User, err error) {
 	}
 }
 
-func (app *App) dbGetPeople(Id int) ([]graph.Node, error) {
+func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	var g []graph.Node
 	var err error
+	if Filter != nil {
+		// for age == MATCH (u:User) WHERE u.birthday > "1914-10-06T18:51:39.178248882Z" AND u.birthday < "1916-10-06T18:51:39.178248882Z" return u
+		//  for score/rating == MATCH (u:User) WHERE u.rating > 0 AND u.rating < 5 return u
+	}
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE ID(n) <> `+strconv.Itoa(Id)+` RETURN n LIMIT 40`, nil)
 	if len(data) == 0 {
 		err = errors.New("wrong username or password")
