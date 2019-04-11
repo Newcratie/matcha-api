@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/Newcratie/matcha-api/api/logprint"
@@ -30,10 +31,19 @@ func Next(c *gin.Context) {
 	})
 }
 
+type Filters struct {
+	age      []int32 `json:"age"`
+	score    []int32 `json:"score"`
+	location []int32 `json:"location"`
+}
+
 func GetPeople(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
-	fmt.Println("==========", c.Request)
+	filtersJson := c.Request.Header["Filters"][0]
+	filters := Filters{}
 
+	json.Unmarshal([]byte(filtersJson), &filters)
+	fmt.Println("asdfasdf", filtersJson)
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
