@@ -32,6 +32,7 @@ func Next(c *gin.Context) {
 
 func GetPeople(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
+	fmt.Println("==========", c.Request)
 
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
