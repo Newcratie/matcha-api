@@ -33,11 +33,13 @@ func Next(c *gin.Context) {
 
 func GetPeople(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
-	filtersJson := c.Request.Header["Filters"][0] // Check if exist
+	filtersJson := c.Request.Header["Filters"][0]
 	filters := Filters{}
 
+	fmt.Println("Before", filtersJson)
 	json.Unmarshal([]byte(filtersJson), &filters)
-	fmt.Println("asdfasdf", filtersJson)
+	fmt.Println("After", filters)
+
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
