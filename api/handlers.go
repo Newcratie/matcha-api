@@ -31,15 +31,9 @@ func Next(c *gin.Context) {
 	})
 }
 
-type Filters struct {
-	age      []int32 `json:"age"`
-	score    []int32 `json:"score"`
-	location []int32 `json:"location"`
-}
-
 func GetPeople(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
-	filtersJson := c.Request.Header["Filters"][0]
+	filtersJson := c.Request.Header["Filters"][0] // Check if exist
 	filters := Filters{}
 
 	json.Unmarshal([]byte(filtersJson), &filters)
@@ -54,7 +48,7 @@ func GetPeople(c *gin.Context) {
 		c.JSON(201, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
-		g, err := app.dbGetPeople(id)
+		g, err := app.dbGetPeople(id, &filters)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
