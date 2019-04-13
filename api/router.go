@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
 )
@@ -16,13 +17,18 @@ func (app *App) routerAPI() {
 	api := app.R.Group("/api")
 	{
 		api.POST("/get_people", GetPeople)
-		api.GET("/ws", func(c *gin.Context) {
+		api.GET("/ws/:token/:chan", func(c *gin.Context) {
 			m.HandleRequest(c.Writer, c.Request)
 		})
-
 	}
 
 	m.HandleMessage(func(s *melody.Session, msg []byte) {
-		m.Broadcast(msg)
+		fmt.Println("MSG ===> ", string(msg))
+		m.BroadcastFilter(msg, func(session *melody.Session) bool {
+			//AUth: verify if token is valid here.
+			fmt.Println("s: ", s.Request.URL.Path)
+			fmt.Println("session: ", session.Request.URL.Path)
+			return session.Request.URL.Path == s.Request.URL.Path
+		})
 	})
 }
