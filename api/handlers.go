@@ -36,6 +36,8 @@ func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
 	filters := Filters{}
 
+	//remettre a zero les filtres si changement d'onglet ex: 42matcha -> user -> 42matcha
+
 	fmt.Println("Before", filtersJson)
 	json.Unmarshal([]byte(filtersJson), &filters)
 	fmt.Println("After", filters)

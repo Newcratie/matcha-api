@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 )
 
 func (app *App) insertUser(u User) {
@@ -68,6 +69,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 
 	var g []graph.Node
 	var err error
+	//tempQuery := `MATCH (n:User) WHERE ID(n) <> ` + strconv.Itoa(Id) + ` RETURN n LIMIT 40`
 	superQuery := customQuery(Id, Filter)
 	//`MATCH (n:User) WHERE ID(n) <> ` + strconv.Itoa(Id) + ` RETURN n LIMIT 40`
 	// for age == MATCH (u:User) WHERE u.birthday > "1914-10-06T18:51:39.178248882Z" AND u.birthday < "1916-10-06T18:51:39.178248882Z" return u
@@ -85,12 +87,49 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	}
 }
 
+//MATCH (u) WHERE (u.latitude > ` + strconv.Itoa(Filter.Location[0]) + ` AND u.longitude < ` + strconv.Itoa(Filter.Location[1]) + `)
+//MATCH (u) WHERE (u.birthday > ` + maxAge + ` AND u.birthday < ` + minAge + `)
+
 func customQuery(Id int, Filter *Filters) (superQuery string) {
 
-	superQuery = `MATCH (n:User) WHERE ID(n) <> ` + strconv.Itoa(Id) + ` RETURN n LIMIT 40`
+	minAge := ageConvert(Id, Filter.Age[0])
+	maxAge := ageConvert(Id, Filter.Age[1])
+
+	superQuery = `MATCH (u:User) WHERE (u.rating > ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating < ` + strconv.Itoa(Filter.Score[1]) + `)
+	MATCH (u) WHERE (u.birthday > "` + maxAge + `" AND u.birthday < "` + minAge + `")
+	return u`
 
 	return superQuery
 }
+
+func ageConvert(Id int, Age int) (birthYear string) {
+
+	//p := fmt.Println
+
+	//t := time.Now()
+	//p("With Format", t.Format(time.RFC3339))
+
+	fmt.Println(Age)
+	now := time.Now()
+	fmt.Println("Before Format : ", now)
+	now = now.AddDate(-(Age), 0, 0)
+	//now, _ = time.Parse(timeFormat, "1906-12-27T17:14:59.681469185Z")
+	fmt.Println("After Format : ", now)
+	birthYear = now.Format(time.RFC3339Nano)
+	//birthYear = strings.Replace(birthYear, " +0000 UTC", "", -1)
+	fmt.Println("On STRINGED : ", birthYear)
+	//fmt.Println("user ID : ", Id)
+	//userDateOfBirth, _, _, _ := app.Neo.QueryNeoAll(`MATCH (u:User) WHERE Id(u)=` + strconv.Itoa(67) + ` return u.birthday`, nil)
+	//fmt.Println("userbirth : ", userDateOfBirth)
+	//now := time.Now()
+	//fmt.Println("Time now : ", now)
+
+	return birthYear
+}
+
+//func kmConvert(Km int) (lat1 string, lon1 string) {
+//
+//}
 
 func (app *App) usernameExist(rf registerForm) bool {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {username: {username}}) RETURN n`, map[string]interface{}{"username": rf.Username})

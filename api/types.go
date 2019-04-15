@@ -52,9 +52,9 @@ type User struct {
 }
 
 type Filters struct {
-	Age      []int32  `json:"age"`
-	Score    []int32  `json:"score"`
-	Location []int32  `json:"location"`
+	Age      []int    `json:"age"`
+	Score    []int    `json:"score"`
+	Location []int    `json:"location"`
 	Tags     []string `json:"tags"`
 }
 
