@@ -17,6 +17,7 @@ func (app *App) routerAPI() {
 	api := app.R.Group("/api")
 	{
 		api.POST("/get_people", GetPeople)
+		api.POST("/get_matchs", GetMatchs)
 		api.GET("/ws/:token/:chan", func(c *gin.Context) {
 			m.HandleRequest(c.Writer, c.Request)
 		})

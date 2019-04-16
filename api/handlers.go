@@ -31,12 +31,34 @@ func Next(c *gin.Context) {
 	})
 }
 
+func GetMatchs(c *gin.Context) {
+	tokenString := c.Request.Header["Authorization"][0]
+
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(hashKey), nil
+	})
+	fmt.Println(claims)
+	if err != nil {
+		fmt.Println("jwt error: ", err)
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else if checkJwt(tokenString) {
+		id := int(math.Round(claims["id"].(float64)))
+		g, err := app.dbGetMatchs(id)
+		if err != nil {
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			c.JSON(200, g)
+		}
+	}
+}
+
 func GetPeople(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
 	filtersJson := c.Request.Header["Filters"][0]
 	filters := Filters{}
 
-	//remettre a zero les filtres si changement d'onglet ex: 42matcha -> user -> 42matcha
+	//remettre a zero les filtres si changement d'onglet ex: 42matcha -> user -> 42matcha || redefinir le slider avec les valeurs envoyer
 
 	fmt.Println("Before", filtersJson)
 	json.Unmarshal([]byte(filtersJson), &filters)

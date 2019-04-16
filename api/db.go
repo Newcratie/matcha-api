@@ -60,13 +60,28 @@ func (app *App) getBasicUser(Id int) (u User, err error) {
 	}
 }
 
+func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
+	var g []graph.Node
+	var err error
+
+	// A custom query with applied Filters
+	superQuery := `MATCH (u:User) RETURN u LIMIT 10`
+
+	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
+
+	if len(data) == 0 {
+		err = errors.New("wrong username or password")
+		return g, err
+	} else {
+		for _, d := range data {
+			g = append(g, d[0].(graph.Node))
+		}
+		return g, err
+	}
+
+}
+
 func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
-
-	fmt.Println("voilqaa ===>")
-	fmt.Println(Filter)
-	fmt.Println("voila2 ===>")
-	fmt.Printf("%+v\n", Filter)
-
 	var g []graph.Node
 	var err error
 
@@ -89,8 +104,11 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 // Miss Latidude/Longitude Max/Min
 func customQuery(Id int, Filter *Filters) (superQuery string) {
 
-	minAge := ageConvert(Id, Filter.Age[0])
-	maxAge := ageConvert(Id, Filter.Age[1])
+	minAge := ageConvert(Filter.Age[0])
+	maxAge := ageConvert(Filter.Age[1])
+	minLat, maxLat, minLon, maxLon := latLongCheck(Id, Filter.Location[1])
+
+	fmt.Println("Salut c'est COOL : ", minLat, maxLat, minLon, maxLon)
 
 	superQuery = `MATCH (u:User) WHERE (u.rating > ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating < ` + strconv.Itoa(Filter.Score[1]) + `)
 	MATCH (u) WHERE (u.birthday > "` + maxAge + `" AND u.birthday < "` + minAge + `")
@@ -99,7 +117,7 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 	return superQuery
 }
 
-func ageConvert(Id int, Age int) (birthYear string) {
+func ageConvert(Age int) (birthYear string) {
 
 	now := time.Now()
 	now = now.AddDate(-(Age), 0, 0)
@@ -107,8 +125,43 @@ func ageConvert(Id int, Age int) (birthYear string) {
 	return birthYear
 }
 
-//func kmConvert(Km int) (lat1 string, lon1 string) {
+func latLongCheck(Id int, Km int) (lat1 string, lon1 string, lat2 string, lon2 string) {
+	Id = 42
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (s) WHERE ID(s)=`+strconv.Itoa(Id)+` return s.latitude, s.longitude`, nil)
+
+	fmt.Println("DATA : ", data, Id)
+
+	return "0", "0", "0", "0"
+}
+
+//func distance(lat1 float64, lng1 float64, lat2 float64, lng2 float64, unit ...string) float64 {
+//	const PI float64 = 3.141592653589793
 //
+//	radlat1 := float64(PI * lat1 / 180)
+//	radlat2 := float64(PI * lat2 / 180)
+//
+//	theta := float64(lng1 - lng2)
+//	radtheta := float64(PI * theta / 180)
+//
+//	dist := math.Sin(radlat1) * math.Sin(radlat2) + math.Cos(radlat1) * math.Cos(radlat2) * math.Cos(radtheta)
+//
+//	if dist > 1 {
+//		dist = 1
+//	}
+//
+//	dist = math.Acos(dist)
+//	dist = dist * 180 / PI
+//	dist = dist * 60 * 1.1515
+//
+//	if len(unit) > 0 {
+//		if unit[0] == "K" {
+//			dist = dist * 1.609344
+//		} else if unit[0] == "N" {
+//			dist = dist * 0.8684
+//		}
+//	}
+//
+//	return dist
 //}
 
 func (app *App) usernameExist(rf registerForm) bool {
@@ -119,6 +172,7 @@ func (app *App) usernameExist(rf registerForm) bool {
 		return true
 	}
 }
+
 func (app *App) emailExist(rf registerForm) bool {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {email: {email}}) RETURN n`, map[string]interface{}{"email": rf.Email})
 	if len(data) == 0 {
