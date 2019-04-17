@@ -60,9 +60,9 @@ func GetPeople(c *gin.Context) {
 
 	//remettre a zero les filtres si changement d'onglet ex: 42matcha -> user -> 42matcha || redefinir le slider avec les valeurs envoyer
 
-	fmt.Println("Before", filtersJson)
+	//fmt.Println("Before", filtersJson)
 	json.Unmarshal([]byte(filtersJson), &filters)
-	fmt.Println("After", filters)
+	//fmt.Println("After", filters)
 
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {

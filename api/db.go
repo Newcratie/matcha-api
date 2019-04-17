@@ -9,6 +9,7 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
 	"log"
+	"math"
 	"os"
 	"strconv"
 	"time"
@@ -95,7 +96,12 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 		return g, err
 	} else {
 		for _, d := range data {
+			fmt.Println("D = ", d[0].(graph.Node).Properties["latitude"])
+			//lonTo := strconv.ParseFloat(d[0].(graph.Node).Properties["longitude"])
+			//latTo := strconv.ParseFloat(d[0].(graph.Node).Properties["latitude"])
+			//if (Haversine(0, 0, lonTo, latTo)) {
 			g = append(g, d[0].(graph.Node))
+			//}
 		}
 		return g, err
 	}
@@ -106,9 +112,9 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 
 	minAge := ageConvert(Filter.Age[0])
 	maxAge := ageConvert(Filter.Age[1])
-	minLat, maxLat, minLon, maxLon := latLongCheck(Id, Filter.Location[1])
+	//minLat, maxLat, minLon, maxLon := latLongCheck(Id, Filter.Location[1])
 
-	fmt.Println("Salut c'est COOL : ", minLat, maxLat, minLon, maxLon)
+	//fmt.Println("Salut c'est COOL : ", minLat, maxLat, minLon, maxLon)
 
 	superQuery = `MATCH (u:User) WHERE (u.rating > ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating < ` + strconv.Itoa(Filter.Score[1]) + `)
 	MATCH (u) WHERE (u.birthday > "` + maxAge + `" AND u.birthday < "` + minAge + `")
@@ -125,44 +131,31 @@ func ageConvert(Age int) (birthYear string) {
 	return birthYear
 }
 
-func latLongCheck(Id int, Km int) (lat1 string, lon1 string, lat2 string, lon2 string) {
-	Id = 42
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (s) WHERE ID(s)=`+strconv.Itoa(Id)+` return s.latitude, s.longitude`, nil)
-
-	fmt.Println("DATA : ", data, Id)
-
-	return "0", "0", "0", "0"
-}
-
-//func distance(lat1 float64, lng1 float64, lat2 float64, lng2 float64, unit ...string) float64 {
-//	const PI float64 = 3.141592653589793
+//func latLongCheck(Id int, Km int) (data) {
+//	Id = 42
+//	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (s) WHERE ID(s)=`+strconv.Itoa(Id)+` return s.latitude, s.longitude`, nil)
 //
-//	radlat1 := float64(PI * lat1 / 180)
-//	radlat2 := float64(PI * lat2 / 180)
+//	fmt.Println("DATA : ", data, Id)
 //
-//	theta := float64(lng1 - lng2)
-//	radtheta := float64(PI * theta / 180)
-//
-//	dist := math.Sin(radlat1) * math.Sin(radlat2) + math.Cos(radlat1) * math.Cos(radlat2) * math.Cos(radtheta)
-//
-//	if dist > 1 {
-//		dist = 1
-//	}
-//
-//	dist = math.Acos(dist)
-//	dist = dist * 180 / PI
-//	dist = dist * 60 * 1.1515
-//
-//	if len(unit) > 0 {
-//		if unit[0] == "K" {
-//			dist = dist * 1.609344
-//		} else if unit[0] == "N" {
-//			dist = dist * 0.8684
-//		}
-//	}
-//
-//	return dist
+//	return data
 //}
+
+func Haversine(lonFrom float64, latFrom float64, lonTo float64, latTo float64) (distance float64) {
+
+	const earthRadius = float64(6371)
+
+	var deltaLat = (latTo - latFrom) * (math.Pi / 180)
+	var deltaLon = (lonTo - lonFrom) * (math.Pi / 180)
+
+	var a = math.Sin(deltaLat/2)*math.Sin(deltaLat/2) +
+		math.Cos(latFrom*(math.Pi/180))*math.Cos(latTo*(math.Pi/180))*
+			math.Sin(deltaLon/2)*math.Sin(deltaLon/2)
+	var c = 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+
+	distance = earthRadius * c
+
+	return
+}
 
 func (app *App) usernameExist(rf registerForm) bool {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {username: {username}}) RETURN n`, map[string]interface{}{"username": rf.Username})
