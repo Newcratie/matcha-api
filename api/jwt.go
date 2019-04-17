@@ -10,10 +10,13 @@ var key = []byte(hashKey)
 
 func (user User) GenerateJwt() (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"loggedIn": true,
-		"id":       user.Id,
-		"username": user.Username,
-		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"loggedIn":  true,
+		"id":        user.Id,
+		"username":  user.Username,
+		"img1":      user.Img1,
+		"firstname": user.FirstName,
+		"lastname":  user.LastName,
+		"exp":       time.Now().Add(time.Hour * 24).Unix(),
 	})
 	tokenString, err := token.SignedString(key)
 	if err != nil {

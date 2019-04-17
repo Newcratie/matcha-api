@@ -1,10 +1,26 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
 )
+
+func (app *App) insertMessage(byt []byte) {
+	var dat map[string]interface{}
+	if err := json.Unmarshal(byt, &dat); err != nil {
+		panic(err)
+	}
+	fmt.Println(dat)
+	dat["author"] = int(dat["author"].(float64))
+	dat["to"] = int(dat["to"].(float64))
+	q := `MATCH (a:User),(b:User)
+WHERE ID(a)={author} AND ID(b)={to}
+CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, id:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
+	st := app.prepareStatement(q)
+	executeStatement(st, dat)
+}
 
 func (app *App) routerAPI() {
 	m := melody.New()
@@ -18,17 +34,18 @@ func (app *App) routerAPI() {
 	{
 		api.POST("/get_people", GetPeople)
 		api.POST("/get_matchs", GetMatchs)
-		api.GET("/ws/:token/:chan", func(c *gin.Context) {
+		api.GET("/ws/:user/:suitor", func(c *gin.Context) {
 			m.HandleRequest(c.Writer, c.Request)
 		})
 	}
 
 	m.HandleMessage(func(s *melody.Session, msg []byte) {
-		fmt.Println("MSG ===> ", string(msg))
 		m.BroadcastFilter(msg, func(session *melody.Session) bool {
 			//AUth: verify if token is valid here.
+			fmt.Printf("MSG ===> %T\n", msg)
 			fmt.Println("s: ", s.Request.URL.Path)
 			fmt.Println("session: ", session.Request.URL.Path)
+			app.insertMessage(msg)
 			return session.Request.URL.Path == s.Request.URL.Path
 		})
 	})
