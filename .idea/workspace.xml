@@ -467,6 +467,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Docker.Docker" />
       <item itemvalue="Go Test.test" />
       <item itemvalue="Go Build.go build run.go" />
       <item itemvalue="Go Test.fake_data_test.go" />
