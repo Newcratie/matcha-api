@@ -9,10 +9,9 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
 	"log"
-	"math"
 	"os"
+	"reflect"
 	"strconv"
-	"time"
 )
 
 func (app *App) insertUser(u User) {
@@ -79,11 +78,22 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 		}
 		return g, err
 	}
+}
 
+var floatType = reflect.TypeOf(float64(0))
+
+func getFloat(unk interface{}) (float64, error) {
+	v := reflect.ValueOf(unk)
+	v = reflect.Indirect(v)
+	if !v.Type().ConvertibleTo(floatType) {
+		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
+	}
+	fv := v.Convert(floatType)
+	return fv.Float(), nil
 }
 
 func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
-	var g []graph.Node
+	var g = make([]graph.Node, 0)
 	var err error
 
 	// A custom query with applied Filters
@@ -96,65 +106,17 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 		return g, err
 	} else {
 		for _, d := range data {
-			fmt.Println("D = ", d[0].(graph.Node).Properties["latitude"])
-			//lonTo := strconv.ParseFloat(d[0].(graph.Node).Properties["longitude"])
-			//latTo := strconv.ParseFloat(d[0].(graph.Node).Properties["latitude"])
-			//if (Haversine(0, 0, lonTo, latTo)) {
-			g = append(g, d[0].(graph.Node))
-			//}
+			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
+			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
+
+			// Haversine will return the distance between 2 Lat/Lon in Kilometers
+
+			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
+				g = append(g, d[0].(graph.Node))
+			}
 		}
 		return g, err
 	}
-}
-
-// Miss Latidude/Longitude Max/Min
-func customQuery(Id int, Filter *Filters) (superQuery string) {
-
-	minAge := ageConvert(Filter.Age[0])
-	maxAge := ageConvert(Filter.Age[1])
-	//minLat, maxLat, minLon, maxLon := latLongCheck(Id, Filter.Location[1])
-
-	//fmt.Println("Salut c'est COOL : ", minLat, maxLat, minLon, maxLon)
-
-	superQuery = `MATCH (u:User) WHERE (u.rating > ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating < ` + strconv.Itoa(Filter.Score[1]) + `)
-	MATCH (u) WHERE (u.birthday > "` + maxAge + `" AND u.birthday < "` + minAge + `")
-	return u`
-
-	return superQuery
-}
-
-func ageConvert(Age int) (birthYear string) {
-
-	now := time.Now()
-	now = now.AddDate(-(Age), 0, 0)
-	birthYear = now.Format(time.RFC3339Nano)
-	return birthYear
-}
-
-//func latLongCheck(Id int, Km int) (data) {
-//	Id = 42
-//	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (s) WHERE ID(s)=`+strconv.Itoa(Id)+` return s.latitude, s.longitude`, nil)
-//
-//	fmt.Println("DATA : ", data, Id)
-//
-//	return data
-//}
-
-func Haversine(lonFrom float64, latFrom float64, lonTo float64, latTo float64) (distance float64) {
-
-	const earthRadius = float64(6371)
-
-	var deltaLat = (latTo - latFrom) * (math.Pi / 180)
-	var deltaLon = (lonTo - lonFrom) * (math.Pi / 180)
-
-	var a = math.Sin(deltaLat/2)*math.Sin(deltaLat/2) +
-		math.Cos(latFrom*(math.Pi/180))*math.Cos(latTo*(math.Pi/180))*
-			math.Sin(deltaLon/2)*math.Sin(deltaLon/2)
-	var c = 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
-
-	distance = earthRadius * c
-
-	return
 }
 
 func (app *App) usernameExist(rf registerForm) bool {
