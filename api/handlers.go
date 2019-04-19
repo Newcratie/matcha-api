@@ -24,6 +24,22 @@ func Token(c *gin.Context) {
 	}
 }
 
+func CreateLike(c *gin.Context) {
+	tokenString := c.Request.Header["Authorization"][0]
+
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(hashKey), nil
+	})
+	fmt.Println(claims)
+	if err != nil {
+		fmt.Println("jwt error: ", err)
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else if checkJwt(tokenString) {
+		//
+	}
+}
+
 func Next(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	c.JSON(200, gin.H{
@@ -58,11 +74,7 @@ func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
 	filters := Filters{}
 
-	//remettre a zero les filtres si changement d'onglet ex: 42matcha -> user -> 42matcha || redefinir le slider avec les valeurs envoyer
-
-	//fmt.Println("Before", filtersJson)
 	json.Unmarshal([]byte(filtersJson), &filters)
-	//fmt.Println("After", filters)
 
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {

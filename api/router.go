@@ -17,7 +17,7 @@ func (app *App) insertMessage(byt []byte) {
 	dat["to"] = int(dat["to"].(float64))
 	q := `MATCH (a:User),(b:User)
 WHERE ID(a)={author} AND ID(b)={to}
-CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, id:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
+CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, to:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
 	st := app.prepareStatement(q)
 	executeStatement(st, dat)
 }
@@ -32,6 +32,7 @@ func (app *App) routerAPI() {
 	}
 	api := app.R.Group("/api")
 	{
+		api.POST("/add_like", CreateLike)
 		api.POST("/get_people", GetPeople)
 		api.POST("/get_matchs", GetMatchs)
 		api.GET("/ws/:user/:suitor", func(c *gin.Context) {
