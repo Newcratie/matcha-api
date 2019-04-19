@@ -9,10 +9,69 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
 	"log"
+	"math"
 	"os"
 	"reflect"
 	"strconv"
+	"time"
 )
+
+func (app *App) insertMessage(byt []byte) {
+	var dat map[string]interface{}
+	if err := json.Unmarshal(byt, &dat); err != nil {
+		panic(err)
+	}
+	fmt.Println(dat)
+	dat["author"] = int(dat["author"].(float64))
+	dat["to"] = int(dat["to"].(float64))
+	q := `
+MATCH (a:User),(b:User)
+WHERE ID(a)={author} AND ID(b)={to}
+CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, id:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
+	st := app.prepareStatement(q)
+	executeStatement(st, dat)
+}
+
+func timeS(s string) {
+	i, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	tm := time.Unix(i, 0)
+	fmt.Println(tm)
+}
+
+type Messages struct {
+	Id        int64     `json:"id"`
+	Author    int64     `json:"author"`
+	Message   string    `json:"message"`
+	Timestamp time.Time `json:"timestamp"`
+}
+
+func (app *App) dbGetMessages(userId, suitorId int) ([]Messages, error) {
+	q := `
+MATCH (a:User)-[]-(n:Message)-[]-(b:User) 
+WHERE ID(a)={user_id} AND ID(b)={suitor_id}
+RETURN n
+ORDER BY ID(n)
+`
+	msgs := make([]Messages, 0)
+
+	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{"user_id": userId, "suitor_id": suitorId})
+	fmt.Println(data)
+	for _, tab := range data {
+		sec, dec := math.Modf(tab[0].(graph.Node).Properties["timestamp"].(float64))
+		t := time.Unix(int64(sec), int64(dec*(1e9)))
+		fmt.Println("T: ", t)
+		msgs = append(msgs, Messages{
+			int64(tab[0].(graph.Node).Properties["id"].(float64)),
+			tab[0].(graph.Node).Properties["author"].(int64),
+			tab[0].(graph.Node).Properties["msg"].(string),
+			time.Time{},
+		})
+	}
+	return msgs, nil
+}
 
 func (app *App) insertUser(u User) {
 	fmt.Println(MapOf(u))

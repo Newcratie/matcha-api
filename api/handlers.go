@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"math"
+	"strconv"
 	"time"
 )
 
@@ -49,6 +50,30 @@ func GetMatchs(c *gin.Context) {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
 			c.JSON(200, g)
+		}
+	}
+}
+func GetMessages(c *gin.Context) {
+	tokenString := c.Request.Header["Authorization"][0]
+	suitorId := c.Request.Header["Suitor-Id"][0]
+
+	fmt.Println("SuitorId ====> ", suitorId)
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(hashKey), nil
+	})
+	fmt.Println(claims)
+	if err != nil {
+		fmt.Println("jwt error: ", err)
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else if checkJwt(tokenString) {
+		id := int(math.Round(claims["id"].(float64)))
+		sui, _ := strconv.Atoi(suitorId)
+		msgs, err := app.dbGetMessages(id, sui)
+		if err != nil {
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			c.JSON(200, msgs)
 		}
 	}
 }
