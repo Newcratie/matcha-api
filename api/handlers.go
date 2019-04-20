@@ -41,8 +41,7 @@ func GetMatchs(c *gin.Context) {
 	})
 	fmt.Println(claims)
 	if err != nil {
-		fmt.Println("jwt error: ", err)
-		c.JSON(201, gin.H{"err": err.Error()})
+		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
 		g, err := app.dbGetMatchs(id)
@@ -64,8 +63,7 @@ func GetMessages(c *gin.Context) {
 	})
 	fmt.Println(claims)
 	if err != nil {
-		fmt.Println("jwt error: ", err)
-		c.JSON(201, gin.H{"err": err.Error()})
+		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
 		sui, _ := strconv.Atoi(suitorId)
@@ -95,8 +93,7 @@ func GetPeople(c *gin.Context) {
 	})
 	fmt.Println(claims)
 	if err != nil {
-		fmt.Println("jwt error: ", err)
-		c.JSON(201, gin.H{"err": err.Error()})
+		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
 		g, err := app.dbGetPeople(id, &filters)

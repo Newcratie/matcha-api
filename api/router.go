@@ -26,11 +26,7 @@ func (app *App) routerAPI() {
 		app.insertMessage(msg)
 		_ = m.BroadcastFilter(msg, func(session *melody.Session) bool {
 			//AUth: verify if token is valid here.
-			if session.Request.URL.Path == s.Request.URL.Path {
-				return true
-			} else {
-				return false
-			}
+			return session.Request.URL.Path == s.Request.URL.Path
 		})
 	})
 }

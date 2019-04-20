@@ -9,11 +9,9 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
 	"log"
-	"math"
 	"os"
 	"reflect"
 	"strconv"
-	"time"
 )
 
 func (app *App) insertMessage(byt []byte) {
@@ -22,8 +20,9 @@ func (app *App) insertMessage(byt []byte) {
 		panic(err)
 	}
 	fmt.Println(dat)
-	dat["author"] = int(dat["author"].(float64))
-	dat["to"] = int(dat["to"].(float64))
+	dat["author"] = int64(dat["author"].(float64))
+	dat["to"] = int64(dat["to"].(float64))
+	dat["timestamp"] = int64(dat["timestamp"].(float64))
 	q := `
 MATCH (a:User),(b:User)
 WHERE ID(a)={author} AND ID(b)={to}
@@ -32,20 +31,11 @@ CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, id:{id}, tim
 	executeStatement(st, dat)
 }
 
-func timeS(s string) {
-	i, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		panic(err)
-	}
-	tm := time.Unix(i, 0)
-	fmt.Println(tm)
-}
-
 type Messages struct {
-	Id        int64     `json:"id"`
-	Author    int64     `json:"author"`
-	Message   string    `json:"message"`
-	Timestamp time.Time `json:"timestamp"`
+	Id        int64  `json:"id"`
+	Author    int64  `json:"author"`
+	Message   string `json:"message"`
+	Timestamp int64  `json:"timestamp"`
 }
 
 func (app *App) dbGetMessages(userId, suitorId int) ([]Messages, error) {
@@ -60,14 +50,11 @@ ORDER BY ID(n)
 	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{"user_id": userId, "suitor_id": suitorId})
 	fmt.Println(data)
 	for _, tab := range data {
-		sec, dec := math.Modf(tab[0].(graph.Node).Properties["timestamp"].(float64))
-		t := time.Unix(int64(sec), int64(dec*(1e9)))
-		fmt.Println("T: ", t)
 		msgs = append(msgs, Messages{
 			int64(tab[0].(graph.Node).Properties["id"].(float64)),
 			tab[0].(graph.Node).Properties["author"].(int64),
 			tab[0].(graph.Node).Properties["msg"].(string),
-			time.Time{},
+			tab[0].(graph.Node).Properties["timestamp"].(int64),
 		})
 	}
 	return msgs, nil
