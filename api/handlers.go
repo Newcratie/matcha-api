@@ -12,6 +12,14 @@ import (
 	"time"
 )
 
+//const (
+//	InfoC    = "\033[1;34m%s\033[0m"
+//	NoticeC  = "\033[1;36m%s\033[0m"
+//	WarningC = "\033[1;33m%s\033[0m"
+//	ErrorC   = "\033[1;31m%s\033[0m"
+//	DebugC   = "\033[0;36m%s\033[0m"
+//)
+
 func Token(c *gin.Context) {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{random_token : "`+c.Param("token")+`"}) SET n.access_lvl = 1 RETURN n`, nil)
 	fmt.Println("data===>", data)
@@ -24,21 +32,40 @@ func Token(c *gin.Context) {
 	}
 }
 
-func CreateLike(c *gin.Context) {
-	tokenString := c.Request.Header["Authorization"][0]
+//func PrintHandlerLog(Err string, Color string) {
+//	fmt.Printf(Color, Err)
+//}
+//
+//func CreateLike(c *gin.Context) (ok bool) {
+//
+//	claims := jwt.MapClaims{}
+//	valid := ValidateToken(c, &claims)
+//
+//	if (valid == true) {
+//	// prepare statement for relation ship on neo4j nodes
+//		return true
+//	} else {
+//		PrintHandlerLog("Token Not Valid", ErrorC)
+//		return false
+//	}
+//}
 
-	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
-	})
-	fmt.Println(claims)
-	if err != nil {
-		fmt.Println("jwt error: ", err)
-		c.JSON(201, gin.H{"err": err.Error()})
-	} else if checkJwt(tokenString) {
-		//
-	}
-}
+//func ValidateToken(c *gin.Context, claims jwt.Claims) (valid bool) {
+//	tokenString := c.Request.Header["Authorization"][0]
+//
+//	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+//		return []byte(hashKey), nil
+//	})
+//	fmt.Println(claims)
+//	if err != nil {
+//		fmt.Println("jwt error: ", err)
+//		c.JSON(201, gin.H{"err": err.Error()})
+//		return false
+//	} else if checkJwt(tokenString) {
+//		return true
+//	}
+//	return false
+//}
 
 func Next(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
