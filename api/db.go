@@ -10,7 +10,6 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"os"
-	"reflect"
 	"strconv"
 )
 
@@ -32,6 +31,71 @@ online:{online}, rating: {rating},
 email: {email}, access_lvl: 0})`
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
+}
+
+//MATCH (u:User), (n:User) WHERE ID(u) = 30 AND ID(n) = 238 return exists( (u)-[:LIKE]->(n) )
+//MATCH (u:User) WHERE ID(u) = 30 MATCH (n:User) WHERE ID(n) = 238 CREATE (n)<-[:LIKE]-(u) return u, n
+//MATCH (u)<-[r:LIKE]-(n) WHERE ID(u) = 30 AND ID(n) = 238 DELETE r
+//MATCH (n)-[r:LIKE]-(u) WHERE ID(u) = 30 AND ID(n) = 238 DETACH DELETE r
+
+func (app *App) dbMatchs(IdFrom int, IdTo int) (valid bool) {
+
+	if app.dbExistMatch(IdFrom, IdTo) == true {
+		if app.dbSetMatch(IdFrom, IdTo) == false {
+			return false
+		}
+	} else if app.dbCreateMatch(IdFrom, IdTo) == false {
+		return false
+	}
+	return true
+}
+
+func (app *App) dbCreateMatch(IdFrom int, IdTo int) (valid bool) {
+
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:LIKE]->(n)`
+	data, _, _, _ := app.Neo.QueryNeoAll(MatchQuery, nil)
+	if data[0][0] == false {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** MatchQuery returned false ***")
+		return false
+	}
+	return true
+}
+
+func (app *App) dbExistMatch(IdFrom int, IdTo int) (valid bool) {
+
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` RETURN EXISTS( (u)<-[:LIKE]-(n) )`
+	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
+	if data[0][0] == false {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** ExistQuery returned false ***")
+		return false
+	}
+	return true
+}
+
+func (app *App) dbSetMatch(IdFrom int, IdTo int) (valid bool) {
+
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:LIKE]->(n)`
+	data, _, _, _ := app.Neo.QueryNeoAll(MatchQuery, nil)
+	if data[0][0] == false {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** MatchQuery returned false ***")
+		return false
+	}
+	return true
+}
+
+func (app *App) dbDeleteMatch(IdFrom int, IdTo int) (valid bool) {
+
+	DeleteQuery := `MATCH (n)-[r:LIKE]-(u)  WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE r`
+	data, _, _, _ := app.Neo.QueryNeoAll(DeleteQuery, nil)
+	if data[0][0] == false {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** DeleteQuery returned false ***")
+		return false
+	}
+	return true
 }
 
 func (app *App) getUser(Username string) (u User, err error) {
@@ -60,12 +124,12 @@ func (app *App) getBasicUser(Id int) (u User, err error) {
 	}
 }
 
-func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
-	var g []graph.Node
+func (app *App) dbFakeMsgPeople(Id int, Filter *Filters) ([]graph.Node, error) {
+	var g = make([]graph.Node, 0)
 	var err error
 
 	// A custom query with applied Filters
-	superQuery := `MATCH (u:User) RETURN u LIMIT 10`
+	superQuery := `MATCH (u:User) RETURN u LIMIT 15`
 
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
@@ -74,22 +138,17 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 		return g, err
 	} else {
 		for _, d := range data {
-			g = append(g, d[0].(graph.Node))
+			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
+			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
+
+			// Haversine will return the distance between 2 Lat/Lon in Kilometers
+
+			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
+				g = append(g, d[0].(graph.Node))
+			}
 		}
 		return g, err
 	}
-}
-
-var floatType = reflect.TypeOf(float64(0))
-
-func getFloat(unk interface{}) (float64, error) {
-	v := reflect.ValueOf(unk)
-	v = reflect.Indirect(v)
-	if !v.Type().ConvertibleTo(floatType) {
-		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
-	}
-	fv := v.Convert(floatType)
-	return fv.Float(), nil
 }
 
 func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
