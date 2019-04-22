@@ -179,7 +179,7 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 	var g = make([]graph.Node, 0)
 	var err error
 
-	superQuery := `MATCH (u)-[m:MATCH]-(n) WHERE ID(u) = 30 return n`
+	superQuery := `MATCH (u)-[m:MATCH]-(n) WHERE ID(u) = ` + strconv.Itoa(Id) + ` return n`
 
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
@@ -190,7 +190,10 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 		for _, d := range data {
 			g = append(g, d[0].(graph.Node))
 		}
+		fmt.Println("YOOOOOOOO ===")
+		fmt.Println(g)
 		return g, err
+
 	}
 }
 
