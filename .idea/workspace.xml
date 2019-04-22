@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="36822d56-41dc-4c86-a674-facbf7b2587e" name="Default Changelist" comment="">
+    <list default="true" id="36822d56-41dc-4c86-a674-facbf7b2587e" name="Default Changelist" comment="Working on Filters">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_16_19__6_52_PM__Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handlers.go" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -112,68 +114,106 @@
     <session id="1043278564">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="go" value="15" />
+          <entry key="go" value="35" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Go" value="15" />
+          <entry key="Go" value="35" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="go" value="980" />
-          <entry key="txt" value="24" />
+          <entry key="go" value="4067" />
+          <entry key="txt" value="94" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Go" value="980" />
-          <entry key="PLAIN_TEXT" value="24" />
+          <entry key="Go" value="4067" />
+          <entry key="PLAIN_TEXT" value="94" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.125" value="1" />
+          <entry key="project.open.time.13" value="1" />
+          <entry key="project.open.time.132" value="1" />
+          <entry key="project.open.time.27" value="1" />
           <entry key="project.open.time.35" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.36" value="1" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/api/router.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
-              <folding>
-                <element signature="e#13#87#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/handlers.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1058">
-              <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/db.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.55874896">
+      <split-first>
+        <splitter split-orientation="horizontal" split-proportion="0.5">
+          <split-first>
+            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+              <file pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/api/router.go">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="345">
+                      <caret line="20" column="33" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-first>
+          <split-second>
+            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+              <file pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/api/handlers.go">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="680">
+                      <caret line="97" column="9" lean-forward="true" selection-start-line="97" selection-start-column="9" selection-end-line="97" selection-end-column="9" />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-second>
+        </splitter>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/api/db.go">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="560">
+                  <caret line="79" column="57" lean-forward="true" selection-start-line="79" selection-start-column="57" selection-end-line="79" selection-end-column="57" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/api/db_tool.go">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1403">
+                  <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/api/types.go">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1173">
+                  <caret line="57" column="35" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -191,6 +231,11 @@
       <find>ret</find>
       <find>jso`</find>
       <find>===&gt;</find>
+      <find>wrong username</find>
+      <find>Prepare</find>
+      <find>Prepar</find>
+      <find>PrepareNeo</find>
+      <find>prepare</find>
     </findStrings>
   </component>
   <component name="GOROOT" path="/usr/local/go" />
@@ -246,10 +291,12 @@
         <option value="$PROJECT_DIR$/api/fake_data_test.go" />
         <option value="$PROJECT_DIR$/run.go" />
         <option value="$PROJECT_DIR$/api/types.go" />
-        <option value="$PROJECT_DIR$/api/handlers.go" />
-        <option value="$PROJECT_DIR$/api/db.go" />
         <option value="$PROJECT_DIR$/api/jwt.go" />
+        <option value="$PROJECT_DIR$/api/utils/db_tool.go" />
         <option value="$PROJECT_DIR$/api/router.go" />
+        <option value="$PROJECT_DIR$/api/db_tool.go" />
+        <option value="$PROJECT_DIR$/api/db.go" />
+        <option value="$PROJECT_DIR$/api/handlers.go" />
       </list>
     </option>
   </component>
@@ -259,7 +306,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="width" value="2560" />
     <option name="height" value="1440" />
   </component>
@@ -286,22 +333,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="matcha-api" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-            <path>
-              <item name="matcha-api" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="api" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -313,6 +344,22 @@
               <item name="matcha-api" type="b2602c69:ProjectViewProjectNode" />
               <item name="matcha-api" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="matcha-api" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="matcha-api" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="api" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -334,15 +381,15 @@
     <property name="settings.editor.selected.configurable" value="MTConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/api" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/api" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/api/tests" />
       <recent name="$PROJECT_DIR$/api/print" />
       <recent name="$PROJECT_DIR$/tests" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/api" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -530,7 +577,7 @@
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18149325" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.06115965" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="DB Browser" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -542,8 +589,8 @@
       <window_info anchor="bottom" id="Version Control" order="5" sideWeight="0.4988086" weight="0.3293944" />
       <window_info anchor="bottom" id="DB Execution Console" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.4138205" side_tool="true" visible="true" weight="0.0" />
-      <window_info active="true" anchor="bottom" x="1243" y="699" width="1149" height="444" id="Docker" order="9" sideWeight="0.5861795" visible="true" weight="0.17651403" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.41623187" side_tool="true" weight="0.2703102" />
+      <window_info active="true" anchor="bottom" x="1243" y="699" width="1149" height="444" id="Docker" order="9" sideWeight="0.5837681" visible="true" weight="0.2703102" />
       <window_info anchor="bottom" id="Graph Database Console" order="10" weight="0.6010165" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.3288835" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -555,7 +602,7 @@
       <window_info anchor="right" x="1155" y="284" width="1206" height="757" id="Debug" order="6" weight="0.32525814" />
       <window_info anchor="right" id="Graph Database" order="7" weight="0.3297568" />
       <window_info anchor="right" x="2" y="23" width="1438" height="877" id="Run" order="8" sideWeight="0.4498094" side_tool="true" weight="0.3482923" />
-      <window_info active="true" anchor="right" id="Terminal" order="9" sideWeight="1.0" visible="true" weight="0.471803" />
+      <window_info anchor="right" auto_hide="true" id="Terminal" internal_type="SLIDING" order="9" sideWeight="1.0" type="SLIDING" weight="0.471803" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21418338" />
@@ -604,8 +651,10 @@
     <MESSAGE value="Get basic must return id with datas." />
     <MESSAGE value="Home started" />
     <MESSAGE value="Stable" />
+    <MESSAGE value="distance and tag OK" />
     <MESSAGE value="Working on Filters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working on Filters" />
+    <MESSAGE value="match implementation not yet finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="match implementation not yet finished" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.realize.yaml">
@@ -730,31 +779,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/conn.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="34" column="19" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/fake_data_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/types.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="57" column="38" lean-forward="true" selection-start-line="57" selection-start-column="38" selection-end-line="57" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -765,27 +793,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/db.go">
+    <entry file="file://$PROJECT_DIR$/../../dgrijalva/jwt-go/claims.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="437">
+          <caret line="23" column="43" lean-forward="true" selection-start-line="23" selection-start-column="43" selection-end-line="23" selection-end-column="43" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/handlers.go">
+    <entry file="file://$PROJECT_DIR$/api/fake_data_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1058">
-          <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
+        <state relative-caret-position="184">
+          <caret line="18" column="22" lean-forward="true" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/stmt_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="1022" lean-forward="true" selection-start-line="1022" selection-end-line="1022" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/stmt.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="41" column="18" lean-forward="true" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/conn.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="500" column="23" selection-start-line="500" selection-start-column="23" selection-end-line="500" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../gopkg.in/olahol/melody.v1/melody.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1637">
+          <caret line="217" column="17" selection-start-line="217" selection-start-column="17" selection-end-line="217" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/router.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
-          <folding>
-            <element signature="e#13#87#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="345">
+          <caret line="20" column="33" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/db_tool.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1403">
+          <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/types.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="57" column="35" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/db.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="79" column="57" lean-forward="true" selection-start-line="79" selection-start-column="57" selection-end-line="79" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/handlers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="97" column="9" lean-forward="true" selection-start-line="97" selection-start-column="9" selection-end-line="97" selection-end-column="9" />
         </state>
       </provider>
     </entry>

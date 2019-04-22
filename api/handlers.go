@@ -88,15 +88,15 @@ func GetMatchs(c *gin.Context) {
 	if err != nil {
 		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
-	} else if checkJwt(tokenString) {
-		id := int(math.Round(claims["id"].(float64)))
-		app.dbMatchs(30, 238)
-		if err != nil {
-			c.JSON(201, gin.H{"err": err.Error()})
-		} else {
-			c.JSON(200, g)
-		}
-	}
+	} //else if checkJwt(tokenString) {
+	//	id := int(math.Round(claims["id"].(float64)))
+	//	app.dbGetMatchs(30, 238)
+	//	if err != nil {
+	//		c.JSON(201, gin.H{"err": err.Error()})
+	//	} else {
+	//		c.JSON(200, g)
+	//	}
+	//}
 }
 
 func GetPeople(c *gin.Context) {

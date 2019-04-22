@@ -76,7 +76,7 @@ func (app *App) dbExistMatch(IdFrom int, IdTo int) (valid bool) {
 
 func (app *App) dbSetMatch(IdFrom int, IdTo int) (valid bool) {
 
-	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:LIKE]->(n)`
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:MATCH]->(n)`
 	data, _, _, _ := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if data[0][0] == false {
 		//err = errors.New("wrong username or password")
@@ -124,12 +124,11 @@ func (app *App) getBasicUser(Id int) (u User, err error) {
 	}
 }
 
-func (app *App) dbFakeMsgPeople(Id int, Filter *Filters) ([]graph.Node, error) {
+func (app *App) dbGetMatch(Id int, Filter *Filters) ([]graph.Node, error) {
 	var g = make([]graph.Node, 0)
 	var err error
 
-	// A custom query with applied Filters
-	superQuery := `MATCH (u:User) RETURN u LIMIT 15`
+	superQuery := `MATCH (u)-[m:MATCH]-(n) WHERE ID(u) = 30 return n`
 
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
