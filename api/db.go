@@ -84,37 +84,42 @@ email: {email}, access_lvl: 0})`
 //MATCH (u)<-[r:LIKE]-(n) WHERE ID(u) = 30 AND ID(n) = 238 DELETE r
 //MATCH (n)-[r:LIKE]-(u) WHERE ID(u) = 30 AND ID(n) = 238 DETACH DELETE r
 
-func (app *App) dbMatchs(IdFrom int, IdTo int) (valid bool) {
+func (app *App) dbMatchs(IdFrom int, IdTo int, Relation string) (valid bool) {
 
-	if app.dbExistMatch(IdFrom, IdTo) == true {
-		if app.dbSetMatch(IdFrom, IdTo) == false {
-			return false
+	if Relation != "" {
+		app.dbDeleteRelation(IdFrom, IdTo, Relation)
+	}
+
+	if app.dbExistLike(IdFrom, IdTo) == true {
+		if app.dbSetMatch(IdFrom, IdTo) == true {
+			app.dbDeleteRelation(IdFrom, IdTo, "LIKE")
+			return true
 		}
-	} else if app.dbCreateMatch(IdFrom, IdTo) == false {
+	} else if app.dbCreateLike(IdFrom, IdTo) == false {
 		return false
 	}
-	return true
+	return false
 }
 
-func (app *App) dbCreateMatch(IdFrom int, IdTo int) (valid bool) {
+func (app *App) dbCreateLike(IdFrom int, IdTo int) (valid bool) {
 
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:LIKE]->(n)`
-	data, _, _, _ := app.Neo.QueryNeoAll(MatchQuery, nil)
-	if data[0][0] == false {
+	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+	if err != nil {
 		//err = errors.New("wrong username or password")
-		fmt.Println("*** MatchQuery returned false ***")
+		fmt.Println("*** CreateLike Query returned an Error ***", data)
 		return false
 	}
 	return true
 }
 
-func (app *App) dbExistMatch(IdFrom int, IdTo int) (valid bool) {
+func (app *App) dbExistLike(IdFrom int, IdTo int) (valid bool) {
 
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` RETURN EXISTS( (u)<-[:LIKE]-(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
 		//err = errors.New("wrong username or password")
-		fmt.Println("*** ExistQuery returned false ***")
+		fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -123,22 +128,22 @@ func (app *App) dbExistMatch(IdFrom int, IdTo int) (valid bool) {
 func (app *App) dbSetMatch(IdFrom int, IdTo int) (valid bool) {
 
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:MATCH]->(n)`
-	data, _, _, _ := app.Neo.QueryNeoAll(MatchQuery, nil)
-	if data[0][0] == false {
+	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+	if err != nil {
 		//err = errors.New("wrong username or password")
-		fmt.Println("*** MatchQuery returned false ***")
+		fmt.Println("*** Set MatchQuery returned an Error ***", data)
 		return false
 	}
 	return true
 }
 
-func (app *App) dbDeleteMatch(IdFrom int, IdTo int) (valid bool) {
+func (app *App) dbDeleteRelation(IdFrom int, IdTo int, Rel string) (valid bool) {
 
-	DeleteQuery := `MATCH (n)-[r:LIKE]-(u)  WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE r`
-	data, _, _, _ := app.Neo.QueryNeoAll(DeleteQuery, nil)
-	if data[0][0] == false {
+	DeleteQuery := `MATCH (n)-[m:` + Rel + `]-(u)  WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE m`
+	data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+	if err != nil {
 		//err = errors.New("wrong username or password")
-		fmt.Println("*** DeleteQuery returned false ***")
+		fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 		return false
 	}
 	return true
@@ -170,7 +175,7 @@ func (app *App) getBasicUser(Id int) (u User, err error) {
 	}
 }
 
-func (app *App) dbGetMatch(Id int, Filter *Filters) ([]graph.Node, error) {
+func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 	var g = make([]graph.Node, 0)
 	var err error
 
@@ -183,14 +188,7 @@ func (app *App) dbGetMatch(Id int, Filter *Filters) ([]graph.Node, error) {
 		return g, err
 	} else {
 		for _, d := range data {
-			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
-			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
-
-			// Haversine will return the distance between 2 Lat/Lon in Kilometers
-
-			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
-				g = append(g, d[0].(graph.Node))
-			}
+			g = append(g, d[0].(graph.Node))
 		}
 		return g, err
 	}

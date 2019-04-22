@@ -124,7 +124,6 @@ func GetMessages(c *gin.Context) {
 
 func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
-	var g []graph.Node
 	var err error
 
 	filters := Filters{}
@@ -132,22 +131,10 @@ func GetPeople(c *gin.Context) {
 	valid, err := ValidateToken(c, &claims)
 	json.Unmarshal([]byte(filtersJson), &filters)
 
-<<<<<<< HEAD
-	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
-	})
 	fmt.Println(claims)
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
-	} else if checkJwt(tokenString) {
-=======
-	PrintHandlerLog("LOG CLAIMS", InfoC)
-	app.dbMatchs(30, 238)
-	fmt.Println("DATA= = = = = ", g)
-	fmt.Println("DATA= = = = = ", err)
-	if valid == true {
->>>>>>> 3a31e15f4a06d91e6580413589f3fd8a0471b99d
+	} else if valid == true {
 		id := int(math.Round(claims["id"].(float64)))
 		g, err := app.dbGetPeople(id, &filters)
 		if err != nil {

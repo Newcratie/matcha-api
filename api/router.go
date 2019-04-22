@@ -5,20 +5,20 @@ import (
 	"gopkg.in/olahol/melody.v1"
 )
 
-func (app *App) insertMessage(byt []byte) {
-	var dat map[string]interface{}
-	if err := json.Unmarshal(byt, &dat); err != nil {
-		panic(err)
-	}
-	fmt.Println(dat)
-	dat["author"] = int(dat["author"].(float64))
-	dat["to"] = int(dat["to"].(float64))
-	q := `MATCH (a:User),(b:User)
-WHERE ID(a)={author} AND ID(b)={to}
-CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, to:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
-	st := app.prepareStatement(q)
-	executeStatement(st, dat)
-}
+//func (app *App) insertMessage(byt []byte) {
+//	var dat map[string]interface{}
+//	if err := json.Unmarshal(byt, &dat); err != nil {
+//		panic(err)
+//	}
+//	fmt.Println(dat)
+//	dat["author"] = int(dat["author"].(float64))
+//	dat["to"] = int(dat["to"].(float64))
+//	q := `MATCH (a:User),(b:User)
+//WHERE ID(a)={author} AND ID(b)={to}
+//CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, to:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
+//	st := app.prepareStatement(q)
+//	executeStatement(st, dat)
+//}
 
 func (app *App) routerAPI() {
 	m := melody.New()
