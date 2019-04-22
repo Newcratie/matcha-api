@@ -111,7 +111,7 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 	var err error
 
 	// A custom query with applied Filters
-	superQuery := `MATCH (u:User) RETURN u LIMIT 10`
+	superQuery := `MATCH (u:User) RETURN u LIMIT 30`
 
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
