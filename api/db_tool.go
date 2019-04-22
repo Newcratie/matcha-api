@@ -1,7 +1,9 @@
 package api
 
 import (
+	"fmt"
 	"math"
+	"reflect"
 	"strconv"
 	"time"
 )
@@ -59,6 +61,18 @@ func Haversine(lonFrom float64, latFrom float64, lonTo float64, latTo float64) (
 	distance = int(earthRadius * c)
 
 	return
+}
+
+var floatType = reflect.TypeOf(float64(0))
+
+func getFloat(unk interface{}) (float64, error) {
+	v := reflect.ValueOf(unk)
+	v = reflect.Indirect(v)
+	if !v.Type().ConvertibleTo(floatType) {
+		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
+	}
+	fv := v.Convert(floatType)
+	return fv.Float(), nil
 }
 
 // Create link between User and TAG
