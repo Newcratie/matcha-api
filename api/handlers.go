@@ -9,7 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"math"
+	"strconv"
 	"time"
+)
+
+const (
+	InfoC    = "\033[1;34m%s\033[0m"
+	NoticeC  = "\033[1;36m%s\033[0m"
+	WarningC = "\033[1;33m%s\033[0m"
+	ErrorC   = "\033[1;31m%s\033[0m"
+	DebugC   = "\033[0;36m%s\033[0m"
 )
 
 func Token(c *gin.Context) {
@@ -22,6 +31,44 @@ func Token(c *gin.Context) {
 	} else {
 		c.JSON(200, gin.H{"status": "Email validated"})
 	}
+}
+
+func PrintHandlerLog(Err string, Color string) {
+	Err = Err + "\n"
+	fmt.Printf(Color, Err)
+}
+
+func CreateLike(c *gin.Context) {
+
+	claims := jwt.MapClaims{}
+	valid, err := ValidateToken(c, &claims)
+
+	if valid == true {
+		// prepare statement for relation ship on neo4j nodes
+	} else {
+		PrintHandlerLog("Token Not Valid", ErrorC)
+		fmt.Println("jwt error: ", err)
+		c.JSON(201, gin.H{"err": err.Error()})
+	}
+}
+
+func ValidateToken(c *gin.Context, claims jwt.Claims) (valid bool, err error) {
+	tokenString := c.Request.Header["Authorization"][0]
+
+	_, err = jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(hashKey), nil
+	})
+	fmt.Println(claims)
+	if err != nil {
+		fmt.Println("jwt error: ", err)
+		c.JSON(201, gin.H{"err": err.Error()})
+		PrintHandlerLog("-----NOT VALID-----", ErrorC)
+		return false, err
+	} else if checkJwt(tokenString) {
+		PrintHandlerLog("-----VALID-----", ErrorC)
+		return true, err
+	}
+	return false, err
 }
 
 func Next(c *gin.Context) {
@@ -40,8 +87,7 @@ func GetMatchs(c *gin.Context) {
 	})
 	fmt.Println(claims)
 	if err != nil {
-		fmt.Println("jwt error: ", err)
-		c.JSON(201, gin.H{"err": err.Error()})
+		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
 		g, err := app.dbGetMatchs(id)
@@ -52,27 +98,43 @@ func GetMatchs(c *gin.Context) {
 		}
 	}
 }
-
-func GetPeople(c *gin.Context) {
+func GetMessages(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
-	filtersJson := c.Request.Header["Filters"][0]
-	filters := Filters{}
+	suitorId := c.Request.Header["Suitor-Id"][0]
 
-	//remettre a zero les filtres si changement d'onglet ex: 42matcha -> user -> 42matcha || redefinir le slider avec les valeurs envoyer
-
-	fmt.Println("Before", filtersJson)
-	json.Unmarshal([]byte(filtersJson), &filters)
-	fmt.Println("After", filters)
-
+	fmt.Println("SuitorId ====> ", suitorId)
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
 	fmt.Println(claims)
 	if err != nil {
-		fmt.Println("jwt error: ", err)
-		c.JSON(201, gin.H{"err": err.Error()})
+		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
+		id := int(math.Round(claims["id"].(float64)))
+		sui, _ := strconv.Atoi(suitorId)
+		msgs, err := app.dbGetMessages(id, sui)
+		if err != nil {
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			c.JSON(200, msgs)
+		}
+	}
+}
+
+func GetPeople(c *gin.Context) {
+	filtersJson := c.Request.Header["Filters"][0]
+	var err error
+
+	filters := Filters{}
+	claims := jwt.MapClaims{}
+	valid, err := ValidateToken(c, &claims)
+	json.Unmarshal([]byte(filtersJson), &filters)
+
+	fmt.Println(claims)
+	if err != nil {
+		c.JSON(202, gin.H{"err": err.Error()})
+	} else if valid == true {
 		id := int(math.Round(claims["id"].(float64)))
 		g, err := app.dbGetPeople(id, &filters)
 		if err != nil {
@@ -80,6 +142,9 @@ func GetPeople(c *gin.Context) {
 		} else {
 			c.JSON(200, g)
 		}
+	} else {
+		fmt.Println("jwt error: ", err)
+		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
 

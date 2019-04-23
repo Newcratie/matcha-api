@@ -1,0 +1,513 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"36822d56-41dc-4c86-a674-facbf7b2587e\" name=\"Default Changelist\" comment=\"Working on Filters\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/api/db.go\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/api/db.go\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/api/handlers.go\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/api/handlers.go\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/api/types.go\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/api/types.go\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/run.go\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/run.go\" afterDir=\"false\" />\n    </list>\n    <option name=\"EXCLUDED_CONVERTED_TO_IGNORED\" value=\"true\" />\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"CoverageDataManager\">\n    <SUITE FILE_PATH=\"coverage/matcha_api$api_test_go.out\" NAME=\"api_test.go Coverage Results\" MODIFIED=\"1552495933745\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"GoCoverage\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" />\n  </component>\n  <component name=\"CoverageViewManager\">\n    <option name=\"myElementSize\" value=\"215\" />\n  </component>\n  <component name=\"DatabaseView\">\n    <option name=\"SHOW_INTERMEDIATE\" value=\"true\" />\n    <option name=\"GROUP_DATA_SOURCES\" value=\"true\" />\n    <option name=\"GROUP_SCHEMA\" value=\"true\" />\n    <option name=\"GROUP_CONTENTS\" value=\"false\" />\n    <option name=\"SORT_POSITIONED\" value=\"false\" />\n    <option name=\"SHOW_EMPTY_GROUPS\" value=\"false\" />\n    <option name=\"AUTO_SCROLL_FROM_SOURCE\" value=\"false\" />\n    <option name=\"HIDDEN_KINDS\">\n      <set />\n    </option>\n    <expand />\n    <select />\n  </component>\n  <component name=\"DockerExecCommand\">\n    <ExecCommand>\n      <option name=\"command\" value=\"npm install\" />\n      <option name=\"imageId\" value=\"matcha_web\" />\n    </ExecCommand>\n    <ExecCommand>\n      <option name=\"command\" value=\"realize start\" />\n      <option name=\"imageId\" value=\"matcha_api\" />\n    </ExecCommand>\n  </component>\n  <component name=\"FUSProjectUsageTrigger\">\n    <session id=\"1539745550\">\n      <usages-collector id=\"statistics.lifecycle.project\">\n        <counts>\n          <entry key=\"project.closed\" value=\"3\" />\n          <entry key=\"project.open.time.10\" value=\"1\" />\n          <entry key=\"project.open.time.11\" value=\"1\" />\n          <entry key=\"project.open.time.27\" value=\"1\" />\n          <entry key=\"project.opened\" value=\"3\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.extensions.open\">\n        <counts>\n          <entry key=\"go\" value=\"12\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.types.open\">\n        <counts>\n          <entry key=\"Go\" value=\"12\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.extensions.edit\">\n        <counts>\n          <entry key=\"go\" value=\"1078\" />\n          <entry key=\"txt\" value=\"9\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.types.edit\">\n        <counts>\n          <entry key=\"Go\" value=\"1078\" />\n          <entry key=\"PLAIN_TEXT\" value=\"9\" />\n        </counts>\n      </usages-collector>\n    </session>\n    <session id=\"-1502995868\">\n      <usages-collector id=\"statistics.lifecycle.project\">\n        <counts>\n          <entry key=\"project.closed\" value=\"3\" />\n          <entry key=\"project.open.time.14\" value=\"1\" />\n          <entry key=\"project.open.time.18\" value=\"1\" />\n          <entry key=\"project.open.time.20\" value=\"1\" />\n          <entry key=\"project.open.time.31\" value=\"1\" />\n          <entry key=\"project.opened\" value=\"4\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.extensions.edit\">\n        <counts>\n          <entry key=\"go\" value=\"964\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.types.edit\">\n        <counts>\n          <entry key=\"Go\" value=\"964\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.extensions.open\">\n        <counts>\n          <entry key=\"go\" value=\"1\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.types.open\">\n        <counts>\n          <entry key=\"Go\" value=\"1\" />\n        </counts>\n      </usages-collector>\n    </session>\n    <session id=\"1043278564\">\n      <usages-collector id=\"statistics.file.extensions.open\">\n        <counts>\n          <entry key=\"go\" value=\"15\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.types.open\">\n        <counts>\n          <entry key=\"Go\" value=\"15\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.extensions.edit\">\n        <counts>\n          <entry key=\"go\" value=\"980\" />\n          <entry key=\"txt\" value=\"24\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.file.types.edit\">\n        <counts>\n          <entry key=\"Go\" value=\"980\" />\n          <entry key=\"PLAIN_TEXT\" value=\"24\" />\n        </counts>\n      </usages-collector>\n      <usages-collector id=\"statistics.lifecycle.project\">\n        <counts>\n          <entry key=\"project.closed\" value=\"1\" />\n          <entry key=\"project.open.time.35\" value=\"1\" />\n          <entry key=\"project.opened\" value=\"1\" />\n        </counts>\n      </usages-collector>\n    </session>\n  </component>\n  <component name=\"FileEditorManager\">\n    <splitter split-orientation=\"horizontal\" split-proportion=\"0.2656455\">\n      <split-first>\n        <leaf SIDE_TABS_SIZE_LIMIT_KEY=\"300\">\n          <file pinned=\"false\" current-in-tab=\"false\">\n            <entry file=\"file://$PROJECT_DIR$/api/router.go\">\n              <provider selected=\"true\" editor-type-id=\"text-editor\">\n                <state relative-caret-position=\"322\">\n                  <caret line=\"28\" selection-start-line=\"28\" selection-end-line=\"28\" />\n                </state>\n              </provider>\n            </entry>\n          </file>\n          <file pinned=\"false\" current-in-tab=\"true\">\n            <entry file=\"file://$PROJECT_DIR$/api/match.go\">\n              <provider selected=\"true\" editor-type-id=\"text-editor\">\n                <state relative-caret-position=\"184\">\n                  <caret line=\"8\" column=\"49\" selection-start-line=\"8\" selection-start-column=\"49\" selection-end-line=\"8\" selection-end-column=\"49\" />\n                  <folding>\n                    <element signature=\"e#13#89#0\" expanded=\"true\" />\n                  </folding>\n                </state>\n              </provider>\n            </entry>\n          </file>\n        </leaf>\n      </split-first>\n      <split-second>\n        <splitter split-orientation=\"horizontal\" split-proportion=\"0.4108527\">\n          <split-first>\n            <leaf SIDE_TABS_SIZE_LIMIT_KEY=\"300\">\n              <file pinned=\"false\" current-in-tab=\"false\">\n                <entry file=\"file://$PROJECT_DIR$/run.go\">\n                  <provider selected=\"true\" editor-type-id=\"text-editor\">\n                    <state relative-caret-position=\"253\">\n                      <caret line=\"11\" selection-start-line=\"11\" selection-end-line=\"11\" />\n                      <folding>\n                        <element signature=\"e#14#70#0\" expanded=\"true\" />\n                      </folding>\n                    </state>\n                  </provider>\n                </entry>\n              </file>\n              <file pinned=\"false\" current-in-tab=\"true\">\n                <entry file=\"file://$PROJECT_DIR$/api/handlers.go\">\n                  <provider selected=\"true\" editor-type-id=\"text-editor\">\n                    <state relative-caret-position=\"599\">\n                      <caret line=\"52\" column=\"46\" selection-start-line=\"52\" selection-start-column=\"46\" selection-end-line=\"52\" selection-end-column=\"46\" />\n                    </state>\n                  </provider>\n                </entry>\n              </file>\n            </leaf>\n          </split-first>\n          <split-second>\n            <leaf SIDE_TABS_SIZE_LIMIT_KEY=\"300\">\n              <file pinned=\"false\" current-in-tab=\"true\">\n                <entry file=\"file://$PROJECT_DIR$/api/db.go\">\n                  <provider selected=\"true\" editor-type-id=\"text-editor\">\n                    <state relative-caret-position=\"764\">\n                      <caret line=\"90\" lean-forward=\"true\" selection-start-line=\"90\" selection-end-line=\"90\" />\n                      <folding>\n                        <element signature=\"e#13#263#0\" expanded=\"true\" />\n                      </folding>\n                    </state>\n                  </provider>\n                </entry>\n              </file>\n              <file pinned=\"false\" current-in-tab=\"false\">\n                <entry file=\"file://$PROJECT_DIR$/api/fake_data_test.go\">\n                  <provider selected=\"true\" editor-type-id=\"text-editor\">\n                    <state relative-caret-position=\"498\">\n                      <caret line=\"49\" selection-start-line=\"49\" selection-end-line=\"49\" />\n                    </state>\n                  </provider>\n                </entry>\n              </file>\n              <file pinned=\"false\" current-in-tab=\"false\">\n                <entry file=\"file://$PROJECT_DIR$/api/types.go\">\n                  <provider selected=\"true\" editor-type-id=\"text-editor\">\n                    <state relative-caret-position=\"287\">\n                      <caret line=\"57\" column=\"38\" lean-forward=\"true\" selection-start-line=\"57\" selection-start-column=\"38\" selection-end-line=\"57\" selection-end-column=\"38\" />\n                    </state>\n                  </provider>\n                </entry>\n              </file>\n              <file pinned=\"false\" current-in-tab=\"false\">\n                <entry file=\"file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/conn.go\">\n                  <provider selected=\"true\" editor-type-id=\"text-editor\">\n                    <state relative-caret-position=\"23\">\n                      <caret line=\"34\" column=\"19\" selection-start-line=\"34\" selection-start-column=\"10\" selection-end-line=\"34\" selection-end-column=\"19\" />\n                    </state>\n                  </provider>\n                </entry>\n              </file>\n            </leaf>\n          </split-second>\n        </splitter>\n      </split-second>\n    </splitter>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"tsconfig.json\" />\n        <option value=\"HTML File\" />\n        <option value=\"Go File\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"FindInProjectRecents\">\n    <findStrings>\n      <find>online_status_update_date</find>\n      <find>FetchUser</find>\n      <find>ret</find>\n      <find>jso`</find>\n      <find>===&gt;</find>\n    </findStrings>\n  </component>\n  <component name=\"GOROOT\" path=\"/usr/local/go\" />\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\n      </map>\n    </option>\n  </component>\n  <component name=\"IdeDocumentHistory\">\n    <option name=\"CHANGED_PATHS\">\n      <list>\n        <option value=\"$PROJECT_DIR$/testing/test.go\" />\n        <option value=\"$PROJECT_DIR$/api/test.go\" />\n        <option value=\"$PROJECT_DIR$/test.go\" />\n        <option value=\"$PROJECT_DIR$/register.go\" />\n        <option value=\"$PROJECT_DIR$/types.go\" />\n        <option value=\"$PROJECT_DIR$/tests/api_test.go\" />\n        <option value=\"$PROJECT_DIR$/tests/login_test.go\" />\n        <option value=\"$PROJECT_DIR$/db.go\" />\n        <option value=\"$PROJECT_DIR$/exec/run.go\" />\n        <option value=\"$PROJECT_DIR$/api.go\" />\n        <option value=\"$PROJECT_DIR$/api/tests/login_test.go\" />\n        <option value=\"$PROJECT_DIR$/api/utils.go\" />\n        <option value=\"$PROJECT_DIR$/api/print/utils.go\" />\n        <option value=\"$PROJECT_DIR$/api/logprint/utils.go\" />\n        <option value=\"$PROJECT_DIR$/api/tests/db_test.go\" />\n        <option value=\"$PROJECT_DIR$/seedfaker.json\" />\n        <option value=\"$PROJECT_DIR$/seedfaker.js\" />\n        <option value=\"$PROJECT_DIR$/api/logprint/logprint.go\" />\n        <option value=\"$PROJECT_DIR$/fakeData.json\" />\n        <option value=\"$PROJECT_DIR$/api/tests/fake_data_test.go\" />\n        <option value=\"$PROJECT_DIR$/api/admin.go\" />\n        <option value=\"$PROJECT_DIR$/api/messages.go\" />\n        <option value=\"$PROJECT_DIR$/api/hash/hash.go\" />\n        <option value=\"$PROJECT_DIR$/api/utils/confirm_email.html\" />\n        <option value=\"$PROJECT_DIR$/api/send_token.go\" />\n        <option value=\"$PROJECT_DIR$/api/login.go\" />\n        <option value=\"$PROJECT_DIR$/api/register-validation.go\" />\n        <option value=\"$PROJECT_DIR$/api/valid_token.go\" />\n        <option value=\"$PROJECT_DIR$/api/api_test.go\" />\n        <option value=\"$PROJECT_DIR$/api_test.go\" />\n        <option value=\"$PROJECT_DIR$/api/jwt.go\" />\n        <option value=\"$PROJECT_DIR$/api/tests/fake_data.json\" />\n        <option value=\"$PROJECT_DIR$/api/tests/generic_test.go\" />\n        <option value=\"$PROJECT_DIR$/api/api.go\" />\n        <option value=\"$PROJECT_DIR$/api/valid-email.go\" />\n        <option value=\"$PROJECT_DIR$/api/register.go\" />\n        <option value=\"$PROJECT_DIR$/api/db_test.go\" />\n        <option value=\"$PROJECT_DIR$/api/router.go\" />\n        <option value=\"$PROJECT_DIR$/api/match.go\" />\n        <option value=\"$PROJECT_DIR$/api/basic_test.go\" />\n        <option value=\"$PROJECT_DIR$/api/fake_data_test.go\" />\n        <option value=\"$PROJECT_DIR$/run.go\" />\n        <option value=\"$PROJECT_DIR$/api/types.go\" />\n        <option value=\"$PROJECT_DIR$/api/handlers.go\" />\n        <option value=\"$PROJECT_DIR$/api/db.go\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"JsBuildToolGruntFileManager\" detection-done=\"true\" sorting=\"DEFINITION_ORDER\" />\n  <component name=\"JsBuildToolPackageJson\" detection-done=\"true\" sorting=\"DEFINITION_ORDER\" />\n  <component name=\"JsGulpfileManager\">\n    <detection-done>true</detection-done>\n    <sorting>DEFINITION_ORDER</sorting>\n  </component>\n  <component name=\"ProjectFrameBounds\" fullScreen=\"true\">\n    <option name=\"width\" value=\"2560\" />\n    <option name=\"height\" value=\"1440\" />\n  </component>\n  <component name=\"ProjectInspectionProfilesVisibleTreeState\">\n    <entry key=\"Project Default\">\n      <profile-state>\n        <expanded-state>\n          <State />\n          <State>\n            <id>Dockerfile</id>\n          </State>\n          <State>\n            <id>docker-compose</id>\n          </State>\n        </expanded-state>\n      </profile-state>\n    </entry>\n  </component>\n  <component name=\"ProjectLevelVcsManager\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectView\">\n    <navigator proportions=\"\" version=\"1\">\n      <foldersAlwaysOnTop value=\"true\" />\n    </navigator>\n    <panes>\n      <pane id=\"Scope\">\n        <subPane subId=\"Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope\">\n          <expand>\n            <path>\n              <item name=\"matcha-api\" type=\"3d21c010:ScopeViewTreeModel$ProjectNode\" />\n              <item name=\"\" type=\"442cc68d:ScopeViewTreeModel$RootNode\" />\n            </path>\n            <path>\n              <item name=\"matcha-api\" type=\"3d21c010:ScopeViewTreeModel$ProjectNode\" />\n              <item name=\"\" type=\"442cc68d:ScopeViewTreeModel$RootNode\" />\n              <item name=\"api\" type=\"9f88c78c:ScopeViewTreeModel$FileNode\" />\n            </path>\n          </expand>\n          <select />\n        </subPane>\n      </pane>\n      <pane id=\"ProjectPane\">\n        <subPane>\n          <expand>\n            <path>\n              <item name=\"matcha-api\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"matcha-api\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"matcha-api\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"matcha-api\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"api\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n          </expand>\n          <select />\n        </subPane>\n      </pane>\n    </panes>\n  </component>\n  <component name=\"PropertiesComponent\">\n    <property name=\"DefaultGoTemplateProperty\" value=\"Go File\" />\n    <property name=\"DefaultHtmlFileTemplate\" value=\"HTML File\" />\n    <property name=\"GO_FMT\" value=\"true\" />\n    <property name=\"SearchEverywhereHistoryKey\" value=\"rout&#9;FILE&#9;file:///Users/abbenham/go/src/github.com/Newcratie/matcha-api/api/router.go&#10;inser&#9;null&#9;null&#10;vUs&#9;null&#9;null&#10;type&#9;FILE&#9;file:///Users/abbenham/go/src/github.com/Newcratie/matcha-api/api/types.go&#10;Token&#9;FILE&#9;file:///Users/abbenham/go/src/github.com/Newcratie/matcha-api/api/valid_token.go&#10;Next&#9;null&#9;null&#10;next&#9;ACTION&#9;MethodDown&#10;layout&#9;null&#9;null&#10;timeLa&#9;null&#9;null&#10;newApp&#9;null&#9;null\" />\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\n    <property name=\"go.gopath.indexing.explicitly.defined\" value=\"true\" />\n    <property name=\"go.sdk.automatically.set\" value=\"true\" />\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$\" />\n    <property name=\"nodejs_interpreter_path.stuck_in_default_project\" value=\"undefined stuck path\" />\n    <property name=\"nodejs_npm_path_reset_for_default_project\" value=\"true\" />\n    <property name=\"settings.editor.selected.configurable\" value=\"MTConfigurable\" />\n  </component>\n  <component name=\"RecentsManager\">\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$\" />\n      <recent name=\"$PROJECT_DIR$/api\" />\n      <recent name=\"$PROJECT_DIR$/api/tests\" />\n      <recent name=\"$PROJECT_DIR$/api/print\" />\n      <recent name=\"$PROJECT_DIR$/tests\" />\n    </key>\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/api\" />\n    </key>\n  </component>\n  <component name=\"RestoreUpdateTree\" date=\"Moments ago\" ActionInfo=\"_Update\">\n    <UpdatedFiles>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Updated from server\" />\n        <option name=\"myStatusName\" value=\"Changed on server\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"CHANGED_ON_SERVER\" />\n        <FILE-GROUP>\n          <option name=\"myUpdateName\" value=\"Updated\" />\n          <option name=\"myStatusName\" value=\"Changed\" />\n          <option name=\"mySupportsDeletion\" value=\"false\" />\n          <option name=\"myCanBeAbsent\" value=\"false\" />\n          <option name=\"myId\" value=\"UPDATED\" />\n          <PATH vcs=\"Git\" revision=\"\">$PROJECT_DIR$/.idea/workspace.xml</PATH>\n          <PATH vcs=\"Git\" revision=\"\">$PROJECT_DIR$/api/router.go</PATH>\n        </FILE-GROUP>\n        <FILE-GROUP>\n          <option name=\"myUpdateName\" value=\"Created\" />\n          <option name=\"myStatusName\" value=\"Created\" />\n          <option name=\"mySupportsDeletion\" value=\"false\" />\n          <option name=\"myCanBeAbsent\" value=\"false\" />\n          <option name=\"myId\" value=\"CREATED\" />\n          <PATH vcs=\"Git\" revision=\"\">$PROJECT_DIR$/api/chat_test.go</PATH>\n        </FILE-GROUP>\n        <FILE-GROUP>\n          <option name=\"myUpdateName\" value=\"Deleted\" />\n          <option name=\"myStatusName\" value=\"Deleted\" />\n          <option name=\"mySupportsDeletion\" value=\"false\" />\n          <option name=\"myCanBeAbsent\" value=\"true\" />\n          <option name=\"myId\" value=\"REMOVED_FROM_REPOSITORY\" />\n        </FILE-GROUP>\n        <FILE-GROUP>\n          <option name=\"myUpdateName\" value=\"Restored\" />\n          <option name=\"myStatusName\" value=\"Will be restored\" />\n          <option name=\"mySupportsDeletion\" value=\"false\" />\n          <option name=\"myCanBeAbsent\" value=\"false\" />\n          <option name=\"myId\" value=\"RESTORED\" />\n        </FILE-GROUP>\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Modified\" />\n        <option name=\"myStatusName\" value=\"Modified\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"MODIFIED\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Skipped\" />\n        <option name=\"myStatusName\" value=\"Skipped\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"SKIPPED\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Merged with conflicts\" />\n        <option name=\"myStatusName\" value=\"Will be merged with conflicts\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"MERGED_WITH_CONFLICTS\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Merged with tree conflicts\" />\n        <option name=\"myStatusName\" value=\"Merged with tree conflicts\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"MERGED_WITH_TREE_CONFLICT\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Merged with property conflicts\" />\n        <option name=\"myStatusName\" value=\"Will be merged with property conflicts\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"MERGED_WITH_PROPERTY_CONFLICT\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Merged\" />\n        <option name=\"myStatusName\" value=\"Will be merged\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"MERGED\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Not in repository\" />\n        <option name=\"myStatusName\" value=\"Not in repository\" />\n        <option name=\"mySupportsDeletion\" value=\"true\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"UNKNOWN\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Locally added\" />\n        <option name=\"myStatusName\" value=\"Locally added\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"LOCALLY_ADDED\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Locally removed\" />\n        <option name=\"myStatusName\" value=\"Locally removed\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"LOCALLY_REMOVED\" />\n      </FILE-GROUP>\n      <FILE-GROUP>\n        <option name=\"myUpdateName\" value=\"Switched\" />\n        <option name=\"myStatusName\" value=\"Switched\" />\n        <option name=\"mySupportsDeletion\" value=\"false\" />\n        <option name=\"myCanBeAbsent\" value=\"false\" />\n        <option name=\"myId\" value=\"SWITCHED\" />\n      </FILE-GROUP>\n    </UpdatedFiles>\n  </component>\n  <component name=\"RunDashboard\">\n    <option name=\"ruleStates\">\n      <list>\n        <RuleState>\n          <option name=\"name\" value=\"ConfigurationTypeDashboardGroupingRule\" />\n        </RuleState>\n        <RuleState>\n          <option name=\"name\" value=\"StatusDashboardGroupingRule\" />\n        </RuleState>\n      </list>\n    </option>\n  </component>\n  <component name=\"RunManager\" selected=\"Go Test.fake_data_test.go\">\n    <configuration name=\"go build run.go\" type=\"GoApplicationRunConfiguration\" factoryName=\"Go Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"matcha-api\" />\n      <working_directory value=\"$PROJECT_DIR$/\" />\n      <kind value=\"FILE\" />\n      <filePath value=\"$PROJECT_DIR$/run.go\" />\n      <package value=\"github.com/Newcratie/matcha-api\" />\n      <directory value=\"$PROJECT_DIR$/\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"api_test.go (1)\" type=\"GoTestRunConfiguration\" factoryName=\"Go Test\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"matcha-api\" />\n      <working_directory value=\"$PROJECT_DIR$\" />\n      <framework value=\"gotest\" />\n      <kind value=\"FILE\" />\n      <package value=\"github.com/Newcratie/matcha-api\" />\n      <directory value=\"$PROJECT_DIR$/\" />\n      <filePath value=\"$PROJECT_DIR$/api_test.go\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"basic_test.go\" type=\"GoTestRunConfiguration\" factoryName=\"Go Test\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"matcha-api\" />\n      <working_directory value=\"$PROJECT_DIR$/api\" />\n      <envs>\n        <env name=\"NEO_HOST\" value=\"localhost\" />\n      </envs>\n      <EXTENSION ID=\"net.ashald.envfile\">\n        <option name=\"IS_ENABLED\" value=\"false\" />\n        <option name=\"IS_SUBST\" value=\"false\" />\n        <option name=\"IS_PATH_MACRO_SUPPORTED\" value=\"false\" />\n        <option name=\"IS_IGNORE_MISSING_FILES\" value=\"false\" />\n        <ENTRIES>\n          <ENTRY IS_ENABLED=\"true\" PARSER=\"runconfig\" />\n        </ENTRIES>\n      </EXTENSION>\n      <framework value=\"gotest\" />\n      <kind value=\"FILE\" />\n      <package value=\"github.com/Newcratie/matcha-api\" />\n      <directory value=\"$PROJECT_DIR$/\" />\n      <filePath value=\"$PROJECT_DIR$/api/basic_test.go\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"db_test.go\" type=\"GoTestRunConfiguration\" factoryName=\"Go Test\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"matcha-api\" />\n      <working_directory value=\"$PROJECT_DIR$/api\" />\n      <go_parameters value=\"-i\" />\n      <framework value=\"gotest\" />\n      <kind value=\"FILE\" />\n      <package value=\"github.com/Newcratie/matcha-api\" />\n      <directory value=\"$PROJECT_DIR$/\" />\n      <filePath value=\"$PROJECT_DIR$/api/db_test.go\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"fake_data_test.go\" type=\"GoTestRunConfiguration\" factoryName=\"Go Test\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"matcha-api\" />\n      <working_directory value=\"$PROJECT_DIR$/api\" />\n      <envs>\n        <env name=\"NEO_HOST\" value=\"localhost\" />\n      </envs>\n      <EXTENSION ID=\"net.ashald.envfile\">\n        <option name=\"IS_ENABLED\" value=\"false\" />\n        <option name=\"IS_SUBST\" value=\"false\" />\n        <option name=\"IS_PATH_MACRO_SUPPORTED\" value=\"false\" />\n        <option name=\"IS_IGNORE_MISSING_FILES\" value=\"false\" />\n        <ENTRIES>\n          <ENTRY IS_ENABLED=\"true\" PARSER=\"runconfig\" />\n        </ENTRIES>\n      </EXTENSION>\n      <framework value=\"gotest\" />\n      <kind value=\"FILE\" />\n      <package value=\"github.com/Newcratie/matcha-api\" />\n      <directory value=\"$PROJECT_DIR$/\" />\n      <filePath value=\"$PROJECT_DIR$/api/fake_data_test.go\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"test\" type=\"GoTestRunConfiguration\" factoryName=\"Go Test\">\n      <module name=\"matcha-api\" />\n      <working_directory value=\"$PROJECT_DIR$/\" />\n      <go_parameters value=\"-i\" />\n      <envs>\n        <env name=\"POSTGRES_HOST\" value=\"localhost\" />\n      </envs>\n      <EXTENSION ID=\"net.ashald.envfile\">\n        <option name=\"IS_ENABLED\" value=\"false\" />\n        <option name=\"IS_SUBST\" value=\"false\" />\n        <option name=\"IS_PATH_MACRO_SUPPORTED\" value=\"false\" />\n        <option name=\"IS_IGNORE_MISSING_FILES\" value=\"false\" />\n        <ENTRIES>\n          <ENTRY IS_ENABLED=\"true\" PARSER=\"runconfig\" />\n        </ENTRIES>\n      </EXTENSION>\n      <framework value=\"gotest\" />\n      <kind value=\"DIRECTORY\" />\n      <package value=\"github.com/Newcratie/matcha-api\" />\n      <directory value=\"$PROJECT_DIR$/\" />\n      <filePath value=\"$PROJECT_DIR$/|$PROJECT_DIR$/test.go\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"Docker\" type=\"docker-deploy\" factoryName=\"docker-compose.yml\" server-name=\"Docker\">\n      <deployment type=\"docker-compose.yml\">\n        <settings>\n          <option name=\"sourceFilePath\" value=\"../../../../../42matcha/docker-compose.yml\" />\n          <option name=\"startBrowserSettings\">\n            <browser url=\"http://127.0.0.1\" />\n          </option>\n        </settings>\n      </deployment>\n      <method v=\"2\" />\n    </configuration>\n    <list>\n      <item itemvalue=\"Go Test.test\" />\n      <item itemvalue=\"Docker.Docker\" />\n      <item itemvalue=\"Go Build.go build run.go\" />\n      <item itemvalue=\"Go Test.fake_data_test.go\" />\n      <item itemvalue=\"Go Test.api_test.go (1)\" />\n      <item itemvalue=\"Go Test.basic_test.go\" />\n      <item itemvalue=\"Go Test.db_test.go\" />\n    </list>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Go Test.fake_data_test.go\" />\n        <item itemvalue=\"Go Test.db_test.go\" />\n        <item itemvalue=\"Go Test.basic_test.go\" />\n        <item itemvalue=\"Go Build.go build run.go\" />\n        <item itemvalue=\"Go Test.api_test.go (1)\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"TestHistory\">\n    <history-entry file=\"fake_data_test_go - 2019.03.28 at 02h 40m 49s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.03.28 at 02h 45m 36s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.03.28 at 02h 46m 14s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.03.28 at 02h 54m 25s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.03.28 at 03h 14m 16s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"db_test_go - 2019.03.30 at 10h 02m 15s.xml\">\n      <configuration name=\"db_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.03.30 at 11h 37m 37s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.04.05 at 10h 03m 43s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.04.11 at 18h 07m 37s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n    <history-entry file=\"fake_data_test_go - 2019.04.11 at 18h 18m 04s.xml\">\n      <configuration name=\"fake_data_test.go\" configurationId=\"GoTestRunConfiguration\" />\n    </history-entry>\n  </component>\n  <component name=\"TodoView\">\n    <todo-panel id=\"selected-file\">\n      <is-autoscroll-to-source value=\"true\" />\n    </todo-panel>\n    <todo-panel id=\"all\">\n      <are-packages-shown value=\"true\" />\n      <is-autoscroll-to-source value=\"true\" />\n    </todo-panel>\n  </component>\n  <component name=\"ToolWindowManager\">\n    <frame x=\"0\" y=\"0\" width=\"2560\" height=\"1440\" extended-state=\"0\" />\n    <editor active=\"true\" />\n    <layout>\n      <window_info content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.0929309\" />\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\n      <window_info id=\"DB Browser\" order=\"2\" />\n      <window_info id=\"Favorites\" order=\"3\" side_tool=\"true\" />\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" sideWeight=\"0.49960285\" weight=\"0.32865584\" />\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"2\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"3\" weight=\"0.4\" />\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"4\" weight=\"0.32909784\" />\n      <window_info anchor=\"bottom\" id=\"Version Control\" order=\"5\" sideWeight=\"0.4988086\" weight=\"0.3293944\" />\n      <window_info anchor=\"bottom\" id=\"DB Execution Console\" order=\"6\" />\n      <window_info anchor=\"bottom\" id=\"Database Changes\" order=\"7\" show_stripe_button=\"false\" />\n      <window_info anchor=\"bottom\" id=\"Event Log\" order=\"8\" sideWeight=\"0.4138205\" side_tool=\"true\" visible=\"true\" weight=\"0.17651403\" />\n      <window_info active=\"true\" anchor=\"bottom\" x=\"1243\" y=\"699\" width=\"1149\" height=\"444\" id=\"Docker\" order=\"9\" sideWeight=\"0.5861795\" visible=\"true\" weight=\"0.17651403\" />\n      <window_info anchor=\"bottom\" id=\"Graph Database Console\" order=\"10\" weight=\"0.6010165\" />\n      <window_info anchor=\"bottom\" id=\"Messages\" order=\"11\" weight=\"0.3288835\" />\n      <window_info anchor=\"right\" id=\"Commander\" internal_type=\"SLIDING\" order=\"0\" type=\"SLIDING\" weight=\"0.4\" />\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\n      <window_info anchor=\"right\" id=\"Cargo\" order=\"3\" />\n      <window_info anchor=\"right\" id=\"Database\" order=\"4\" weight=\"0.32922953\" />\n      <window_info anchor=\"right\" id=\"Coverage\" order=\"5\" side_tool=\"true\" weight=\"0.32942328\" />\n      <window_info anchor=\"right\" x=\"1155\" y=\"284\" width=\"1206\" height=\"757\" id=\"Debug\" order=\"6\" weight=\"0.32525814\" />\n      <window_info anchor=\"right\" id=\"Graph Database\" order=\"7\" weight=\"0.3297568\" />\n      <window_info active=\"true\" anchor=\"right\" x=\"2\" y=\"23\" width=\"1438\" height=\"877\" id=\"Run\" order=\"8\" sideWeight=\"0.4498094\" side_tool=\"true\" weight=\"0.3482923\" />\n      <window_info anchor=\"right\" id=\"Terminal\" order=\"9\" sideWeight=\"1.0\" weight=\"0.50119144\" />\n    </layout>\n    <layout-to-restore>\n      <window_info content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.21418338\" />\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\n      <window_info id=\"DB Browser\" order=\"2\" />\n      <window_info id=\"Favorites\" order=\"3\" side_tool=\"true\" />\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" sideWeight=\"0.49960285\" weight=\"0.32909784\" />\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"2\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"3\" weight=\"0.4\" />\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"4\" weight=\"0.32909784\" />\n      <window_info anchor=\"bottom\" id=\"Version Control\" order=\"5\" sideWeight=\"0.4988086\" weight=\"0.3293944\" />\n      <window_info anchor=\"bottom\" id=\"DB Execution Console\" order=\"6\" />\n      <window_info anchor=\"bottom\" id=\"Database Changes\" order=\"7\" show_stripe_button=\"false\" />\n      <window_info anchor=\"bottom\" id=\"Terminal\" order=\"8\" sideWeight=\"0.22279587\" side_tool=\"true\" weight=\"0.35069886\" />\n      <window_info anchor=\"bottom\" id=\"Event Log\" order=\"9\" side_tool=\"true\" />\n      <window_info anchor=\"bottom\" x=\"1527\" y=\"34\" width=\"1412\" height=\"866\" id=\"Docker\" order=\"10\" sideWeight=\"0.55019057\" type=\"FLOATING\" visible=\"true\" weight=\"0.8700265\" />\n      <window_info anchor=\"bottom\" id=\"Graph Database Console\" order=\"11\" weight=\"0.6010165\" />\n      <window_info anchor=\"bottom\" id=\"Messages\" order=\"12\" weight=\"0.3288835\" />\n      <window_info anchor=\"right\" id=\"Commander\" internal_type=\"SLIDING\" order=\"0\" type=\"SLIDING\" weight=\"0.4\" />\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\n      <window_info anchor=\"right\" id=\"Cargo\" order=\"3\" />\n      <window_info anchor=\"right\" id=\"Database\" order=\"4\" weight=\"0.3295129\" />\n      <window_info anchor=\"right\" id=\"Coverage\" order=\"5\" side_tool=\"true\" weight=\"0.32942328\" />\n      <window_info anchor=\"right\" x=\"131\" y=\"923\" width=\"1206\" height=\"757\" id=\"Debug\" order=\"6\" type=\"FLOATING\" weight=\"0.32546496\" />\n      <window_info anchor=\"right\" id=\"Graph Database\" order=\"7\" weight=\"0.3297568\" />\n      <window_info active=\"true\" anchor=\"right\" x=\"1455\" y=\"31\" width=\"1324\" height=\"760\" id=\"Run\" order=\"8\" sideWeight=\"0.4498094\" side_tool=\"true\" type=\"FLOATING\" visible=\"true\" weight=\"0.74641836\" />\n    </layout-to-restore>\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"1\" />\n  </component>\n  <component name=\"VcsContentAnnotationSettings\">\n    <option name=\"myLimit\" value=\"2678400000\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <option name=\"CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT\" value=\"true\" />\n    <MESSAGE value=\"Unit Test Init\" />\n    <MESSAGE value=\"Emmergency\" />\n    <MESSAGE value=\"Send mail confirm\" />\n    <MESSAGE value=\"Append access LVL\" />\n    <MESSAGE value=\"refactor tree\" />\n    <MESSAGE value=\"gmx --&gt; gmail\" />\n    <MESSAGE value=\"Auth work great\" />\n    <MESSAGE value=\"Get basic must return id with datas.\" />\n    <MESSAGE value=\"Home started\" />\n    <MESSAGE value=\"Stable\" />\n    <MESSAGE value=\"Working on Filters\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Working on Filters\" />\n  </component>\n  <component name=\"editorHistoryManager\">\n    <entry file=\"file://$PROJECT_DIR$/.realize.yaml\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file:///usr/local/Cellar/go/1.12/libexec/src/runtime/panic.go\" />\n    <entry file=\"file://$PROJECT_DIR$/tsconfig.json\" />\n    <entry file=\"file://$PROJECT_DIR$/api/logprint/logprint.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"394\">\n          <caret line=\"24\" selection-start-line=\"24\" selection-end-line=\"24\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file:///usr/local/go/src/reflect/type.go\" />\n    <entry file=\"file://$PROJECT_DIR$/api/utils/confirm_email.html\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"233\">\n          <caret line=\"83\" column=\"8\" selection-start-line=\"83\" selection-start-column=\"8\" selection-end-line=\"83\" selection-end-column=\"8\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/admin.go\" />\n    <entry file=\"file://$PROJECT_DIR$/api/login.go\" />\n    <entry file=\"file://$PROJECT_DIR$/api/register-validation.go\" />\n    <entry file=\"file://$PROJECT_DIR$/seedfaker.js\" />\n    <entry file=\"file://$PROJECT_DIR$/api/hash/hash.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"184\">\n          <caret line=\"13\" selection-start-line=\"13\" selection-end-line=\"13\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file:///usr/local/go/src/runtime/panic.go\" />\n    <entry file=\"file://$PROJECT_DIR$/api/tests/fake_data.json\" />\n    <entry file=\"file://$PROJECT_DIR$/api/tests/db_test.go\" />\n    <entry file=\"file://$PROJECT_DIR$/api_test.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"63\">\n          <caret line=\"3\" column=\"31\" selection-start-line=\"3\" selection-start-column=\"31\" selection-end-line=\"3\" selection-end-column=\"31\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/messages.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"63\">\n          <caret line=\"3\" selection-start-line=\"3\" selection-end-line=\"3\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/valid-email.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"399\">\n          <caret line=\"41\" selection-start-line=\"41\" selection-end-line=\"41\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/structures/graph/node.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"231\">\n          <caret line=\"11\" column=\"38\" selection-start-line=\"11\" selection-start-column=\"38\" selection-end-line=\"11\" selection-end-column=\"38\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/register.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/db_test.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"126\">\n          <caret line=\"6\" lean-forward=\"true\" selection-start-line=\"6\" selection-end-line=\"6\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/jwt.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"525\">\n          <caret line=\"29\" selection-start-line=\"29\" selection-end-line=\"29\" />\n          <folding>\n            <element signature=\"e#13#69#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/api.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"504\">\n          <caret line=\"29\" selection-start-line=\"29\" selection-end-line=\"29\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/basic_test.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"258\">\n          <caret line=\"19\" lean-forward=\"true\" selection-start-line=\"19\" selection-end-line=\"19\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/datetest.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"-573\" />\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/router.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"322\">\n          <caret line=\"28\" selection-start-line=\"28\" selection-end-line=\"28\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/tests/generic_test.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"115\">\n          <caret line=\"5\" column=\"11\" selection-start-line=\"5\" selection-start-column=\"11\" selection-end-line=\"5\" selection-end-column=\"11\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/../../brianvoe/gofakeit/number.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"23\">\n          <caret line=\"2\" column=\"7\" lean-forward=\"true\" selection-start-line=\"2\" selection-start-column=\"7\" selection-end-line=\"2\" selection-end-column=\"7\" />\n          <folding>\n            <element signature=\"e#18#49#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file:///usr/local/go/src/time/time.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"345\">\n          <caret line=\"1106\" column=\"46\" lean-forward=\"true\" selection-start-line=\"1106\" selection-start-column=\"46\" selection-end-line=\"1106\" selection-end-column=\"46\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/../../brianvoe/gofakeit/datetime.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"253\">\n          <caret line=\"14\" column=\"38\" lean-forward=\"true\" selection-start-line=\"14\" selection-start-column=\"38\" selection-end-line=\"14\" selection-end-column=\"38\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/match.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"184\">\n          <caret line=\"8\" column=\"49\" selection-start-line=\"8\" selection-start-column=\"49\" selection-end-line=\"8\" selection-end-column=\"49\" />\n          <folding>\n            <element signature=\"e#13#89#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/conn.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"23\">\n          <caret line=\"34\" column=\"19\" selection-start-line=\"34\" selection-start-column=\"10\" selection-end-line=\"34\" selection-end-column=\"19\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/fake_data_test.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"498\">\n          <caret line=\"49\" selection-start-line=\"49\" selection-end-line=\"49\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/run.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"253\">\n          <caret line=\"11\" selection-start-line=\"11\" selection-end-line=\"11\" />\n          <folding>\n            <element signature=\"e#14#70#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/types.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"287\">\n          <caret line=\"57\" column=\"38\" lean-forward=\"true\" selection-start-line=\"57\" selection-start-column=\"38\" selection-end-line=\"57\" selection-end-column=\"38\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/handlers.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"599\">\n          <caret line=\"52\" column=\"46\" selection-start-line=\"52\" selection-start-column=\"46\" selection-end-line=\"52\" selection-end-column=\"46\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/api/db.go\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"764\">\n          <caret line=\"90\" lean-forward=\"true\" selection-start-line=\"90\" selection-end-line=\"90\" />\n          <folding>\n            <element signature=\"e#13#263#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(revision a2fde03a5b0b876926f49ea010da0e334892a819)
++++ .idea/workspace.xml	(date 1555433565000)
+@@ -2,11 +2,9 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="36822d56-41dc-4c86-a674-facbf7b2587e" name="Default Changelist" comment="Working on Filters">
++      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/api/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/db.go" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/api/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handlers.go" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/api/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/types.go" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/run.go" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/api/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/router.go" afterDir="false" />
+     </list>
+     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+     <option name="SHOW_DIALOG" value="false" />
+@@ -81,32 +79,35 @@
+     <session id="-1502995868">
+       <usages-collector id="statistics.lifecycle.project">
+         <counts>
+-          <entry key="project.closed" value="3" />
++          <entry key="project.closed" value="5" />
++          <entry key="project.open.time.135" value="1" />
+           <entry key="project.open.time.14" value="1" />
+           <entry key="project.open.time.18" value="1" />
+           <entry key="project.open.time.20" value="1" />
++          <entry key="project.open.time.3" value="1" />
+           <entry key="project.open.time.31" value="1" />
+-          <entry key="project.opened" value="4" />
++          <entry key="project.open.time.6" value="1" />
++          <entry key="project.opened" value="7" />
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.extensions.edit">
+         <counts>
+-          <entry key="go" value="964" />
++          <entry key="go" value="1815" />
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.types.edit">
+         <counts>
+-          <entry key="Go" value="964" />
++          <entry key="Go" value="1815" />
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.extensions.open">
+         <counts>
+-          <entry key="go" value="1" />
++          <entry key="go" value="2" />
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.types.open">
+         <counts>
+-          <entry key="Go" value="1" />
++          <entry key="Go" value="2" />
+         </counts>
+       </usages-collector>
+     </session>
+@@ -143,105 +144,29 @@
+     </session>
+   </component>
+   <component name="FileEditorManager">
+-    <splitter split-orientation="horizontal" split-proportion="0.2656455">
+-      <split-first>
+-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+-          <file pinned="false" current-in-tab="false">
+-            <entry file="file://$PROJECT_DIR$/api/router.go">
+-              <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="322">
+-                  <caret line="28" selection-start-line="28" selection-end-line="28" />
+-                </state>
+-              </provider>
+-            </entry>
+-          </file>
+-          <file pinned="false" current-in-tab="true">
+-            <entry file="file://$PROJECT_DIR$/api/match.go">
+-              <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="184">
+-                  <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+-                  <folding>
+-                    <element signature="e#13#89#0" expanded="true" />
+-                  </folding>
+-                </state>
+-              </provider>
+-            </entry>
+-          </file>
+-        </leaf>
+-      </split-first>
+-      <split-second>
+-        <splitter split-orientation="horizontal" split-proportion="0.4108527">
+-          <split-first>
+-            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+-              <file pinned="false" current-in-tab="false">
+-                <entry file="file://$PROJECT_DIR$/run.go">
+-                  <provider selected="true" editor-type-id="text-editor">
+-                    <state relative-caret-position="253">
+-                      <caret line="11" selection-start-line="11" selection-end-line="11" />
+-                      <folding>
+-                        <element signature="e#14#70#0" expanded="true" />
+-                      </folding>
+-                    </state>
+-                  </provider>
+-                </entry>
+-              </file>
+-              <file pinned="false" current-in-tab="true">
+-                <entry file="file://$PROJECT_DIR$/api/handlers.go">
+-                  <provider selected="true" editor-type-id="text-editor">
+-                    <state relative-caret-position="599">
+-                      <caret line="52" column="46" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
+-                    </state>
+-                  </provider>
+-                </entry>
+-              </file>
+-            </leaf>
+-          </split-first>
+-          <split-second>
+-            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+-              <file pinned="false" current-in-tab="true">
+-                <entry file="file://$PROJECT_DIR$/api/db.go">
+-                  <provider selected="true" editor-type-id="text-editor">
+-                    <state relative-caret-position="764">
+-                      <caret line="90" lean-forward="true" selection-start-line="90" selection-end-line="90" />
+-                      <folding>
+-                        <element signature="e#13#263#0" expanded="true" />
+-                      </folding>
+-                    </state>
+-                  </provider>
+-                </entry>
+-              </file>
+-              <file pinned="false" current-in-tab="false">
+-                <entry file="file://$PROJECT_DIR$/api/fake_data_test.go">
+-                  <provider selected="true" editor-type-id="text-editor">
+-                    <state relative-caret-position="498">
+-                      <caret line="49" selection-start-line="49" selection-end-line="49" />
+-                    </state>
+-                  </provider>
+-                </entry>
+-              </file>
+-              <file pinned="false" current-in-tab="false">
+-                <entry file="file://$PROJECT_DIR$/api/types.go">
+-                  <provider selected="true" editor-type-id="text-editor">
+-                    <state relative-caret-position="287">
+-                      <caret line="57" column="38" lean-forward="true" selection-start-line="57" selection-start-column="38" selection-end-line="57" selection-end-column="38" />
+-                    </state>
+-                  </provider>
+-                </entry>
+-              </file>
+-              <file pinned="false" current-in-tab="false">
+-                <entry file="file://$PROJECT_DIR$/../../johnnadratowski/golang-neo4j-bolt-driver/conn.go">
+-                  <provider selected="true" editor-type-id="text-editor">
+-                    <state relative-caret-position="23">
+-                      <caret line="34" column="19" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="19" />
+-                    </state>
+-                  </provider>
+-                </entry>
+-              </file>
+-            </leaf>
+-          </split-second>
+-        </splitter>
+-      </split-second>
+-    </splitter>
++    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
++      <file pinned="false" current-in-tab="true">
++        <entry file="file://$PROJECT_DIR$/api/router.go">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="552">
++              <caret line="24" column="56" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
++              <folding>
++                <element signature="e#13#87#0" expanded="true" />
++              </folding>
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/api/db.go">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="614">
++              <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
++            </state>
++          </provider>
++        </entry>
++      </file>
++    </leaf>
+   </component>
+   <component name="FileTemplateManagerImpl">
+     <option name="RECENT_TEMPLATES">
+@@ -263,6 +188,8 @@
+   </component>
+   <component name="GOROOT" path="/usr/local/go" />
+   <component name="Git.Settings">
++    <option name="UPDATE_CHANGES_POLICY" value="SHELVE" />
++    <option name="UPDATE_TYPE" value="MERGE" />
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+     <option name="RECENT_BRANCH_BY_REPOSITORY">
+       <map>
+@@ -310,7 +237,6 @@
+         <option value="$PROJECT_DIR$/api/valid-email.go" />
+         <option value="$PROJECT_DIR$/api/register.go" />
+         <option value="$PROJECT_DIR$/api/db_test.go" />
+-        <option value="$PROJECT_DIR$/api/router.go" />
+         <option value="$PROJECT_DIR$/api/match.go" />
+         <option value="$PROJECT_DIR$/api/basic_test.go" />
+         <option value="$PROJECT_DIR$/api/fake_data_test.go" />
+@@ -318,6 +244,7 @@
+         <option value="$PROJECT_DIR$/api/types.go" />
+         <option value="$PROJECT_DIR$/api/handlers.go" />
+         <option value="$PROJECT_DIR$/api/db.go" />
++        <option value="$PROJECT_DIR$/api/router.go" />
+       </list>
+     </option>
+   </component>
+@@ -399,7 +326,7 @@
+     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
++    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+   </component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+@@ -427,8 +354,9 @@
+           <option name="mySupportsDeletion" value="false" />
+           <option name="myCanBeAbsent" value="false" />
+           <option name="myId" value="UPDATED" />
+-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
+-          <PATH vcs="Git" revision="">$PROJECT_DIR$/api/router.go</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/api/db.go</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/api/handlers.go</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/api/types.go</PATH>
+         </FILE-GROUP>
+         <FILE-GROUP>
+           <option name="myUpdateName" value="Created" />
+@@ -436,7 +364,6 @@
+           <option name="mySupportsDeletion" value="false" />
+           <option name="myCanBeAbsent" value="false" />
+           <option name="myId" value="CREATED" />
+-          <PATH vcs="Git" revision="">$PROJECT_DIR$/api/chat_test.go</PATH>
+         </FILE-GROUP>
+         <FILE-GROUP>
+           <option name="myUpdateName" value="Deleted" />
+@@ -648,7 +575,6 @@
+     </configuration>
+     <list>
+       <item itemvalue="Go Test.test" />
+-      <item itemvalue="Docker.Docker" />
+       <item itemvalue="Go Build.go build run.go" />
+       <item itemvalue="Go Test.fake_data_test.go" />
+       <item itemvalue="Go Test.api_test.go (1)" />
+@@ -666,9 +592,6 @@
+     </recent_temporary>
+   </component>
+   <component name="TestHistory">
+-    <history-entry file="fake_data_test_go - 2019.03.28 at 02h 40m 49s.xml">
+-      <configuration name="fake_data_test.go" configurationId="GoTestRunConfiguration" />
+-    </history-entry>
+     <history-entry file="fake_data_test_go - 2019.03.28 at 02h 45m 36s.xml">
+       <configuration name="fake_data_test.go" configurationId="GoTestRunConfiguration" />
+     </history-entry>
+@@ -694,6 +617,9 @@
+       <configuration name="fake_data_test.go" configurationId="GoTestRunConfiguration" />
+     </history-entry>
+     <history-entry file="fake_data_test_go - 2019.04.11 at 18h 18m 04s.xml">
++      <configuration name="fake_data_test.go" configurationId="GoTestRunConfiguration" />
++    </history-entry>
++    <history-entry file="fake_data_test_go - 2019.04.13 at 18h 12m 19s.xml">
+       <configuration name="fake_data_test.go" configurationId="GoTestRunConfiguration" />
+     </history-entry>
+   </component>
+@@ -708,9 +634,8 @@
+   </component>
+   <component name="ToolWindowManager">
+     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
+-    <editor active="true" />
+     <layout>
+-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0929309" />
++      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18030183" />
+       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+       <window_info id="DB Browser" order="2" />
+       <window_info id="Favorites" order="3" side_tool="true" />
+@@ -719,10 +644,10 @@
+       <window_info anchor="bottom" id="Cvs" order="2" weight="0.25" />
+       <window_info anchor="bottom" id="Inspection" order="3" weight="0.4" />
+       <window_info anchor="bottom" id="TODO" order="4" weight="0.32909784" />
+-      <window_info anchor="bottom" id="Version Control" order="5" sideWeight="0.4988086" weight="0.3293944" />
++      <window_info anchor="bottom" id="Version Control" order="5" sideWeight="0.4988086" weight="0.32791728" />
+       <window_info anchor="bottom" id="DB Execution Console" order="6" />
+       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.4138205" side_tool="true" visible="true" weight="0.17651403" />
++      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.4138205" side_tool="true" weight="0.17651403" />
+       <window_info active="true" anchor="bottom" x="1243" y="699" width="1149" height="444" id="Docker" order="9" sideWeight="0.5861795" visible="true" weight="0.17651403" />
+       <window_info anchor="bottom" id="Graph Database Console" order="10" weight="0.6010165" />
+       <window_info anchor="bottom" id="Messages" order="11" weight="0.3288835" />
+@@ -734,8 +659,8 @@
+       <window_info anchor="right" id="Coverage" order="5" side_tool="true" weight="0.32942328" />
+       <window_info anchor="right" x="1155" y="284" width="1206" height="757" id="Debug" order="6" weight="0.32525814" />
+       <window_info anchor="right" id="Graph Database" order="7" weight="0.3297568" />
+-      <window_info active="true" anchor="right" x="2" y="23" width="1438" height="877" id="Run" order="8" sideWeight="0.4498094" side_tool="true" weight="0.3482923" />
+-      <window_info anchor="right" id="Terminal" order="9" sideWeight="1.0" weight="0.50119144" />
++      <window_info anchor="right" x="2" y="23" width="1438" height="877" id="Run" order="8" sideWeight="0.3308715" side_tool="true" weight="0.4050834" />
++      <window_info active="true" anchor="right" id="Terminal" order="9" sideWeight="0.66912854" visible="true" weight="0.4305004" />
+     </layout>
+     <layout-to-restore>
+       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21418338" />
+@@ -864,9 +789,6 @@
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="525">
+           <caret line="29" selection-start-line="29" selection-end-line="29" />
+-          <folding>
+-            <element signature="e#13#69#0" expanded="true" />
+-          </folding>
+         </state>
+       </provider>
+     </entry>
+@@ -884,18 +806,7 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/api/datetest.go">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="-573" />
+-      </provider>
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/api/router.go">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="322">
+-          <caret line="28" selection-start-line="28" selection-end-line="28" />
+-        </state>
+-      </provider>
+-    </entry>
++    <entry file="file://$PROJECT_DIR$/api/datetest.go" />
+     <entry file="file://$PROJECT_DIR$/api/tests/generic_test.go">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="115">
+@@ -903,16 +814,7 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/../../brianvoe/gofakeit/number.go">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="23">
+-          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+-          <folding>
+-            <element signature="e#18#49#0" expanded="true" />
+-          </folding>
+-        </state>
+-      </provider>
+-    </entry>
++    <entry file="file://$PROJECT_DIR$/../../brianvoe/gofakeit/number.go" />
+     <entry file="file:///usr/local/go/src/time/time.go">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="345">
+@@ -920,20 +822,18 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/../../brianvoe/gofakeit/datetime.go">
++    <entry file="file://$PROJECT_DIR$/../../brianvoe/gofakeit/datetime.go" />
++    <entry file="file://$PROJECT_DIR$/api/fake_data_test.go">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="253">
+-          <caret line="14" column="38" lean-forward="true" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
++        <state relative-caret-position="498">
++          <caret line="49" selection-start-line="49" selection-end-line="49" />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/api/match.go">
++    <entry file="file://$PROJECT_DIR$/api/types.go">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="184">
+-          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+-          <folding>
+-            <element signature="e#13#89#0" expanded="true" />
+-          </folding>
++        <state relative-caret-position="512">
++          <caret line="57" column="35" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
+         </state>
+       </provider>
+     </entry>
+@@ -944,43 +844,40 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/api/fake_data_test.go">
++    <entry file="file://$PROJECT_DIR$/api/handlers.go">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="498">
+-          <caret line="49" selection-start-line="49" selection-end-line="49" />
++        <state relative-caret-position="599">
++          <caret line="52" column="46" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
+         </state>
+       </provider>
+     </entry>
+     <entry file="file://$PROJECT_DIR$/run.go">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="253">
++        <state relative-caret-position="231">
+           <caret line="11" selection-start-line="11" selection-end-line="11" />
+-          <folding>
+-            <element signature="e#14#70#0" expanded="true" />
+-          </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/api/types.go">
++    <entry file="file://$PROJECT_DIR$/api/match.go">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="287">
+-          <caret line="57" column="38" lean-forward="true" selection-start-line="57" selection-start-column="38" selection-end-line="57" selection-end-column="38" />
++        <state relative-caret-position="552">
++          <caret line="24" selection-start-line="24" selection-end-line="24" />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/api/handlers.go">
++    <entry file="file://$PROJECT_DIR$/api/db.go">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="599">
+-          <caret line="52" column="46" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
++        <state relative-caret-position="614">
++          <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/api/db.go">
++    <entry file="file://$PROJECT_DIR$/api/router.go">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="764">
+-          <caret line="90" lean-forward="true" selection-start-line="90" selection-end-line="90" />
++        <state relative-caret-position="552">
++          <caret line="24" column="56" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
+           <folding>
+-            <element signature="e#13#263#0" expanded="true" />
++            <element signature="e#13#87#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+Index: .idea/codeStyles/Project.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ProjectCodeStyleConfiguration\">\n  <code_scheme name=\"Project\" version=\"173\">\n    <DBN-PSQL>\n      <case-options enabled=\"false\">\n        <option name=\"KEYWORD_CASE\" value=\"lower\" />\n        <option name=\"FUNCTION_CASE\" value=\"lower\" />\n        <option name=\"PARAMETER_CASE\" value=\"lower\" />\n        <option name=\"DATATYPE_CASE\" value=\"lower\" />\n        <option name=\"OBJECT_CASE\" value=\"preserve\" />\n      </case-options>\n      <formatting-settings enabled=\"false\" />\n    </DBN-PSQL>\n    <DBN-SQL>\n      <case-options enabled=\"false\">\n        <option name=\"KEYWORD_CASE\" value=\"lower\" />\n        <option name=\"FUNCTION_CASE\" value=\"lower\" />\n        <option name=\"PARAMETER_CASE\" value=\"lower\" />\n        <option name=\"DATATYPE_CASE\" value=\"lower\" />\n        <option name=\"OBJECT_CASE\" value=\"preserve\" />\n      </case-options>\n      <formatting-settings enabled=\"false\">\n        <option name=\"STATEMENT_SPACING\" value=\"one_line\" />\n        <option name=\"CLAUSE_CHOP_DOWN\" value=\"chop_down_if_statement_long\" />\n        <option name=\"ITERATION_ELEMENTS_WRAPPING\" value=\"chop_down_if_not_single\" />\n      </formatting-settings>\n    </DBN-SQL>\n    <DBN-PSQL>\n      <case-options enabled=\"false\">\n        <option name=\"KEYWORD_CASE\" value=\"lower\" />\n        <option name=\"FUNCTION_CASE\" value=\"lower\" />\n        <option name=\"PARAMETER_CASE\" value=\"lower\" />\n        <option name=\"DATATYPE_CASE\" value=\"lower\" />\n        <option name=\"OBJECT_CASE\" value=\"preserve\" />\n      </case-options>\n      <formatting-settings enabled=\"false\" />\n    </DBN-PSQL>\n    <DBN-SQL>\n      <case-options enabled=\"false\">\n        <option name=\"KEYWORD_CASE\" value=\"lower\" />\n        <option name=\"FUNCTION_CASE\" value=\"lower\" />\n        <option name=\"PARAMETER_CASE\" value=\"lower\" />\n        <option name=\"DATATYPE_CASE\" value=\"lower\" />\n        <option name=\"OBJECT_CASE\" value=\"preserve\" />\n      </case-options>\n      <formatting-settings enabled=\"false\">\n        <option name=\"STATEMENT_SPACING\" value=\"one_line\" />\n        <option name=\"CLAUSE_CHOP_DOWN\" value=\"chop_down_if_statement_long\" />\n        <option name=\"ITERATION_ELEMENTS_WRAPPING\" value=\"chop_down_if_not_single\" />\n      </formatting-settings>\n    </DBN-SQL>\n  </code_scheme>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/codeStyles/Project.xml	(revision a2fde03a5b0b876926f49ea010da0e334892a819)
++++ .idea/codeStyles/Project.xml	(date 1555170494000)
+@@ -24,29 +24,5 @@
+         <option name="ITERATION_ELEMENTS_WRAPPING" value="chop_down_if_not_single" />
+       </formatting-settings>
+     </DBN-SQL>
+-    <DBN-PSQL>
+-      <case-options enabled="false">
+-        <option name="KEYWORD_CASE" value="lower" />
+-        <option name="FUNCTION_CASE" value="lower" />
+-        <option name="PARAMETER_CASE" value="lower" />
+-        <option name="DATATYPE_CASE" value="lower" />
+-        <option name="OBJECT_CASE" value="preserve" />
+-      </case-options>
+-      <formatting-settings enabled="false" />
+-    </DBN-PSQL>
+-    <DBN-SQL>
+-      <case-options enabled="false">
+-        <option name="KEYWORD_CASE" value="lower" />
+-        <option name="FUNCTION_CASE" value="lower" />
+-        <option name="PARAMETER_CASE" value="lower" />
+-        <option name="DATATYPE_CASE" value="lower" />
+-        <option name="OBJECT_CASE" value="preserve" />
+-      </case-options>
+-      <formatting-settings enabled="false">
+-        <option name="STATEMENT_SPACING" value="one_line" />
+-        <option name="CLAUSE_CHOP_DOWN" value="chop_down_if_statement_long" />
+-        <option name="ITERATION_ELEMENTS_WRAPPING" value="chop_down_if_not_single" />
+-      </formatting-settings>
+-    </DBN-SQL>
+   </code_scheme>
+ </component>
+\ No newline at end of file
+Index: api/router.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package api\n\nimport (\n\t\"fmt\"\n\t\"github.com/gin-gonic/gin\"\n\t\"gopkg.in/olahol/melody.v1\"\n)\n\nfunc (app *App) routerAPI() {\n\tm := melody.New()\n\tauth := app.R.Group(\"/auth\")\n\t{\n\t\tauth.POST(\"/login\", Login)\n\t\tauth.POST(\"/register\", Register)\n\t\tauth.GET(\"/valid_email/:token\", Token)\n\t}\n\tapi := app.R.Group(\"/api\")\n\t{\n\t\tapi.POST(\"/get_people\", GetPeople)\n\t\tapi.GET(\"/ws/:token/:chan\", func(c *gin.Context) {\n\t\t\tm.HandleRequest(c.Writer, c.Request)\n\t\t})\n\t}\n\n\tm.HandleMessage(func(s *melody.Session, msg []byte) {\n\t\tfmt.Println(\"MSG ===> \", string(msg))\n\t\tm.BroadcastFilter(msg, func(session *melody.Session) bool {\n\t\t\t//AUth: verify if token is valid here.\n\t\t\tfmt.Println(\"s: \", s.Request.URL.Path)\n\t\t\tfmt.Println(\"session: \", session.Request.URL.Path)\n\t\t\treturn session.Request.URL.Path == s.Request.URL.Path\n\t\t})\n\t})\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- api/router.go	(revision a2fde03a5b0b876926f49ea010da0e334892a819)
++++ api/router.go	(date 1555427461000)
+@@ -17,15 +17,16 @@
+ 	api := app.R.Group("/api")
+ 	{
+ 		api.POST("/get_people", GetPeople)
+-		api.GET("/ws/:token/:chan", func(c *gin.Context) {
++		api.GET("/ws/:user/:suitor", func(c *gin.Context) {
+ 			m.HandleRequest(c.Writer, c.Request)
+ 		})
+ 	}
+ 
+ 	m.HandleMessage(func(s *melody.Session, msg []byte) {
+-		fmt.Println("MSG ===> ", string(msg))
+ 		m.BroadcastFilter(msg, func(session *melody.Session) bool {
+ 			//AUth: verify if token is valid here.
++			fmt.Println("========= Broadcast Filter=============")
++			fmt.Println("MSG ===> ", string(msg))
+ 			fmt.Println("s: ", s.Request.URL.Path)
+ 			fmt.Println("session: ", session.Request.URL.Path)
+ 			return session.Request.URL.Path == s.Request.URL.Path

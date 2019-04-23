@@ -11,8 +11,53 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"time"
 )
+
+func (app *App) insertMessage(byt []byte) {
+	var dat map[string]interface{}
+	if err := json.Unmarshal(byt, &dat); err != nil {
+		panic(err)
+	}
+	fmt.Println(dat)
+	dat["author"] = int64(dat["author"].(float64))
+	dat["to"] = int64(dat["to"].(float64))
+	dat["timestamp"] = int64(dat["timestamp"].(float64))
+	q := `
+MATCH (a:User),(b:User)
+WHERE ID(a)={author} AND ID(b)={to}
+CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, id:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
+	st := app.prepareStatement(q)
+	executeStatement(st, dat)
+}
+
+type Messages struct {
+	Id        int64  `json:"id"`
+	Author    int64  `json:"author"`
+	Message   string `json:"message"`
+	Timestamp int64  `json:"timestamp"`
+}
+
+func (app *App) dbGetMessages(userId, suitorId int) ([]Messages, error) {
+	q := `
+MATCH (a:User)-[]-(n:Message)-[]-(b:User) 
+WHERE ID(a)={user_id} AND ID(b)={suitor_id}
+RETURN n
+ORDER BY ID(n)
+`
+	msgs := make([]Messages, 0)
+
+	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{"user_id": userId, "suitor_id": suitorId})
+	fmt.Println(data)
+	for _, tab := range data {
+		msgs = append(msgs, Messages{
+			int64(tab[0].(graph.Node).Properties["id"].(float64)),
+			tab[0].(graph.Node).Properties["author"].(int64),
+			tab[0].(graph.Node).Properties["msg"].(string),
+			tab[0].(graph.Node).Properties["timestamp"].(int64),
+		})
+	}
+	return msgs, nil
+}
 
 func (app *App) insertUser(u User) {
 	fmt.Println(MapOf(u))
@@ -32,6 +77,89 @@ online:{online}, rating: {rating},
 email: {email}, access_lvl: 0})`
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
+}
+
+//MATCH (u:User), (n:User) WHERE ID(u) = 30 AND ID(n) = 238 return exists( (u)-[:LIKE]->(n) )
+//MATCH (u:User) WHERE ID(u) = 30 MATCH (n:User) WHERE ID(n) = 238 CREATE (n)<-[:LIKE]-(u) return u, n
+//MATCH (u)<-[r:LIKE]-(n) WHERE ID(u) = 30 AND ID(n) = 238 DELETE r
+//MATCH (n)-[r:LIKE]-(u) WHERE ID(u) = 30 AND ID(n) = 238 DETACH DELETE r
+
+func (app *App) dbMatchs(IdFrom int, IdTo int, Relation string) (valid bool) {
+
+	if Relation != "" {
+		app.dbDeleteRelation(IdFrom, IdTo, Relation)
+	}
+
+	if app.dbExistLike(IdFrom, IdTo, "LIKE") == true {
+		if app.dbSetMatch(IdFrom, IdTo) == true {
+			app.dbDeleteRelation(IdFrom, IdTo, "LIKE")
+			return true
+		}
+	} else if app.dbCreateLike(IdFrom, IdTo) == false {
+		return false
+	}
+	return false
+}
+
+func (app *App) dbCreateLike(IdFrom int, IdTo int) (valid bool) {
+
+	if app.dbExistLike(IdFrom, IdTo, "DISLIKE") == false {
+		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:LIKE]->(n)`
+		data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+		if err != nil {
+			//err = errors.New("wrong username or password")
+			fmt.Println("*** CreateLike Query returned an Error ***", data)
+			return false
+		}
+	}
+	return true
+}
+
+func (app *App) dbExistLike(IdFrom int, IdTo int, ExistRel string) (valid bool) {
+
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` RETURN EXISTS( (u)<-[:` + ExistRel + `]-(n) )`
+	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
+	if data[0][0] == false {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** Exist Query returned FALSE ***")
+		return false
+	}
+	return true
+}
+
+func (app *App) dbSetMatch(IdFrom int, IdTo int) (valid bool) {
+
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:MATCH]->(n)`
+	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+	if err != nil {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** Set MatchQuery returned an Error ***", data)
+		return false
+	}
+	return true
+}
+
+func (app *App) dbDeleteRelation(IdFrom int, IdTo int, Rel string) (valid bool) {
+
+	if Rel == "DISLIKE" {
+		DeleteQuery := `MATCH (n)-[t]-(u) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE t CREATE (u)<-[r:DISLIKE]-(n)`
+		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		if err != nil {
+			//err = errors.New("wrong username or password")
+			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			return false
+		}
+	} else {
+		DeleteQuery := `MATCH (n)-[m:` + Rel + `]-(u)  WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE m`
+		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		if err != nil {
+			//err = errors.New("wrong username or password")
+			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			return false
+		}
+	}
+
+	return true
 }
 
 func (app *App) getUser(Username string) (u User, err error) {
@@ -61,11 +189,10 @@ func (app *App) getBasicUser(Id int) (u User, err error) {
 }
 
 func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
-	var g []graph.Node
+	var g = make([]graph.Node, 0)
 	var err error
 
-	// A custom query with applied Filters
-	superQuery := `MATCH (u:User) RETURN u LIMIT 10`
+	superQuery := `MATCH (u)-[m:MATCH]-(n) WHERE ID(u) = ` + strconv.Itoa(Id) + ` return n`
 
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
@@ -76,13 +203,15 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 		for _, d := range data {
 			g = append(g, d[0].(graph.Node))
 		}
+		fmt.Println("YOOOOOOOO ===")
+		fmt.Println(g)
 		return g, err
-	}
 
+	}
 }
 
 func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
-	var g []graph.Node
+	var g = make([]graph.Node, 0)
 	var err error
 
 	// A custom query with applied Filters
@@ -95,74 +224,18 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 		return g, err
 	} else {
 		for _, d := range data {
-			g = append(g, d[0].(graph.Node))
+			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
+			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
+
+			// Haversine will return the distance between 2 Lat/Lon in Kilometers
+
+			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
+				g = append(g, d[0].(graph.Node))
+			}
 		}
 		return g, err
 	}
 }
-
-// Miss Latidude/Longitude Max/Min
-func customQuery(Id int, Filter *Filters) (superQuery string) {
-
-	minAge := ageConvert(Filter.Age[0])
-	maxAge := ageConvert(Filter.Age[1])
-	minLat, maxLat, minLon, maxLon := latLongCheck(Id, Filter.Location[1])
-
-	fmt.Println("Salut c'est COOL : ", minLat, maxLat, minLon, maxLon)
-
-	superQuery = `MATCH (u:User) WHERE (u.rating > ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating < ` + strconv.Itoa(Filter.Score[1]) + `)
-	MATCH (u) WHERE (u.birthday > "` + maxAge + `" AND u.birthday < "` + minAge + `")
-	return u`
-
-	return superQuery
-}
-
-func ageConvert(Age int) (birthYear string) {
-
-	now := time.Now()
-	now = now.AddDate(-(Age), 0, 0)
-	birthYear = now.Format(time.RFC3339Nano)
-	return birthYear
-}
-
-func latLongCheck(Id int, Km int) (lat1 string, lon1 string, lat2 string, lon2 string) {
-	Id = 42
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (s) WHERE ID(s)=`+strconv.Itoa(Id)+` return s.latitude, s.longitude`, nil)
-
-	fmt.Println("DATA : ", data, Id)
-
-	return "0", "0", "0", "0"
-}
-
-//func distance(lat1 float64, lng1 float64, lat2 float64, lng2 float64, unit ...string) float64 {
-//	const PI float64 = 3.141592653589793
-//
-//	radlat1 := float64(PI * lat1 / 180)
-//	radlat2 := float64(PI * lat2 / 180)
-//
-//	theta := float64(lng1 - lng2)
-//	radtheta := float64(PI * theta / 180)
-//
-//	dist := math.Sin(radlat1) * math.Sin(radlat2) + math.Cos(radlat1) * math.Cos(radlat2) * math.Cos(radtheta)
-//
-//	if dist > 1 {
-//		dist = 1
-//	}
-//
-//	dist = math.Acos(dist)
-//	dist = dist * 180 / PI
-//	dist = dist * 60 * 1.1515
-//
-//	if len(unit) > 0 {
-//		if unit[0] == "K" {
-//			dist = dist * 1.609344
-//		} else if unit[0] == "N" {
-//			dist = dist * 0.8684
-//		}
-//	}
-//
-//	return dist
-//}
 
 func (app *App) usernameExist(rf registerForm) bool {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {username: {username}}) RETURN n`, map[string]interface{}{"username": rf.Username})
