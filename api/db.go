@@ -219,9 +219,13 @@ func (app *App) dbGetUserProfile(Id int) ([]graph.Node, error) {
 		return g, err
 	} else {
 		for _, d := range data {
+			//fmt.Printf("%s %T\n", "D =", d)
+			//fmt.Println("IN D =", d)
 			g = append(g, d[0].(graph.Node))
 		}
 		fmt.Println("USER Info = ", g)
+		//g.(graph.Node)
+		fmt.Printf("%T\n", g.(graph.Node))
 		return g, err
 	}
 }
