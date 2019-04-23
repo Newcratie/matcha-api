@@ -6,6 +6,7 @@ import (
 )
 
 func UserHandler(c *gin.Context) {
+	//i := "Changed"
 
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)
@@ -16,6 +17,7 @@ func UserHandler(c *gin.Context) {
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
+			fmt.Printf("TYPE ====> %T\n", g)
 			c.JSON(200, g)
 		}
 	} else {
