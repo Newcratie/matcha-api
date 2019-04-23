@@ -208,20 +208,17 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 	}
 }
 
-func (app *App) dbGetUserProfile(Id int) ([]graph.Node, error) {
-	var g = make([]graph.Node, 0)
+func (app *App) dbGetUserProfile(Id int) (graph.Node, error) {
+	var g = graph.Node{}
 	var err error
 
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE ID(n) = `+strconv.Itoa(Id)+` SET n.online = true RETURN  n`, nil)
-	fmt.Println(data)
 	if len(data) == 0 {
 		err = errors.New("wrong username or password")
 		return g, err
 	} else {
-		for _, d := range data {
-			g = append(g, d[0].(graph.Node))
-		}
-		fmt.Println("USER Info = ", g)
+		g = data[0][0].(graph.Node)
+		delete(g.Properties, "password")
 		return g, err
 	}
 }

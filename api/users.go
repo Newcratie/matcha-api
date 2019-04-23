@@ -1,10 +1,8 @@
 package api
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"math"
 )
 
 func UserHandler(c *gin.Context) {
@@ -13,7 +11,7 @@ func UserHandler(c *gin.Context) {
 	valid, err := ValidateToken(c, &claims)
 
 	if valid == true {
-		Id := int(math.Round(claims["id"].(float64)))
+		Id := int(claims["id"].(float64))
 		g, err := app.dbGetUserProfile(Id)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
@@ -21,7 +19,6 @@ func UserHandler(c *gin.Context) {
 			c.JSON(200, g)
 		}
 	} else {
-		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
 
