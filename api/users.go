@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -18,11 +17,9 @@ func UserHandler(c *gin.Context) {
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
-			fmt.Printf("TYPE ====> %T\n", g)
 			c.JSON(200, g)
 		}
 	} else {
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
-
 }

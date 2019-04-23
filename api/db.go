@@ -233,7 +233,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
 	if len(data) == 0 {
-		err = errors.New("wrong username or password")
+		err = errors.New("Tag is not assigned to anyone")
 		return g, err
 	} else {
 		for _, d := range data {

@@ -129,7 +129,6 @@ func GetPeople(c *gin.Context) {
 	fmt.Println("****IN DB MATCH****")
 
 	//app.dbMatchs(0, 30, "")
-	app.dbGetUserProfile(0)
 
 	filters := Filters{}
 	claims := jwt.MapClaims{}
