@@ -126,6 +126,11 @@ func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
 	var err error
 
+	fmt.Println("****IN DB MATCH****")
+
+	//app.dbMatchs(0, 30, "")
+	app.dbGetUserProfile(0)
+
 	filters := Filters{}
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)

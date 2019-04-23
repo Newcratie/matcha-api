@@ -4,12 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/jmoiron/sqlx"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
-	"log"
-	"os"
 	"strconv"
 )
 
@@ -86,6 +83,8 @@ email: {email}, access_lvl: 0})`
 
 func (app *App) dbMatchs(IdFrom int, IdTo int, Relation string) (valid bool) {
 
+	//fmt.Println("****IN DB MsssssssATCH****")
+
 	if Relation != "" {
 		app.dbDeleteRelation(IdFrom, IdTo, Relation)
 	}
@@ -158,7 +157,6 @@ func (app *App) dbDeleteRelation(IdFrom int, IdTo int, Rel string) (valid bool) 
 			return false
 		}
 	}
-
 	return true
 }
 
@@ -207,6 +205,24 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 		fmt.Println(g)
 		return g, err
 
+	}
+}
+
+func (app *App) dbGetUserProfile(Id int) ([]graph.Node, error) {
+	var g = make([]graph.Node, 0)
+	var err error
+
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE ID(n) = `+strconv.Itoa(Id)+` SET n.online = true RETURN  n`, nil)
+	fmt.Println(data)
+	if len(data) == 0 {
+		err = errors.New("wrong username or password")
+		return g, err
+	} else {
+		for _, d := range data {
+			g = append(g, d[0].(graph.Node))
+		}
+		fmt.Println("USER Info = ", g)
+		return g, err
 	}
 }
 
@@ -274,31 +290,6 @@ func handleError(err error) {
 		panic(err)
 	}
 }
-
-//--------------------------------------------------------------------------------------------------------------//
-
-func dbConnect() *sqlx.DB {
-	connStr := "user=matcha password=secret dbname=matcha host=" +
-		os.Getenv("POSTGRES_HOST") +
-		" port=5432 sslmode=disable"
-	db, err := sqlx.Open("postgres", connStr)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return db
-}
-
-//func (app *App) ValidToken(randomToken string) error {
-//	var u User
-//	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:Person) WHERE n.random_token = "`+ randomToken + `" RETURN n`, nil)
-//	if len(data) == 0 {
-//		return errors.New("Invalid Link")
-//	} else if u.AccessLvl == 1 {
-//		return errors.New("Email already validated")
-//	}
-//	//_, err = app.Db.NamedExec(`UPDATE "public"."users" SET "access_lvl" = 1 WHERE "id" = :id`, u)
-//	return nil
-//}
 
 func MapOf(u interface{}) (m map[string]interface{}) {
 	m = make(map[string]interface{})

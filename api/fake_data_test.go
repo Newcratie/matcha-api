@@ -1,11 +1,9 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/brianvoe/gofakeit"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
-	"io/ioutil"
 	"os"
 	"strconv"
 	"testing"
@@ -20,7 +18,7 @@ func newRandomMale() User {
 	interest[1] = "hetero"
 	interest[2] = "homo"
 	return User{Username: gofakeit.Username(),
-		Password:  "fakepass",
+		Password:  hash.Encrypt(hashKey, "fakepass"),
 		FirstName: f.FirstName,
 		LastName:  f.LastName,
 		Email:     gofakeit.Email(),
@@ -56,7 +54,7 @@ func newRandomFemale() User {
 	interest[1] = "hetero"
 	interest[2] = "homo"
 	return User{Username: gofakeit.Username(),
-		Password:  "fakepass",
+		Password:  hash.Encrypt(hashKey, "fakepass"),
 		FirstName: f.FirstName,
 		LastName:  f.LastName,
 		Email:     gofakeit.Email(),
@@ -94,23 +92,5 @@ func TestAddFakeData(t *testing.T) {
 		app.insertUser(u)
 		u = newRandomFemale()
 		app.insertUser(u)
-	}
-}
-
-func estAddFakeData(t *testing.T) {
-	app.newApp()
-	app.Db = dbConnect()
-	data, err := ioutil.ReadFile("./tests/fake_data.json")
-	if err != nil {
-		fmt.Println("File reading error", err)
-		return
-	}
-	var u []User
-	err = json.Unmarshal(data, &u)
-	if err != nil {
-		panic(err)
-	}
-	for _, user := range u {
-		app.insertUser(user)
 	}
 }
