@@ -164,7 +164,7 @@ func (app *App) getUser(Username string) (u User, err error) {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{username : "`+Username+`"}) SET n.online = true RETURN  n`, nil)
 	fmt.Println(data)
 	if len(data) == 0 {
-		err = errors.New("wrong username or password")
+		err = errors.New("Err : Username doesn't exist")
 		return
 	} else {
 		jso, _ := json.Marshal(data[0][0].(graph.Node).Properties)
@@ -195,14 +195,12 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
 	if len(data) == 0 {
-		err = errors.New("wrong username or password")
+		err = errors.New("Err : No Match found for given User ID")
 		return g, err
 	} else {
 		for _, d := range data {
 			g = append(g, d[0].(graph.Node))
 		}
-		fmt.Println("YOOOOOOOO ===")
-		fmt.Println(g)
 		return g, err
 
 	}
@@ -214,7 +212,7 @@ func (app *App) dbGetUserProfile(Id int) (graph.Node, error) {
 
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE ID(n) = `+strconv.Itoa(Id)+` SET n.online = true RETURN  n`, nil)
 	if len(data) == 0 {
-		err = errors.New("wrong username or password")
+		err = errors.New("Err : User Id doesn't exist")
 		return g, err
 	} else {
 		g = data[0][0].(graph.Node)
@@ -233,7 +231,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
 	if len(data) == 0 {
-		err = errors.New("Tag is not assigned to anyone")
+		err = errors.New("Err : Tag is not assigned to anyone")
 		return g, err
 	} else {
 		for _, d := range data {
