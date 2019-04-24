@@ -49,6 +49,13 @@ type User struct {
 	Rating      int       `json:"rating" db:"rating"`
 	Token       string    `json:"token" db:"token"`
 	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
+	Tags        []Tag     `json:"tags"`
+}
+
+type Tag struct {
+	Key   string `json:"key"`
+	Text  string `json:"text"`
+	Value string `json:"value"`
 }
 
 type Filters struct {

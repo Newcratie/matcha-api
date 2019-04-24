@@ -82,11 +82,27 @@ func newRandomFemale() User {
 	}
 }
 
+func addTagList() []Tag {
+	t := []Tag{
+		Tag{"angular", "Angular", "angular"},
+		{"css", "CSS", "css"},
+		{"design", "Graphic Design", "design"},
+		{"ember", "Ember", "ember"},
+		{"sex", "sex", "sex"},
+		{"fortnite", "fortnite", "fortnite"},
+	}
+	return t
+}
+
 func TestAddFakeData(t *testing.T) {
 	const max = 80
 	driver := bolt.NewDriver()
 	host := os.Getenv("NEO_HOST")
 	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
+	tags := addTagList()
+	for _, tt := range tags {
+		app.insertTag(tt)
+	}
 	for i := 0; i < max; i++ {
 		u := newRandomMale()
 		app.insertUser(u)

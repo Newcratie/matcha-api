@@ -89,6 +89,11 @@ func userFactory(rf registerForm) (u User, err error) {
 	u.FirstName = rf.Firstname
 	u.Birthday = rf.Birthday
 	u.RandomToken = newToken()
+	u.Img1 = "http://localhost:8080/src/public/img/blank-profile.png"
+	u.Img2 = "http://localhost:8080/src/public/img/blank-profile.png"
+	u.Img3 = "http://localhost:8080/src/public/img/blank-profile.png"
+	u.Img4 = "http://localhost:8080/src/public/img/blank-profile.png"
+	u.Img5 = "http://localhost:8080/src/public/img/blank-profile.png"
 	err = SendEmailValidation(u.Username, u.Email, u.RandomToken)
 	return
 }
