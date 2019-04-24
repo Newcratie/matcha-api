@@ -71,7 +71,7 @@ city:{city}, zip: {zip},
 country:{country}, latitude: {latitude},
 longitude:{longitude}, geo_allowed: {geo_allowed},
 online:{online}, rating: {rating},
-email: {email}, access_lvl: 0})`
+email: {email}, access_lvl: 1})`
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
 }

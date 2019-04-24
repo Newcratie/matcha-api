@@ -13,14 +13,13 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 
 	minAge := ageConvert(Filter.Age[0])
 	maxAge := ageConvert(Filter.Age[1])
-	fmt.Printf("%s %T\n", "Score 1 ==", Filter.Score)
 
 	if len(Filter.Tags) > 0 {
 		cQuery = setTagQuery(Filter)
 	}
 
-	superQuery += `MATCH (u:User) WHERE (u.rating > ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating < ` + strconv.Itoa(Filter.Score[1]) + `)
-	MATCH (u) WHERE (u.birthday > "` + maxAge + `" AND u.birthday < "` + minAge + `") ` + cQuery + `
+	superQuery += `MATCH (u:User) WHERE (u.rating >= ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating <= ` + strconv.Itoa(Filter.Score[1]) + `)
+	AND (u.birthday >= "` + maxAge + `" AND u.birthday <= "` + minAge + `") ` + cQuery + `
 	RETURN DISTINCT u`
 
 	return
@@ -38,6 +37,8 @@ func setTagQuery(Filter *Filters) (customQuery string) {
 	}
 	return
 }
+
+//func setContent()
 
 func ageConvert(Age int) (birthYear string) {
 

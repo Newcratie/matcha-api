@@ -1,13 +1,14 @@
 package api
 
 import (
+	"errors"
+	"fmt"
+	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
 func UserHandler(c *gin.Context) {
-	//i := "Changed"
-
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)
 
@@ -25,9 +26,65 @@ func UserHandler(c *gin.Context) {
 	}
 }
 
-func UserPassMailChange(Id int, claims jwt.MapClaims) {
+func UserPassChange(c *gin.Context, claims jwt.MapClaims) {
+	username := claims["username"].(string)
+	mail := claims["mail"].(string)
+	password := c.PostForm("password")
 
-	if claims["password"] != "" {
-
+	u, err := app.getUser(username)
+	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
+		err = errors.New("Err: Wrong Password")
+	} else {
+		// check password
+		//change password
+		err = SendEmail(username, mail, "./api/utils/pass_change.html")
 	}
+}
+
+func UserModify(c *gin.Context) {
+	claims := jwt.MapClaims{}
+	valid, err := ValidateToken(c, &claims)
+	if valid == false || err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		mod := c.Param("name")
+		Id := int(claims["id"].(float64))
+		switch mod {
+		case "biography":
+			updateBio(c, Id)
+		case "username":
+
+		case "password":
+
+		case "firstname":
+
+		case "lastname":
+
+		case "location":
+		}
+	}
+}
+
+func updateBio(c *gin.Context, Id int) {
+	fmt.Println("TATATATA")
+}
+
+func updatePassword(c *gin.Context, Id int) {
+
+}
+
+func updateUsername(c *gin.Context, Id int) {
+
+}
+
+func updateFirstname(c *gin.Context, Id int) {
+
+}
+
+func updateLastname(c *gin.Context, Id int) {
+
+}
+
+func updateLocation(c *gin.Context, Id int) {
+
 }
