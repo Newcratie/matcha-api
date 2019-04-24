@@ -13,6 +13,7 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 
 	minAge := ageConvert(Filter.Age[0])
 	maxAge := ageConvert(Filter.Age[1])
+	fmt.Printf("%s %T\n", "Score 1 ==", Filter.Score)
 
 	if len(Filter.Tags) > 0 {
 		cQuery = setTagQuery(Filter)

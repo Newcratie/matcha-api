@@ -23,3 +23,10 @@ func UserHandler(c *gin.Context) {
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
+
+func UserPassMailChange(Id int, claims jwt.MapClaims) {
+
+	if claims["password"] != "" {
+
+	}
+}
