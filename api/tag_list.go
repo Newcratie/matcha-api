@@ -7,7 +7,7 @@ import (
 
 func (app *App) dbGetTagList() (ret []Tag) {
 	q := `
-MATCH (a:Tag)
+MATCH (a:TAG)
 RETURN a
 ORDER BY a.value
 `

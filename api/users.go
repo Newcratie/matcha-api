@@ -1,10 +1,10 @@
 package api
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
-	"encoding/json"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -61,14 +61,26 @@ func UserModifyHandler(c *gin.Context) {
 func UserPassChange(c *gin.Context, claims jwt.MapClaims) {
 	username := claims["username"].(string)
 	mail := claims["mail"].(string)
-	password := c.PostForm("password")
+	//oldPassword := c.PostForm("old_password")
+	//newPassword := c.PostForm("new_password")
+	//confirmPassword := c.PostForm("confirm_password")
+
+	oldPassword := "patate"
+	newPassword := "pouet"
+	confirmPassword := "patate"
 
 	u, err := app.getUser(username)
-	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
-		err = errors.New("Err: Wrong Password")
+	if err != nil || oldPassword != hash.Decrypt(hashKey, u.Password) {
+		err = errors.New("error : wrong password")
 	} else {
-		// check password
-		//change password
+		err = verifyPassword(newPassword, confirmPassword)
+		if err != nil {
+			fmt.Println("ERROR :===> ", err)
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			u.Password = hash.Encrypt(hashKey, newPassword)
+			app.updateUser(u)
+		}
 		err = SendEmail(username, mail, "./api/utils/pass_change.html")
 	}
 }
@@ -85,6 +97,8 @@ func UserModify(c *gin.Context) {
 		case "biography":
 			updateBio(c, Id)
 		case "username":
+
+		case "tag":
 
 		case "password":
 

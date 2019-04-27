@@ -49,7 +49,7 @@ type User struct {
 	Rating      int       `json:"rating" db:"rating"`
 	Token       string    `json:"token" db:"token"`
 	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
-	Tags        []Tag     `json:"tags"`
+	Tags        []string  `json:"tags" db:"tags"`
 }
 
 type Tag struct {

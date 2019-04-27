@@ -72,6 +72,27 @@ country:{country}, latitude: {latitude},
 longitude:{longitude}, geo_allowed: {geo_allowed},
 online:{online}, rating: {rating},
 email: {email}, access_lvl: 1})`
+	fmt.Println("Query == ", q)
+	st := app.prepareStatement(q)
+	executeStatement(st, MapOf(u))
+}
+
+func (app *App) updateUser(u User) {
+	fmt.Println(MapOf(u))
+	q := `MERGE (u:User{name: {username},
+username:{username}, password:{password},
+firstname: {firstname}, lastname: {lastname},
+birthday:{birthday}, random_token: {random_token},
+img1:{img1}, img2: {img2},
+img3:{img3}, img4: {img4},
+img5:{img5}, biography: {biography},
+genre:{genre}, interest: {interest},
+img5:{img5}, biography: {biography},
+city:{city}, zip: {zip},
+country:{country}, latitude: {latitude},
+longitude:{longitude}, geo_allowed: {geo_allowed},
+online:{online}, rating: {rating},
+email: {email}, access_lvl: 1})`
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
 }
