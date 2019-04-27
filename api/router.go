@@ -21,6 +21,7 @@ func (app *App) routerAPI() {
 		api.POST("/get_messages", GetMessages)
 		api.POST("/user", UserHandler)
 		api.PUT("/user/:name", UserModifyHandler)
+		api.PUT("/img/:n", UserImageHandler)
 		api.GET("/ws/:user/:suitor", func(c *gin.Context) {
 			_ = m.HandleRequest(c.Writer, c.Request)
 		})
