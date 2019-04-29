@@ -19,7 +19,6 @@ ORDER BY a.value
 			tab[0].(graph.Node).Properties["value"].(string),
 		})
 	}
-	//fmt.Println(ret)
 	return
 }
 

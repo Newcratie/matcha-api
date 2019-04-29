@@ -38,24 +38,24 @@ func getBodymap(c *gin.Context) (body map[string]interface{}) {
 }
 
 func UserImageHandler(c *gin.Context) {
-	//
 	file := c.PostForm("file")
-	fmt.Println("file  ===>", file)
-	//
-	//claims := jwt.MapClaims{}
-	//valid, err := ValidateToken(c, &claims)
-	//if valid {
-	//	Id := int(claims["id"].(float64))
-	//	g, err := app.dbGetUserProfile(Id)
-	//	tagList := app.dbGetTagList()
-	//	if err != nil {
-	//		c.JSON(201, gin.H{"err": err.Error()})
-	//	} else {
-	//		c.JSON(200, gin.H{"user": g, "tagList": tagList})
-	//	}
-	//} else {
-	//	c.JSON(201, gin.H{"err": err.Error()})
-	//}
+	fmt.Printf("file  %s\n", file)
+
+	claims := jwt.MapClaims{}
+	valid, err := ValidateToken(c, &claims)
+
+	if valid == true {
+		Id := int(claims["id"].(float64))
+		g, err := app.dbGetUserProfile(Id)
+		tagList := app.dbGetTagList()
+		if err != nil {
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			c.JSON(200, gin.H{"user": g, "tagList": tagList})
+		}
+	} else {
+		c.JSON(201, gin.H{"err": err.Error()})
+	}
 }
 
 func UserModifyHandler(c *gin.Context) {
