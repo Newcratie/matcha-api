@@ -30,9 +30,9 @@ func setTagQuery(Filter *Filters) (customQuery string) {
 	customQuery = `MATCH (t:TAG)-[]-(u) WHERE `
 	for i, tag := range Filter.Tags {
 		if i == 0 {
-			customQuery += `t.name='` + tag + `' `
+			customQuery += `t.value='` + tag + `' `
 		} else {
-			customQuery += `OR t.name='` + tag + `' `
+			customQuery += `OR t.value='` + tag + `' `
 		}
 	}
 	return

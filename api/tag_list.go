@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
+	"strconv"
 )
 
 func (app *App) dbGetTagList() (ret []Tag) {
@@ -22,9 +23,9 @@ ORDER BY a.value
 	return
 }
 
-func (app *App) insertTag(t Tag) {
+func (app *App) insertTag(t Tag, Id int64) {
 	fmt.Println("========", MapOf(t))
-	q := `CREATE (t:Tag{key: {key}, text:{text}, value:{value}})`
+	q := `MATCH (u:User) WHERE ID(u) = ` + strconv.Itoa(Id) + ` CREATE (t:TAG{key: {key}, text:{text}, value:{value}})<-[:TAGGED]-(u)`
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(t))
 }

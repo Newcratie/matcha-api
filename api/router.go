@@ -17,6 +17,7 @@ func (app *App) routerAPI() {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+
 	auth := app.R.Group("/auth")
 	{
 		auth.POST("/login", Login)

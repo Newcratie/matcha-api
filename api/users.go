@@ -82,19 +82,108 @@ func UserModifyHandler(c *gin.Context) {
 	}
 }
 
-func UserPassChange(c *gin.Context, claims jwt.MapClaims) {
+func UserModify(c *gin.Context) {
+	claims := jwt.MapClaims{}
+	valid, err := ValidateToken(c, &claims)
+	if valid == false || err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		mod := c.Param("name")
+		switch mod {
+		case "biography":
+			updateBio(c, claims)
+			break
+		case "username":
+			updateUsername(c, claims)
+			break
+		case "tag":
+			addTag(c, claims)
+			break
+		case "password":
+			updatePassword(c, claims)
+			break
+		case "firstname":
+			updateFirstname(c, claims)
+			break
+		case "lastname":
+			updateLastname(c, claims)
+			break
+			//case "location":
+		}
+	}
+}
+
+func updateBio(c *gin.Context, claims jwt.MapClaims) {
+	username := claims["username"].(string)
+	u, err := app.getUser(username)
+	if err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	bio := c.PostForm("bio")
+	if len(bio) > 100 {
+		err = errors.New("error : your biography can't exceed 100 characters")
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		u.Biography = bio
+		app.updateUser(u)
+	}
+}
+
+func updateUsername(c *gin.Context, claims jwt.MapClaims) {
+	username := claims["username"].(string)
+	u, err := app.getUser(username)
+	if err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	newUsername := c.PostForm("username")
+	if len(newUsername) < 6 || len(newUsername) > 20 {
+		err = errors.New("error : your username must be between 6 to 20 characters")
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		u.Username = newUsername
+		app.updateUser(u)
+	}
+}
+
+func addTag(c *gin.Context, claims jwt.MapClaims) {
+
+	var Tags Tag
+	username := claims["username"].(string)
+	u, err := app.getUser(username)
+	if err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	Tags.Value = c.PostForm("tag")
+	if len(Tags.Value) < 1 || len(Tags.Value) > 20 {
+		err = errors.New("error : your Tag must be between 1 to 20 characters")
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		Tags.Value = strings.ToLower(Tags.Value)
+		Tags.Key = Tags.Value
+		Tags.Text = "#" + strings.Title(Tags.Value)
+		app.insertTag(Tags, u.Id)
+	}
+}
+
+func updatePassword(c *gin.Context, claims jwt.MapClaims) {
 	fmt.Println("ON Pass change")
 	fmt.Println("Claims ==>", claims)
 
 	username := claims["username"].(string)
 	mail := claims["email"].(string)
-	//oldPassword := c.PostForm("old_password")
-	//newPassword := c.PostForm("new_password")
-	//confirmPassword := c.PostForm("confirm_password")
+	oldPassword := c.PostForm("old_password")
+	newPassword := c.PostForm("new_password")
+	confirmPassword := c.PostForm("confirm_password")
 
-	oldPassword := "123456789"
-	newPassword := "Pouet1234/"
-	confirmPassword := "Pouet1234/"
+	//oldPassword := "123456789"
+	//newPassword := "Pouet1234/"
+	//confirmPassword := "Pouet1234/"
 
 	u, err := app.getUser(username)
 	if err != nil || oldPassword != hash.Decrypt(hashKey, u.Password) {
@@ -114,52 +203,58 @@ func UserPassChange(c *gin.Context, claims jwt.MapClaims) {
 	}
 }
 
-func UserModify(c *gin.Context) {
-	claims := jwt.MapClaims{}
-	valid, err := ValidateToken(c, &claims)
-	if valid == false || err != nil {
+func updateFirstname(c *gin.Context, claims jwt.MapClaims) {
+	username := claims["username"].(string)
+	u, err := app.getUser(username)
+	if err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	firstname := c.PostForm("firstname")
+	if len(firstname) < 2 || len(firstname) > 20 {
+		err = errors.New("error : your firstname must be between 2 to 20 characters")
 		c.JSON(201, gin.H{"err": err.Error()})
 	} else {
-		mod := c.Param("name")
-		Id := int(claims["id"].(float64))
-		switch mod {
-		case "biography":
-			updateBio(c, Id)
-		case "username":
-
-		case "tag":
-
-		case "password":
-			UserPassChange(c, claims)
-		case "firstname":
-
-		case "lastname":
-
-		case "location":
-		}
+		u.FirstName = firstname
+		app.updateUser(u)
 	}
 }
 
-func updateBio(c *gin.Context, Id int) {
-	fmt.Println("TATATATA")
+func updateLastname(c *gin.Context, claims jwt.MapClaims) {
+	username := claims["username"].(string)
+	u, err := app.getUser(username)
+	if err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	lastname := c.PostForm("lastname")
+	if len(lastname) < 2 || len(lastname) > 20 {
+		err = errors.New("error : your lastname must be between 2 to 20 characters")
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		u.LastName = lastname
+		app.updateUser(u)
+	}
 }
 
-func updatePassword(c *gin.Context, Id int) {
-
-}
-
-func updateUsername(c *gin.Context, Id int) {
-
-}
-
-func updateFirstname(c *gin.Context, Id int) {
-
-}
-
-func updateLastname(c *gin.Context, Id int) {
-
-}
-
-func updateLocation(c *gin.Context, Id int) {
-
-}
+//check kat long validity
+//func updateLocation(c *gin.Context, claims jwt.MapClaims) {
+//	username := claims["username"].(string)
+//	u, err := app.getUser(username)
+//	if err != nil {
+//		c.JSON(201, gin.H{"err": err.Error()})
+//		return
+//	}
+//
+//	lat := c.PostForm("latitude")
+//	lon := c.PostForm("longitude")
+//	if len(firstname) < 2 {
+//		err = errors.New("error : your firstname must be at least 2 characters")
+//		c.JSON(201, gin.H{"err": err.Error()})
+//	} else {
+//		u.FirstName = firstname
+//		app.updateUser(u)
+//	}
+//}
