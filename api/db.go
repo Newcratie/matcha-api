@@ -78,7 +78,6 @@ email: {email}, access_lvl: 1})`
 }
 
 func (app *App) updateUser(u User) {
-	fmt.Println(MapOf(u))
 	q := `MERGE (u:User{name: {username},
 username:{username}, password:{password},
 firstname: {firstname}, lastname: {lastname},
@@ -183,7 +182,6 @@ func (app *App) dbDeleteRelation(IdFrom int, IdTo int, Rel string) (valid bool) 
 
 func (app *App) getUser(Username string) (u User, err error) {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{username : "`+Username+`"}) SET n.online = true RETURN  n`, nil)
-	fmt.Println(data)
 	if len(data) == 0 {
 		err = errors.New("Err : Username doesn't exist")
 		return
@@ -252,7 +250,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
 	if len(data) == 0 {
-		err = errors.New("Err : Tag is not assigned to anyone")
+		err = errors.New("err : filters doesn't match anyone")
 		return g, err
 	} else {
 		for _, d := range data {

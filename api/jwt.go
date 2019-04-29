@@ -12,6 +12,7 @@ func (user User) GenerateJwt() (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"loggedIn":  true,
 		"id":        user.Id,
+		"email":     user.Email,
 		"username":  user.Username,
 		"img1":      user.Img1,
 		"firstname": user.FirstName,

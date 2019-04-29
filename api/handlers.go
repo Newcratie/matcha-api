@@ -62,10 +62,8 @@ func ValidateToken(c *gin.Context, claims jwt.Claims) (valid bool, err error) {
 	if err != nil {
 		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
-		PrintHandlerLog("-----NOT VALID-----", ErrorC)
 		return false, err
 	} else if checkJwt(tokenString) {
-		PrintHandlerLog("-----VALID-----", ErrorC)
 		return true, err
 	}
 	return false, err
@@ -126,16 +124,18 @@ func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
 	var err error
 
-	fmt.Println("****IN DB MATCH****")
+	//fmt.Println("****IN DB MATCH****")
 
 	//app.dbMatchs(0, 30, "")
 
 	filters := Filters{}
 	claims := jwt.MapClaims{}
+
 	valid, err := ValidateToken(c, &claims)
+	//UserPassChange(c, claims)
 	json.Unmarshal([]byte(filtersJson), &filters)
 
-	fmt.Println(claims)
+	//fmt.Println(claims)
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if valid == true {

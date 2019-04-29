@@ -13,7 +13,7 @@ import (
 	"strconv"
 )
 
-func SendEmail(username, email, link string) error {
+func SendEmail(Title, username, email, link string) error {
 	logprint.Title("send Token")
 	smtpHost := "smtp.gmail.com"
 	smtpPort := 587
@@ -30,7 +30,7 @@ func SendEmail(username, email, link string) error {
 
 	from := mail.Address{"", smtpLogin}
 	to := mail.Address{username, email}
-	title := "Validate your address"
+	title := Title
 	body, err := ParseTemplate(link, templateData)
 	if err != nil {
 		fmt.Println(err)

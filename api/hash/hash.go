@@ -4,7 +4,6 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
-	"fmt"
 )
 
 var iv = []byte{35, 46, 57, 24, 85, 35, 24, 74, 87, 35, 88, 98, 66, 32, 14, 05}
@@ -22,7 +21,6 @@ func decodeBase64(s string) []byte {
 }
 
 func Encrypt(key, text string) string {
-	fmt.Println(text)
 	block, err := aes.NewCipher([]byte(key))
 	if err != nil {
 		panic(err)
@@ -35,7 +33,6 @@ func Encrypt(key, text string) string {
 }
 
 func Decrypt(key, text string) string {
-	fmt.Println(text)
 	block, err := aes.NewCipher([]byte(key))
 	if err != nil {
 		panic(err)

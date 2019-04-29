@@ -59,18 +59,22 @@ func UserModifyHandler(c *gin.Context) {
 }
 
 func UserPassChange(c *gin.Context, claims jwt.MapClaims) {
+	fmt.Println("ON Pass change")
+	fmt.Println("Claims ==>", claims)
+
 	username := claims["username"].(string)
-	mail := claims["mail"].(string)
+	mail := claims["email"].(string)
 	//oldPassword := c.PostForm("old_password")
 	//newPassword := c.PostForm("new_password")
 	//confirmPassword := c.PostForm("confirm_password")
 
-	oldPassword := "patate"
-	newPassword := "pouet"
-	confirmPassword := "patate"
+	oldPassword := "123456789"
+	newPassword := "Pouet1234/"
+	confirmPassword := "Pouet1234/"
 
 	u, err := app.getUser(username)
 	if err != nil || oldPassword != hash.Decrypt(hashKey, u.Password) {
+		fmt.Println("Wrong Pass")
 		err = errors.New("error : wrong password")
 	} else {
 		err = verifyPassword(newPassword, confirmPassword)
@@ -78,10 +82,11 @@ func UserPassChange(c *gin.Context, claims jwt.MapClaims) {
 			fmt.Println("ERROR :===> ", err)
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
+			fmt.Println("Password change::")
 			u.Password = hash.Encrypt(hashKey, newPassword)
 			app.updateUser(u)
+			err = SendEmail("Matcha password change", username, mail, "./api/utils/pass_change.html")
 		}
-		err = SendEmail(username, mail, "./api/utils/pass_change.html")
 	}
 }
 
@@ -101,7 +106,7 @@ func UserModify(c *gin.Context) {
 		case "tag":
 
 		case "password":
-
+			UserPassChange(c, claims)
 		case "firstname":
 
 		case "lastname":
