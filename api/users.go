@@ -7,6 +7,7 @@ import (
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 func UserHandler(c *gin.Context) {
@@ -36,14 +37,37 @@ func getBodymap(c *gin.Context) (body map[string]interface{}) {
 	return
 }
 
+func UserImageHandler(c *gin.Context) {
+	//
+	file := c.PostForm("file")
+	fmt.Println("file  ===>", file)
+	//
+	//claims := jwt.MapClaims{}
+	//valid, err := ValidateToken(c, &claims)
+	//if valid {
+	//	Id := int(claims["id"].(float64))
+	//	g, err := app.dbGetUserProfile(Id)
+	//	tagList := app.dbGetTagList()
+	//	if err != nil {
+	//		c.JSON(201, gin.H{"err": err.Error()})
+	//	} else {
+	//		c.JSON(200, gin.H{"user": g, "tagList": tagList})
+	//	}
+	//} else {
+	//	c.JSON(201, gin.H{"err": err.Error()})
+	//}
+}
+
 func UserModifyHandler(c *gin.Context) {
-	body := getBodymap(c)
-	for key, value := range body {
-		fmt.Println("index : ", key, " value : ", value)
+	if strings.Contains(c.Param("name"), "img") {
+		file, err := c.FormFile("file")
+		fmt.Println("file  ===>", file, err)
+	} else {
+		m := getBodymap(c)
+		fmt.Println("Map  ===>", m)
 	}
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)
-
 	if valid {
 		Id := int(claims["id"].(float64))
 		g, err := app.dbGetUserProfile(Id)

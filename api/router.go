@@ -19,14 +19,12 @@ func (app *App) routerAPI() {
 		api.POST("/get_people", GetPeople)
 		api.POST("/get_matchs", GetMatchs)
 		api.POST("/get_messages", GetMessages)
+		api.POST("/user", UserHandler)
+		api.PUT("/user/:name", UserModifyHandler)
+		api.PUT("/img/:n", UserImageHandler)
 		api.GET("/ws/:user/:suitor", func(c *gin.Context) {
 			_ = m.HandleRequest(c.Writer, c.Request)
 		})
-	}
-	user := api.Group("/user")
-	{
-		user.POST("/", UserHandler)
-		user.PUT("/:name", UserModify)
 	}
 	m.HandleMessage(func(s *melody.Session, msg []byte) {
 		app.insertMessage(msg)
