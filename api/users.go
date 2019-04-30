@@ -18,15 +18,17 @@ func UserHandler(c *gin.Context) {
 		Id := int(claims["id"].(float64))
 		g, err := app.dbGetUserProfile(Id)
 		tagList := app.dbGetTagList()
+		userTags := app.dbGetUserTags(claims["username"].(string))
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
-			c.JSON(200, gin.H{"user": g, "tagList": tagList})
+			c.JSON(200, gin.H{"user": g, "tagList": tagList, "userTags": userTags})
 		}
 	} else {
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
+
 func getBodymap(c *gin.Context) (body map[string]interface{}) {
 	r, _ := c.GetRawData()
 	err := json.Unmarshal(r, &body)
@@ -57,29 +59,29 @@ func UserImageHandler(c *gin.Context) {
 	}
 }
 
-func UserModifyHandler(c *gin.Context) {
-	if strings.Contains(c.Param("name"), "img") {
-		file, err := c.FormFile("file")
-		fmt.Println("file  ===>", file, err)
-	} else {
-		m := getBodymap(c)
-		fmt.Println("Map  ===>", m)
-	}
-	claims := jwt.MapClaims{}
-	valid, err := ValidateToken(c, &claims)
-	if valid {
-		Id := int(claims["id"].(float64))
-		g, err := app.dbGetUserProfile(Id)
-		tagList := app.dbGetTagList()
-		if err != nil {
-			c.JSON(201, gin.H{"err": err.Error()})
-		} else {
-			c.JSON(200, gin.H{"user": g, "tagList": tagList})
-		}
-	} else {
-		c.JSON(201, gin.H{"err": err.Error()})
-	}
-}
+//func UserModifyHandler(c *gin.Context) {
+//	if strings.Contains(c.Param("name"), "img") {
+//		file, err := c.FormFile("file")
+//		fmt.Println("file  ===>", file, err)
+//	} else {
+//		m := getBodymap(c)
+//		fmt.Println("Map  ===>", m)
+//	}
+//	claims := jwt.MapClaims{}
+//	valid, err := ValidateToken(c, &claims)
+//	if valid {
+//		Id := int(claims["id"].(float64))
+//		g, err := app.dbGetUserProfile(Id)
+//		tagList := app.dbGetTagList()
+//		if err != nil {
+//			c.JSON(201, gin.H{"err": err.Error()})
+//		} else {
+//			c.JSON(200, gin.H{"user": g, "tagList": tagList})
+//		}
+//	} else {
+//		c.JSON(201, gin.H{"err": err.Error()})
+//	}
+//}
 
 func UserModify(c *gin.Context) {
 	claims := jwt.MapClaims{}
@@ -113,42 +115,65 @@ func UserModify(c *gin.Context) {
 }
 
 func updateBio(c *gin.Context, claims jwt.MapClaims) {
+
+	body := getBodymap(c)
+	bio := body["biography"].(string)
+
 	username := claims["username"].(string)
 	u, err := app.getUser(username)
 	if err != nil {
+		fmt.Println("IN Error getUser")
 		c.JSON(201, gin.H{"err": err.Error()})
 		return
 	}
 
-	bio := c.PostForm("bio")
-	if len(bio) > 100 {
-		err = errors.New("error : your biography can't exceed 100 characters")
+	fmt.Println("BIO ==> ", bio, "|")
+	if len(bio) > 100 || len(bio) < 10 {
+		err = errors.New("error : your biography must be between 10 and 100 characters")
 		c.JSON(201, gin.H{"err": err.Error()})
 	} else {
 		u.Biography = bio
+		fmt.Println("User.BIO ==> ", u.Biography, "|")
 		app.updateUser(u)
+		fmt.Println("BIO ==> UPDATED")
+		UserHandler(c)
 	}
 }
 
 func updateUsername(c *gin.Context, claims jwt.MapClaims) {
+
+	fmt.Println("IN UpdateUsername")
+
 	username := claims["username"].(string)
 	u, err := app.getUser(username)
+	pass := hash.Decrypt(hashKey, u.Password)
+	dbpass := c.PostForm("old_password")
+	fmt.Println("PASS ====", pass)
+	fmt.Println("DBPASS ==", dbpass)
 	if err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	} else if pass != dbpass {
+		err = errors.New("error : wrong password")
 		c.JSON(201, gin.H{"err": err.Error()})
 		return
 	}
 
-	newUsername := c.PostForm("username")
+	newUsername := c.PostForm("new_username")
 	if len(newUsername) < 6 || len(newUsername) > 20 {
 		err = errors.New("error : your username must be between 6 to 20 characters")
 		c.JSON(201, gin.H{"err": err.Error()})
 	} else {
 		u.Username = newUsername
 		app.updateUser(u)
+		UserHandler(c)
 	}
 }
 
 func addTag(c *gin.Context, claims jwt.MapClaims) {
+
+	fmt.Println("IN addTag")
+
 	var Tags Tag
 	username := claims["username"].(string)
 	u, err := app.getUser(username)
@@ -166,10 +191,14 @@ func addTag(c *gin.Context, claims jwt.MapClaims) {
 		Tags.Key = Tags.Value
 		Tags.Text = "#" + strings.Title(Tags.Value)
 		app.insertTag(Tags, u.Id)
+		UserHandler(c)
 	}
 }
 
 func updatePassword(c *gin.Context, claims jwt.MapClaims) {
+
+	fmt.Println("IN UpdatePassword")
+
 	fmt.Println("ON Pass change")
 	fmt.Println("Claims ==>", claims)
 
@@ -185,7 +214,7 @@ func updatePassword(c *gin.Context, claims jwt.MapClaims) {
 
 	u, err := app.getUser(username)
 	if err != nil || oldPassword != hash.Decrypt(hashKey, u.Password) {
-		fmt.Println("Wrong Pass")
+		fmt.Println("Wrong Pass update password")
 		err = errors.New("error : wrong password")
 	} else {
 		err = verifyPassword(newPassword, confirmPassword)
@@ -197,11 +226,15 @@ func updatePassword(c *gin.Context, claims jwt.MapClaims) {
 			u.Password = hash.Encrypt(hashKey, newPassword)
 			app.updateUser(u)
 			err = SendEmail("Matcha password change", username, mail, "./api/utils/pass_change.html")
+			UserHandler(c)
 		}
 	}
 }
 
 func updateFirstname(c *gin.Context, claims jwt.MapClaims) {
+
+	fmt.Println("IN UpdateFirstname")
+
 	username := claims["username"].(string)
 	u, err := app.getUser(username)
 	if err != nil {
@@ -216,10 +249,14 @@ func updateFirstname(c *gin.Context, claims jwt.MapClaims) {
 	} else {
 		u.FirstName = firstname
 		app.updateUser(u)
+		UserHandler(c)
 	}
 }
 
 func updateLastname(c *gin.Context, claims jwt.MapClaims) {
+
+	fmt.Println("IN UpdateLastname")
+
 	username := claims["username"].(string)
 	u, err := app.getUser(username)
 	if err != nil {
@@ -234,10 +271,11 @@ func updateLastname(c *gin.Context, claims jwt.MapClaims) {
 	} else {
 		u.LastName = lastname
 		app.updateUser(u)
+		UserHandler(c)
 	}
 }
 
-//check kat long validity
+//check lat long validity
 //func updateLocation(c *gin.Context, claims jwt.MapClaims) {
 //	username := claims["username"].(string)
 //	u, err := app.getUser(username)

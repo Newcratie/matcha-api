@@ -66,7 +66,6 @@ img1:{img1}, img2: {img2},
 img3:{img3}, img4: {img4},
 img5:{img5}, biography: {biography},
 genre:{genre}, interest: {interest},
-img5:{img5}, biography: {biography},
 city:{city}, zip: {zip},
 country:{country}, latitude: {latitude},
 longitude:{longitude}, geo_allowed: {geo_allowed},
@@ -78,23 +77,38 @@ email: {email}, access_lvl: 1})`
 }
 
 func (app *App) updateUser(u User) {
-	q := `MERGE (u:User{name: {username},
-username:{username}, password:{password},
-firstname: {firstname}, lastname: {lastname},
-birthday:{birthday}, random_token: {random_token},
-img1:{img1}, img2: {img2},
-img3:{img3}, img4: {img4},
-img5:{img5}, biography: {biography},
-genre:{genre}, interest: {interest},
-img5:{img5}, biography: {biography},
-city:{city}, zip: {zip},
-country:{country}, latitude: {latitude},
-longitude:{longitude}, geo_allowed: {geo_allowed},
-online:{online}, rating: {rating},
-email: {email}, access_lvl: 1})`
+	fmt.Println("USer ====>>", MapOf(u))
+	q := `MATCH (u:User) WHERE u.username = {username} SET u.name = {username},
+u.username = {username}, u.password = {password},
+u.firstname = {firstname}, u.lastname = {lastname},
+u.birthday = {birthday}, u.random_token = {random_token},
+u.img1 = {img1}, u.img2 = {img2},
+u.img3 = {img3}, u.img4 = {img4},
+u.img5 = {img5}, u.biography = {biography},
+u.genre = {genre}, u.interest = {interest},
+u.city = {city}, u.zip = {zip},
+u.country = {country}, u.latitude = {latitude},
+u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
+u.online = {online}, u.rating = {rating},
+u.email = {email}, u.access_lvl = {access_lvl}`
 	st := app.prepareStatement(q)
+	fmt.Println("TATATA", st)
 	executeStatement(st, MapOf(u))
 }
+
+//q := `MATCH (u:User) WHERE ID(u)={id} SET u.name = {username},
+//u.username = {username}, u.password = {password},
+//u.firstname = {firstname}, u.lastname = {lastname},
+//u.birthday = {birthday}, u.random_token = {random_token},
+//u.img1 = {img1}, u.img2 = {img2},
+//u.img3 = {img3}, u.img4 = {img4},
+//u.img5 = {img5}, u.biography = {biography},
+//u.genre = {genre}, u.interest = {interest},
+//u.city = {city}, u.zip = {zip},
+//u.country = {country}, u.latitude = {latitude},
+//u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
+//u.online = {online}, u.rating = {rating},
+//u.email = {email}, u.access_lvl = {access_lvl})`
 
 //MATCH (u:User), (n:User) WHERE ID(u) = 30 AND ID(n) = 238 return exists( (u)-[:LIKE]->(n) )
 //MATCH (u:User) WHERE ID(u) = 30 MATCH (n:User) WHERE ID(n) = 238 CREATE (n)<-[:LIKE]-(u) return u, n
