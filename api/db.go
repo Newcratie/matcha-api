@@ -78,7 +78,7 @@ email: {email}, access_lvl: 1})`
 
 func (app *App) updateUser(u User) {
 	fmt.Println("USer ====>>", MapOf(u))
-	q := `MATCH (u:User) WHERE u.username = {username} SET u.name = {username},
+	q := `MATCH (u:User) WHERE ID(u)=` + strconv.Itoa(int(u.Id)) + ` SET u.name = {username},
 u.username = {username}, u.password = {password},
 u.firstname = {firstname}, u.lastname = {lastname},
 u.birthday = {birthday}, u.random_token = {random_token},

@@ -143,11 +143,14 @@ func updateBio(c *gin.Context, claims jwt.MapClaims) {
 func updateUsername(c *gin.Context, claims jwt.MapClaims) {
 
 	fmt.Println("IN UpdateUsername")
+	body := getBodymap(c)
+	newUsername := body["new_username"].(string)
+	dbpass := body["old_password"]
 
 	username := claims["username"].(string)
 	u, err := app.getUser(username)
 	pass := hash.Decrypt(hashKey, u.Password)
-	dbpass := c.PostForm("old_password")
+
 	fmt.Println("PASS ====", pass)
 	fmt.Println("DBPASS ==", dbpass)
 	if err != nil {
@@ -159,7 +162,6 @@ func updateUsername(c *gin.Context, claims jwt.MapClaims) {
 		return
 	}
 
-	newUsername := c.PostForm("new_username")
 	if len(newUsername) < 6 || len(newUsername) > 20 {
 		err = errors.New("error : your username must be between 6 to 20 characters")
 		c.JSON(201, gin.H{"err": err.Error()})
