@@ -27,7 +27,7 @@ func NewConn(host string) (bolt.Conn, error) {
 		}
 		retries = retries + 1
 		fmt.Println("neo4j not ready, waiting 1s and trying again ", retries)
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 	return nil, err
 }
