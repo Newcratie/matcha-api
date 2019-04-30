@@ -27,7 +27,6 @@ func UserHandler(c *gin.Context) {
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
-
 func getBodymap(c *gin.Context) (body map[string]interface{}) {
 	r, _ := c.GetRawData()
 	err := json.Unmarshal(r, &body)
