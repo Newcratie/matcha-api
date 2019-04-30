@@ -149,7 +149,6 @@ func updateUsername(c *gin.Context, claims jwt.MapClaims) {
 }
 
 func addTag(c *gin.Context, claims jwt.MapClaims) {
-
 	var Tags Tag
 	username := claims["username"].(string)
 	u, err := app.getUser(username)

@@ -25,7 +25,7 @@ ORDER BY a.value
 
 func (app *App) insertTag(t Tag, Id int64) {
 	fmt.Println("========", MapOf(t))
-	q := `MATCH (u:User) WHERE ID(u) = ` + strconv.Itoa(Id) + ` CREATE (t:TAG{key: {key}, text:{text}, value:{value}})<-[:TAGGED]-(u)`
+	q := `MATCH (u:User) WHERE ID(u) = ` + strconv.Itoa(int(Id)) + ` CREATE (t:TAG{key: {key}, text:{text}, value:{value}})<-[:TAGGED]-(u)`
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(t))
 }
