@@ -210,10 +210,6 @@ func updatePassword(c *gin.Context, claims jwt.MapClaims) {
 	newPassword := c.PostForm("new_password")
 	confirmPassword := c.PostForm("confirm_password")
 
-	//oldPassword := "123456789"
-	//newPassword := "Pouet1234/"
-	//confirmPassword := "Pouet1234/"
-
 	u, err := app.getUser(username)
 	if err != nil || oldPassword != hash.Decrypt(hashKey, u.Password) {
 		fmt.Println("Wrong Pass update password")
