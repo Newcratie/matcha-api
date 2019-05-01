@@ -8,6 +8,7 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
 	"strconv"
+	"time"
 )
 
 func (app *App) insertMessage(byt []byte) {
@@ -259,11 +260,12 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	var err error
 
 	// A custom query with applied Filters
+	time.Sleep(500 * time.Millisecond)
 	superQuery := customQuery(Id, Filter)
-	//superQuery := `MATCH (u:User) WHERE (u.rating >= 0 AND u.rating <= 100) AND (u.birthday >= "1899-05-01T14:15:50.7803662Z" AND u.birthday <= "2003-05-01T14:15:50.780358868Z") RETURN DISTINCT u`
-	fmt.Println("SUPERQUERY ===>> ", superQuery, "|")
-	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
+	data, _, _, err := app.Neo.QueryNeoAll(superQuery, nil)
+
+	fmt.Println("ERR ===> ", err)
 	if len(data) == 0 {
 		err = errors.New("err : filters doesn't match anyone")
 		return g, err
