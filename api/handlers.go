@@ -172,7 +172,7 @@ func Login(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 
-	u, err := app.getUser(username)
+	u, err := app.getUser(-1, username)
 	fmt.Println(u, err)
 	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
 		c.JSON(201, gin.H{"err": "Wrong password or username"})

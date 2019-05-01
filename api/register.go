@@ -29,27 +29,23 @@ func validateUser(rf registerForm) (User, validationResponse) {
 		ErrorField{true, ""},
 		"REGISTER",
 	}
-	if app.usernameExist(rf) {
+	if app.usernameExist(rf.Username) {
 		fmt.Println("HEEERRRRe")
 		res.failure()
 		res.Username.Status = false
 		res.Username.Message = res.Username.Message + "Username already exist\n"
 	}
-	if app.emailExist(rf) {
+	if app.emailExist(rf.Email) {
 		fmt.Println("HEEERRRRe")
 		res.failure()
 		res.Email.Status = false
 		res.Email.Message = res.Email.Message + "Email already exist\n"
 	}
-	if len(rf.Password) < passMin || len(rf.Password) > passMax {
+	if err := verifyPassword(rf.Password, rf.Confirm); err != nil {
 		res.failure()
 		res.Password.Status = false
-		res.Password.Message = "Password must contain between " + strconv.Itoa(passMin) + " and " + strconv.Itoa(passMax) + " characters\n"
-	}
-	if rf.Password != rf.Confirm {
-		res.failure()
-		res.Confirm.Status = false
-		res.Confirm.Message = "Passwords don't match\n"
+		res.Password.Message = err.Error()
+		fmt.Println("REGISTER ERROR ==> ", err)
 	}
 	if !emailIsValid(rf.Email) {
 		res.failure()

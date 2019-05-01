@@ -42,22 +42,22 @@ func verifyPassword(newPassword string, confirmPassword string) error {
 		}
 	}
 	if newPassword != confirmPassword {
-		appendError("password doesn't match")
+		appendError("Password doesn't match")
 	}
 	if !lowercasePresent {
-		appendError("lowercase letter missing")
+		appendError("Lowercase letter missing")
 	}
 	if !uppercasePresent {
-		appendError("uppercase letter missing")
+		appendError("Uppercase letter missing")
 	}
 	if !numberPresent {
-		appendError("atleast one numeric character required")
+		appendError("At least one numeric character required")
 	}
 	if !specialCharPresent {
-		appendError("special character missing")
+		appendError("Special character missing")
 	}
 	if !(minPassLength <= passLen && passLen <= maxPassLength) {
-		appendError(fmt.Sprintf("newPassword length must be between %d to %d characters long", minPassLength, maxPassLength))
+		appendError(fmt.Sprintf("Password length must be between %d to %d characters long", minPassLength, maxPassLength))
 	}
 
 	if len(errorString) != 0 {

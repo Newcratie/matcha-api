@@ -195,10 +195,19 @@ func (app *App) dbDeleteRelation(IdFrom int, IdTo int, Rel string) (valid bool) 
 	return true
 }
 
-func (app *App) getUser(Username string) (u User, err error) {
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{username : "`+Username+`"}) SET n.online = true RETURN  n`, nil)
+func (app *App) getUser(Id int, Username string) (u User, err error) {
+
+	var q string
+
+	if Username != "" {
+		q = `MATCH (u:User {username : "` + Username + `"}) RETURN u`
+	} else {
+		q = `MATCH (u:User) WHERE ID(u)= ` + strconv.Itoa(Id) + ` RETURN u`
+	}
+
+	data, _, _, _ := app.Neo.QueryNeoAll(q, nil)
 	if len(data) == 0 {
-		err = errors.New("Err : Username doesn't exist")
+		err = errors.New("Err : User doesn't exist")
 		return
 	} else {
 		jso, _ := json.Marshal(data[0][0].(graph.Node).Properties)
@@ -284,8 +293,8 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	}
 }
 
-func (app *App) usernameExist(rf registerForm) bool {
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {username: {username}}) RETURN n`, map[string]interface{}{"username": rf.Username})
+func (app *App) usernameExist(Username string) bool {
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {username: {username}}) RETURN n`, map[string]interface{}{"username": Username})
 	if len(data) == 0 {
 		return false
 	} else {
@@ -293,8 +302,10 @@ func (app *App) usernameExist(rf registerForm) bool {
 	}
 }
 
-func (app *App) emailExist(rf registerForm) bool {
-	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {email: {email}}) RETURN n`, map[string]interface{}{"email": rf.Email})
+//data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {email: {email}}) RETURN n`, map[string]interface{}{"email": rf.Email})
+
+func (app *App) emailExist(Email string) bool {
+	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {email: {email}}) RETURN n`, map[string]interface{}{"email": Email})
 	if len(data) == 0 {
 		return false
 	} else {

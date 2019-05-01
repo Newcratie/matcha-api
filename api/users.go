@@ -106,9 +106,18 @@ func UserModify(c *gin.Context) {
 		case "firstname":
 			updateFirstname(c, claims)
 			break
-		case "lastname":
-			updateLastname(c, claims)
+		case "genre":
+			updateGenre(c, claims)
 			break
+		case "email":
+			updateEmail(c, claims)
+			break
+		case "interest":
+			updateInterest(c, claims)
+			break
+			//case "lastname":
+			//	updateLastname(c, claims)
+			//	break
 			//case "location":
 		}
 	}
@@ -119,8 +128,9 @@ func updateBio(c *gin.Context, claims jwt.MapClaims) {
 	body := getBodymap(c)
 	bio := body["biography"].(string)
 
-	username := claims["username"].(string)
-	u, err := app.getUser(username)
+	Id := claims["id"].(int)
+	fmt.Println("ID ==>>", Id)
+	u, err := app.getUser(Id, "")
 	if err != nil {
 		fmt.Println("IN Error getUser")
 		c.JSON(201, gin.H{"err": err.Error()})
@@ -145,10 +155,10 @@ func updateUsername(c *gin.Context, claims jwt.MapClaims) {
 	fmt.Println("IN UpdateUsername")
 	body := getBodymap(c)
 	newUsername := body["new_username"].(string)
-	dbpass := body["old_password"]
+	dbpass := body["old_password"].(string)
 
-	username := claims["username"].(string)
-	u, err := app.getUser(username)
+	Id := claims["id"].(int)
+	u, err := app.getUser(Id, "")
 	pass := hash.Decrypt(hashKey, u.Password)
 
 	fmt.Println("PASS ====", pass)
@@ -172,19 +182,106 @@ func updateUsername(c *gin.Context, claims jwt.MapClaims) {
 	}
 }
 
+func updateEmail(c *gin.Context, claims jwt.MapClaims) {
+
+	fmt.Println("IN UpdateEmail")
+	body := getBodymap(c)
+	newEmail := body["new_email"].(string)
+	dbpass := body["old_password"].(string)
+
+	Id := claims["id"].(int)
+	u, err := app.getUser(Id, "")
+	pass := hash.Decrypt(hashKey, u.Password)
+
+	fmt.Println("PASS ====", pass)
+	fmt.Println("DBPASS ==", dbpass)
+	if err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	} else if pass != dbpass {
+		err = errors.New("error : Wrong password")
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	if !emailIsValid(newEmail) {
+		err = errors.New("error : Invalid Email")
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		u.Email = newEmail
+		app.updateUser(u)
+		UserHandler(c)
+	}
+}
+
+func updateGenre(c *gin.Context, claims jwt.MapClaims) {
+
+	body := getBodymap(c)
+	genre := body["genre"].(string)
+
+	Id := claims["id"].(int)
+	fmt.Println("ID ==>>", Id)
+	u, err := app.getUser(Id, "")
+	if err != nil {
+		fmt.Println("IN Error getUser")
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	fmt.Println("BIO ==> ", genre, "|")
+	if genre != "male" || genre != "female" {
+		err = errors.New("error : your gender must be male or female nothing else 'for the moment'")
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		u.Genre = genre
+		fmt.Println("GENRE ==> ", u.Genre, "|")
+		app.updateUser(u)
+		fmt.Println("GENRE ==> UPDATED")
+		UserHandler(c)
+	}
+}
+
+func updateInterest(c *gin.Context, claims jwt.MapClaims) {
+
+	body := getBodymap(c)
+	interest := body["interest"].(string)
+
+	Id := claims["id"].(int)
+	fmt.Println("ID ==>>", Id)
+	u, err := app.getUser(Id, "")
+	if err != nil {
+		fmt.Println("IN Error getUser")
+		c.JSON(201, gin.H{"err": err.Error()})
+		return
+	}
+
+	fmt.Println("Interest ==> ", interest, "|")
+	if interest != "bi" || interest != "hetero" || interest != "homo" {
+		err = errors.New("error : your interest must be bi, hetero or homo")
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		u.Interest = interest
+		fmt.Println("Interest ==> ", u.Interest, "|")
+		app.updateUser(u)
+		fmt.Println("GENRE ==> UPDATED")
+		UserHandler(c)
+	}
+}
+
 func addTag(c *gin.Context, claims jwt.MapClaims) {
 
 	fmt.Println("IN addTag")
-
 	var Tags Tag
-	username := claims["username"].(string)
-	u, err := app.getUser(username)
+	body := getBodymap(c)
+	Tags.Value = body["newtag"].(string)
+
+	Id := claims["id"].(int)
+	u, err := app.getUser(Id, "")
 	if err != nil {
 		c.JSON(201, gin.H{"err": err.Error()})
 		return
 	}
 
-	Tags.Value = c.PostForm("tag")
 	if len(Tags.Value) < 1 || len(Tags.Value) > 20 {
 		err = errors.New("error : your Tag must be between 1 to 20 characters")
 		c.JSON(201, gin.H{"err": err.Error()})
@@ -204,13 +301,13 @@ func updatePassword(c *gin.Context, claims jwt.MapClaims) {
 	fmt.Println("ON Pass change")
 	fmt.Println("Claims ==>", claims)
 
-	username := claims["username"].(string)
 	mail := claims["email"].(string)
 	oldPassword := c.PostForm("old_password")
 	newPassword := c.PostForm("new_password")
 	confirmPassword := c.PostForm("confirm_password")
 
-	u, err := app.getUser(username)
+	Id := claims["id"].(int)
+	u, err := app.getUser(Id, "")
 	if err != nil || oldPassword != hash.Decrypt(hashKey, u.Password) {
 		fmt.Println("Wrong Pass update password")
 		err = errors.New("error : wrong password")
@@ -223,7 +320,7 @@ func updatePassword(c *gin.Context, claims jwt.MapClaims) {
 			fmt.Println("Password change::")
 			u.Password = hash.Encrypt(hashKey, newPassword)
 			app.updateUser(u)
-			err = SendEmail("Matcha password change", username, mail, "./api/utils/pass_change.html")
+			err = SendEmail("Matcha password change", u.Username, mail, "./api/utils/pass_change.html")
 			UserHandler(c)
 		}
 	}
@@ -233,8 +330,8 @@ func updateFirstname(c *gin.Context, claims jwt.MapClaims) {
 
 	fmt.Println("IN UpdateFirstname")
 
-	username := claims["username"].(string)
-	u, err := app.getUser(username)
+	Id := claims["id"].(int)
+	u, err := app.getUser(Id, "")
 	if err != nil {
 		c.JSON(201, gin.H{"err": err.Error()})
 		return
@@ -255,8 +352,8 @@ func updateLastname(c *gin.Context, claims jwt.MapClaims) {
 
 	fmt.Println("IN UpdateLastname")
 
-	username := claims["username"].(string)
-	u, err := app.getUser(username)
+	Id := claims["id"].(int)
+	u, err := app.getUser(Id, "")
 	if err != nil {
 		c.JSON(201, gin.H{"err": err.Error()})
 		return
