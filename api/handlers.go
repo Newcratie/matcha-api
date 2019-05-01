@@ -132,7 +132,6 @@ func GetPeople(c *gin.Context) {
 	claims := jwt.MapClaims{}
 
 	valid, err := ValidateToken(c, &claims)
-	//UserPassChange(c, claims)
 	json.Unmarshal([]byte(filtersJson), &filters)
 
 	//fmt.Println(claims)

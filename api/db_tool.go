@@ -20,7 +20,7 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 
 	superQuery += `MATCH (u:User) WHERE (u.rating >= ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating <= ` + strconv.Itoa(Filter.Score[1]) + `)
 	AND (u.birthday >= "` + maxAge + `" AND u.birthday <= "` + minAge + `") ` + cQuery + `
-	RETURN DISTINCT u`
+	RETURN u`
 
 	return
 }

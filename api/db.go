@@ -260,7 +260,8 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 
 	// A custom query with applied Filters
 	superQuery := customQuery(Id, Filter)
-
+	//superQuery := `MATCH (u:User) WHERE (u.rating >= 0 AND u.rating <= 100) AND (u.birthday >= "1899-05-01T14:15:50.7803662Z" AND u.birthday <= "2003-05-01T14:15:50.780358868Z") RETURN DISTINCT u`
+	fmt.Println("SUPERQUERY ===>> ", superQuery, "|")
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
 	if len(data) == 0 {
