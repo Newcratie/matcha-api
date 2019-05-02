@@ -10,6 +10,7 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"math"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -44,7 +45,13 @@ func CreateLike(c *gin.Context) {
 	valid, err := ValidateToken(c, &claims)
 
 	if valid == true {
-		// prepare statement for relation ship on neo4j nodes
+		var M Match
+		M.IdTo, _ = strconv.Atoi(c.Param("id"))
+		prin("ID_TO ==>", M.IdTo, "|")
+		M.Action = strings.ToUpper(c.Param("action"))
+		prin("ACTION ==>> ", M.Action, "|")
+		M.IdFrom = claims["id"].(int)
+		app.dbMatchs(M)
 	} else {
 		PrintHandlerLog("Token Not Valid", ErrorC)
 		fmt.Println("jwt error: ", err)
@@ -183,6 +190,10 @@ func Login(c *gin.Context) {
 		if err != nil {
 			c.JSON(201, gin.H{"err": "Internal server error: " + err.Error()})
 		} else {
+			u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
+			fmt.Println("LastConn ===>>", u.LastConn)
+			u.Online = true
+			app.updateUser(u)
 			c.JSON(200, jwt)
 		}
 	}
@@ -190,6 +201,7 @@ func Login(c *gin.Context) {
 
 func Register(c *gin.Context) {
 	logprint.Title("Register")
+	fmt.Println("POST BIRTHDAY =========", c.PostForm("birthday"), "|")
 	bd, _ := time.Parse(time.RFC3339, c.PostForm("birthday"))
 
 	rf := registerForm{

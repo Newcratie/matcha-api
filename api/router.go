@@ -27,13 +27,10 @@ func (app *App) routerAPI() {
 	}
 	api := app.R.Group("/api")
 	{
-		api.POST("/add_like", CreateLike)
 		api.GET("/people", GetPeople)
-		api.PUT("/people/:id/:action", func(c *gin.Context) {
-			//Here handle action: like, dislike or block      <------------------ XEN
-			//then return the same thing than GetPeople please
-			c.JSON(200, gin.H{"good": "sisi"})
-		})
+		api.PUT("/people/:id/:action", CreateLike)
+		//Here handle action: like, dislike or block
+		//then return the same thing than GetPeople please
 		api.GET("/matchs", GetMatchs)
 		api.GET("/messages", GetMessages)
 		api.GET("/user", UserHandler)
