@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
@@ -57,7 +56,6 @@ func (app *App) routerAPI() {
 
 	for i := 0; i < 3000; i++ {
 		time.Sleep(time.Second * 2)
-		fmt.Println("i++")
 		n := Notification{
 			"Ceci est une notifications test",
 			int64(i),

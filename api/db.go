@@ -271,7 +271,6 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 		for _, d := range data {
 			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
 			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
-
 			// Haversine will return the distance between 2 Lat/Lon in Kilometers
 
 			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
