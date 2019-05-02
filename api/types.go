@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
+	"gopkg.in/olahol/melody.v1"
 	"time"
 )
 
@@ -14,6 +15,7 @@ type App struct {
 	Db  *sqlx.DB
 	R   *gin.Engine
 	Neo bolt.Conn
+	M   *melody.Melody
 }
 
 type ResStart struct {
