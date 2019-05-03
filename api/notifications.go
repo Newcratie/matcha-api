@@ -21,6 +21,7 @@ func (app *App) postNotification(n Notification, msg []byte) {
 		return session.Request.URL.Path == url
 	})
 }
+
 func notificationsHistoryHandler(c *gin.Context) {
 	n := []Notification{}
 	c.JSON(200, n)
