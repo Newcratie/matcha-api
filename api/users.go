@@ -11,13 +11,10 @@ import (
 
 func UserModify(c *gin.Context) {
 	var req Request
-	req.context = c
-	req.body = getBodyToMap(c)
-	req.claims = jwt.MapClaims{}
-	valid, err := ValidateToken(c, &req.claims)
-
-	if valid == true {
-		req.id = int(req.claims["id"].(float64))
+	if err := req.prepareRequest(c); err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		req.body = getBodyToMap(c)
 		req.user, _ = app.getUser(req.id, "")
 		mod := c.Param("name")
 		switch mod {
@@ -51,8 +48,6 @@ func UserModify(c *gin.Context) {
 		default:
 		}
 		retUser(req)
-	} else {
-		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
 
@@ -205,17 +200,23 @@ func getBodyToMap(c *gin.Context) (body map[string]interface{}) {
 	return
 }
 
-func UserHandler(c *gin.Context) {
-	var req Request
+func (req Request) prepareRequest(c *gin.Context) error {
 	req.context = c
 	req.claims = jwt.MapClaims{}
 	valid, err := ValidateToken(c, &req.claims)
-
 	if valid == true {
 		req.id = int(req.claims["id"].(float64))
 		req.user, _ = app.getUser(req.id, "")
-		retUser(req)
 	} else {
+		return err
+	}
+	return nil
+}
+
+func UserHandler(c *gin.Context) {
+	var req Request
+	if err := req.prepareRequest(c); err != nil {
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
+	retUser(req)
 }
