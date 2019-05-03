@@ -83,18 +83,18 @@ func (app *App) updateUser(u User) {
 	id = strconv.FormatInt(u.Id, 10)
 	fmt.Println("id", id)
 	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.name = {username},
-u.firstname = {firstname}, u.lastname = {lastname}`
-	//u.username = {username}, u.password = {password},
-	//u.birthday = {birthday}, u.random_token = {random_token},
-	//u.img1 = {img1}, u.img2 = {img2},
-	//u.img3 = {img3}, u.img4 = {img4},
-	//u.img5 = {img5}, u.biography = {biography},
-	//u.genre = {genre}, u.interest = {interest},
-	//u.city = {city}, u.zip = {zip},
-	//u.country = {country}, u.latitude = {latitude},
-	//u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
-	//u.online = {online}, u.rating = {rating},
-	//u.email = {email}, u.access_lvl = {access_lvl}`
+	u.firstname = {firstname}, u.lastname = {lastname},
+	u.username = {username}, u.password = {password},
+	u.birthday = {birthday}, u.random_token = {random_token},
+	u.img1 = {img1}, u.img2 = {img2},
+	u.img3 = {img3}, u.img4 = {img4},
+	u.img5 = {img5}, u.biography = {biography},
+	u.genre = {genre}, u.interest = {interest},
+	u.city = {city}, u.zip = {zip},
+	u.country = {country}, u.latitude = {latitude},
+	u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
+	u.online = {online}, u.rating = {rating},
+	u.email = {email}, u.access_lvl = {access_lvl}`
 	st := app.prepareStatement(q)
 	fmt.Println("TATATA", st)
 	executeStatement(st, MapOf(u))

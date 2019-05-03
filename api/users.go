@@ -18,6 +18,12 @@ func UserModify(c *gin.Context) {
 		req.user, _ = app.getUser(req.id, "")
 		mod := c.Param("name")
 		switch mod {
+		case "position":
+			req.updatePosition()
+			break
+		case "location":
+			req.updateLocation()
+			break
 		case "biography":
 			req.updateBio()
 			break
@@ -46,11 +52,21 @@ func UserModify(c *gin.Context) {
 			req.updateInterest()
 			break
 		default:
+			c.JSON(202, gin.H{"err": "route not found"})
 		}
-		retUser(req)
 	}
 }
 
+func (req Request) updatePosition() {
+	pos := req.body["position"]
+	fmt.Println(pos)
+	retUser(req)
+}
+func (req Request) updateLocation() {
+	pos := req.body["location"]
+	fmt.Println(pos)
+	retUser(req)
+}
 func (req Request) updateBio() {
 	bio := req.body["biography"].(string)
 
@@ -60,6 +76,7 @@ func (req Request) updateBio() {
 	} else {
 		req.user.Biography = bio
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
@@ -83,6 +100,7 @@ func (req Request) updateUsername() {
 	} else {
 		req.user.Username = newUsername
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
@@ -90,12 +108,14 @@ func (req Request) updateGenre() {
 	genre := req.body["genre"].(string)
 	req.user.Genre = genre
 	app.updateUser(req.user)
+	retUser(req)
 }
 
 func (req Request) updateInterest() {
 	interest := req.body["interest"].(string)
 	req.user.Interest = interest
 	app.updateUser(req.user)
+	retUser(req)
 }
 
 func (req Request) addTag() {
@@ -110,12 +130,13 @@ func (req Request) updateEmail() {
 	} else {
 		req.user.Email = newEmail
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
 func (req Request) updatePassword() {
 	newPassword := req.body["new_password"].(string)
-	confirmPassword := req.body["confirm_password"].(string)
+	confirmPassword := req.body["confirm"].(string)
 
 	if err := req.checkPassword(); err != nil {
 		req.context.JSON(201, gin.H{"err": err.Error()})
@@ -123,21 +144,21 @@ func (req Request) updatePassword() {
 		if err = verifyPassword(newPassword, confirmPassword); err != nil {
 			req.context.JSON(201, gin.H{"err": err.Error()})
 		} else {
-			fmt.Println("Password change::")
 			req.user.Password = hash.Encrypt(hashKey, newPassword)
+			app.updateUser(req.user)
+			retUser(req)
 		}
 	}
 }
 
 func (req Request) updateFirstname() {
-	fmt.Println("===========REQ=========== \n", req)
 	firstname := req.body["firstname"].(string)
-	fmt.Println("===========>  ", firstname)
 	if len(firstname) < 2 || len(firstname) > 20 {
 		req.context.JSON(201, gin.H{"err": "error : your firstname must be between 2 to 20 characters"})
 	} else {
 		req.user.FirstName = firstname
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
@@ -148,6 +169,8 @@ func (req Request) updateLastname() {
 		req.context.JSON(201, gin.H{"err": err.Error()})
 	} else {
 		req.user.LastName = lastname
+		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
@@ -180,27 +203,17 @@ type Request struct {
 	id      int
 }
 
-func retUser(req Request) {
-	g, err := app.dbGetUserProfile(req.id)
-	tagList := app.dbGetTagList()
-	userTags := app.dbGetUserTags(req.claims["username"].(string))
-	if err != nil {
-		req.context.JSON(201, gin.H{"err": err.Error()})
-	} else {
-		req.context.JSON(200, gin.H{"user": g, "tagList": tagList, "userTags": userTags})
-	}
-}
-
 func getBodyToMap(c *gin.Context) (body map[string]interface{}) {
 	r, _ := c.GetRawData()
 	err := json.Unmarshal(r, &body)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("======Body =======> ", body)
 	return
 }
 
-func (req Request) prepareRequest(c *gin.Context) error {
+func (req *Request) prepareRequest(c *gin.Context) error {
 	req.context = c
 	req.claims = jwt.MapClaims{}
 	valid, err := ValidateToken(c, &req.claims)
@@ -219,4 +232,16 @@ func UserHandler(c *gin.Context) {
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
 	retUser(req)
+}
+
+func retUser(req Request) {
+	g, err := app.dbGetUserProfile(req.id)
+	fmt.Println("")
+	tagList := app.dbGetTagList()
+	userTags := app.dbGetUserTags(req.user.Username)
+	if err != nil {
+		req.context.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		req.context.JSON(200, gin.H{"user": g, "tagList": tagList, "userTags": userTags})
+	}
 }
