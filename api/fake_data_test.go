@@ -115,7 +115,6 @@ func TestAddFakeData(t *testing.T) {
 		s := gofakeit.Color()
 		s = strings.ToLower(s)
 		data, _, _, err := app.Neo.QueryNeoAll(`MERGE (t:TAG {key: "`+s+`", text: "#`+strings.Title(s)+`", value: "`+s+`"}) `, nil)
-		fmt.Println("DATA = ", data, "Err = ", err)
 	}
 	for i := 0; i < max; i++ {
 		u := newRandomMale()
@@ -131,7 +130,6 @@ func AddTagRelation(u User) {
 	for i := 0; i < 4; i++ {
 		tag := strings.ToLower(u.Tags[i])
 		q := `MATCH (u:User) WHERE u.username = {username} MATCH (n:TAG) WHERE n.value = "` + tag + `" CREATE (u)-[g:TAGGED]->(n) return n`
-		fmt.Println("Query ===>", q)
 		st := app.prepareStatement(q)
 		executeStatement(st, MapOf(u))
 	}

@@ -209,7 +209,6 @@ func getBodyToMap(c *gin.Context) (body map[string]interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("======Body =======> ", body)
 	return
 }
 
@@ -236,7 +235,6 @@ func UserHandler(c *gin.Context) {
 
 func retUser(req Request) {
 	g, err := app.dbGetUserProfile(req.id)
-	fmt.Println("")
 	tagList := app.dbGetTagList()
 	userTags := app.dbGetUserTags(req.user.Username)
 	if err != nil {

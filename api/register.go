@@ -30,13 +30,11 @@ func validateUser(rf registerForm) (User, validationResponse) {
 		"REGISTER",
 	}
 	if app.usernameExist(rf.Username) {
-		fmt.Println("HEEERRRRe")
 		res.failure()
 		res.Username.Status = false
 		res.Username.Message = res.Username.Message + "Username already exist\n"
 	}
 	if app.emailExist(rf.Email) {
-		fmt.Println("HEEERRRRe")
 		res.failure()
 		res.Email.Status = false
 		res.Email.Message = res.Email.Message + "Email already exist\n"
@@ -45,7 +43,6 @@ func validateUser(rf registerForm) (User, validationResponse) {
 		res.failure()
 		res.Password.Status = false
 		res.Password.Message = err.Error()
-		fmt.Println("REGISTER ERROR ==> ", err)
 	}
 	if !emailIsValid(rf.Email) {
 		res.failure()

@@ -8,7 +8,6 @@ import (
 )
 
 func TestNull(t *testing.T) {
-	fmt.Println("working")
 }
 
 func TestGlobal(t *testing.T) {

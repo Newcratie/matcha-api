@@ -23,7 +23,6 @@ const (
 
 func Token(c *gin.Context) {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{random_token : "`+c.Param("token")+`"}) SET n.access_lvl = 1 RETURN n`, nil)
-	fmt.Println("data===>", data)
 	if len(data) == 0 {
 		c.JSON(201, gin.H{"err": "Wrong token"})
 	} else if data[0][0].(graph.Node).Properties["access_lvl"] == int64(1) {
@@ -58,7 +57,6 @@ func ValidateToken(c *gin.Context, claims jwt.Claims) (valid bool, err error) {
 	_, err = jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
-	fmt.Println(claims)
 	if err != nil {
 		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
@@ -83,7 +81,6 @@ func GetMatchs(c *gin.Context) {
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
-	fmt.Println(claims)
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
@@ -100,12 +97,10 @@ func GetMessages(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
 	suitorId := c.Request.Header["Suitor-Id"][0]
 
-	fmt.Println("SuitorId ====> ", suitorId)
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
-	fmt.Println(claims)
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
@@ -151,29 +146,11 @@ func GetPeople(c *gin.Context) {
 	}
 }
 
-func Self(c *gin.Context) {
-	tokenString := c.Request.Header["Authorization"][0]
-
-	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
-	})
-	fmt.Println(claims)
-	if err != nil {
-		fmt.Println(err)
-		c.JSON(201, gin.H{"err": err.Error()})
-	} else if checkJwt(tokenString) {
-		id := int(math.Round(claims["id"].(float64)))
-		fmt.Println(id)
-	}
-}
-
 func Login(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 
 	u, err := app.getUser(-1, username)
-	fmt.Println(u, err)
 	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
 		c.JSON(201, gin.H{"err": "Wrong password or username"})
 	} else if u.AccessLvl == 0 {
@@ -201,12 +178,10 @@ func Register(c *gin.Context) {
 		c.PostForm("firstname"),
 		bd,
 	}
-	fmt.Println("Register Form ==> ", rf)
 	user, res := validateUser(rf)
 	if !res.Valid {
 		c.JSON(201, res)
 	} else {
-		fmt.Println("register success", user)
 		app.insertUser(user)
 		c.JSON(200, gin.H{})
 	}

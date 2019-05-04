@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"gopkg.in/olahol/melody.v1"
 	"strconv"
 )
@@ -28,6 +29,7 @@ func (app *App) postNotification(message string, userId, authorId, subjectId int
 	id := strconv.FormatInt(34, 10)
 	url := "/api/notifications/websocket/" + id
 
+	app.dbInsertNotification(msg)
 	_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
 		return session.Request.URL.Path == url
 	})
@@ -52,6 +54,28 @@ CREATE (a)<-[s:TO]-(n:Notif {message:{message}, author_id: {author_id}, subject_
 }
 
 func notificationsHistoryHandler(c *gin.Context) {
-	n := []Notification{}
-	c.JSON(200, n)
+	n, _ := strconv.Atoi(c.Param("user"))
+	userId := int64(n)
+	fmt.Println(userId)
+	q := `
+MATCH (n:Notif)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
+`
+	ntfs := make([]Notification, 0)
+	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{"user_id": userId})
+	for _, tab := range data {
+		ntfs = append(ntfs, Notification{
+			tab[0].(graph.Node).Properties["message"].(string),
+			int64(tab[0].(graph.Node).NodeIdentity),
+			0,
+			tab[0].(graph.Node).Properties["author_id"].(int64),
+			tab[0].(graph.Node).Properties["subject_id"].(int64),
+		})
+	}
+	c.JSON(200, ntfs)
+}
+func notificationsDeleteHandler(c *gin.Context) {
+	q := `MATCH (n:Notif) WHERE ID(n) = ` + c.Param("id") + ` DELETE n`
+	st := app.prepareStatement(q)
+	executeStatement(st, map[string]interface{}{})
+	c.JSON(200, nil)
 }

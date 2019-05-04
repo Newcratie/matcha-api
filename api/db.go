@@ -96,7 +96,6 @@ func (app *App) updateUser(u User) {
 	u.online = {online}, u.rating = {rating},
 	u.email = {email}, u.access_lvl = {access_lvl}`
 	st := app.prepareStatement(q)
-	fmt.Println("TATATA", st)
 	executeStatement(st, MapOf(u))
 }
 
@@ -277,7 +276,6 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 
 	data, _, _, err := app.Neo.QueryNeoAll(superQuery, nil)
 
-	fmt.Println("ERR ===> ", err)
 	if len(data) == 0 {
 		err = errors.New("err : filters doesn't match anyone")
 		return g, err
