@@ -11,31 +11,31 @@ import (
 //MATCH (u)<-[r:LIKE]-(n) WHERE ID(u) = 30 AND ID(n) = 238 DELETE r
 //MATCH (n)-[r:LIKE]-(u) WHERE ID(u) = 30 AND ID(n) = 238 DETACH DELETE r
 
-func (app *App) dbMatchs(M Match) (valid bool, err error) {
+func (app *App) dbMatchs(m Match) (valid bool, err error) {
 
-	if app.dbExistBlocked(M) {
+	if app.dbExistBlocked(m) {
 		err = errors.New("Blocked Relation")
 		fmt.Println("****BLOCKED****")
 		return false, err
 	}
 
-	if M.Action == "LIKE" {
-		app.dbCreateLike(M)
+	if m.action == "LIKE" {
+		app.dbCreateLike(m)
 		fmt.Println("****LIKE****")
-	} else if M.Action == "DISLIKE" {
-		app.dbCreateDislike(M)
+	} else if m.action == "DISLIKE" {
+		app.dbCreateDislike(m)
 		fmt.Println("****DISLIKE****")
-	} else if M.Action == "BLOCK" {
-		app.dbCreateBlock(M)
+	} else if m.action == "BLOCK" {
+		app.dbCreateBlock(m)
 		fmt.Println("****BLOCKED****")
 	}
 	return true, nil
 }
 
-func (app *App) dbExistBlocked(M Match) (valid bool) {
+func (app *App) dbExistBlocked(m Match) (valid bool) {
 
-	prin("MAP == ", MapOf(M), "|")
-	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` RETURN EXISTS( (u)-[:BLOCK]-(n) )`
+	prin("MAP == ", MapOf(m), "|")
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:BLOCK]-(n) )`
 	data, _, _, err := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if err != nil {
 		prin("Err === ", err)
@@ -48,10 +48,10 @@ func (app *App) dbExistBlocked(M Match) (valid bool) {
 	return true
 }
 
-func (app *App) dbCreateLike(M Match) (valid bool) {
+func (app *App) dbCreateLike(m Match) (valid bool) {
 
-	if app.dbExistRevLike(M) == false {
-		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` CREATE (u)-[:LIKE]->(n)`
+	if app.dbExistRevLike(m) == false {
+		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:LIKE]->(n)`
 		data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 		if err != nil {
 			fmt.Println("*** CreateLike Query returned an Error ***", data)
@@ -59,15 +59,15 @@ func (app *App) dbCreateLike(M Match) (valid bool) {
 		}
 		return true
 	} else {
-		app.dbSetMatch(M)
+		app.dbSetMatch(m)
 	}
 	return false
 }
 
-func (app *App) dbSetMatch(M Match) (valid bool) {
+func (app *App) dbSetMatch(m Match) (valid bool) {
 
-	app.dbDeleteRelation(M, "")
-	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` CREATE (u)-[:MATCH]->(n)`
+	app.dbDeleteRelation(m, "")
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:MATCH]->(n)`
 	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
 		fmt.Println("*** Set MatchQuery returned an Error ***", data)
@@ -76,10 +76,10 @@ func (app *App) dbSetMatch(M Match) (valid bool) {
 	return true
 }
 
-func (app *App) dbCreateBlock(M Match) (valid bool) {
+func (app *App) dbCreateBlock(m Match) (valid bool) {
 
-	app.dbDeleteRelation(M, "")
-	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` CREATE (u)-[:BLOCK]->(n)`
+	app.dbDeleteRelation(m, "")
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:BLOCK]->(n)`
 	prin("QUERY ==>", MatchQuery, "|")
 	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
@@ -89,10 +89,10 @@ func (app *App) dbCreateBlock(M Match) (valid bool) {
 	return true
 }
 
-func (app *App) dbCreateDislike(M Match) (valid bool) {
+func (app *App) dbCreateDislike(m Match) (valid bool) {
 
-	if app.dbExistRel(M, "DISLIKE") == false {
-		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` CREATE (u)-[:DISLIKE]->(n)`
+	if app.dbExistRel(m, "DISLIKE") == false {
+		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:DISLIKE]->(n)`
 		data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 		if err != nil {
 			fmt.Println("*** CreateLike Query returned an Error ***", data)
@@ -103,9 +103,9 @@ func (app *App) dbCreateDislike(M Match) (valid bool) {
 	return false
 }
 
-func (app *App) dbExistRel(M Match, Rel string) (valid bool) {
+func (app *App) dbExistRel(m Match, Rel string) (valid bool) {
 
-	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` RETURN EXISTS( (u)-[:` + Rel + `]->(n) )`
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:` + Rel + `]->(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
 		fmt.Println("*** Exist Query returned FALSE ***")
@@ -114,9 +114,9 @@ func (app *App) dbExistRel(M Match, Rel string) (valid bool) {
 	return true
 }
 
-func (app *App) dbExistDislike(M Match) (valid bool) {
+func (app *App) dbExistDislike(m Match) (valid bool) {
 
-	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` RETURN EXISTS( (u)-[:DISLIKE]->(n) )`
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:DISLIKE]->(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
 		fmt.Println("*** Exist Query returned FALSE ***")
@@ -125,9 +125,9 @@ func (app *App) dbExistDislike(M Match) (valid bool) {
 	return true
 }
 
-func (app *App) dbExistRevLike(M Match) (valid bool) {
+func (app *App) dbExistRevLike(m Match) (valid bool) {
 
-	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` RETURN EXISTS( (u)<-[:LIKE]-(n) )`
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)<-[:LIKE]-(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
 		fmt.Println("*** Exist Query returned FALSE ***")
@@ -136,17 +136,17 @@ func (app *App) dbExistRevLike(M Match) (valid bool) {
 	return true
 }
 
-func (app *App) dbDeleteRelation(M Match, Rel string) (valid bool) {
+func (app *App) dbDeleteRelation(m Match, Rel string) (valid bool) {
 
 	if Rel != "" {
-		DeleteQuery := `MATCH (n)-[t]-(u) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` DETACH DELETE t CREATE (u)<-[r:` + Rel + `']-(n)`
+		DeleteQuery := `MATCH (n)-[t]-(u) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE t CREATE (u)<-[r:` + Rel + `']-(n)`
 		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
 			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	} else {
-		DeleteQuery := `MATCH (u:User)-[r]-(n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` DETACH DELETE r`
+		DeleteQuery := `MATCH (u:User)-[r]-(n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE r`
 		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
 			fmt.Println("*** DeleteRelation Query returned an Error ***", data)

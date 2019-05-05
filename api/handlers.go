@@ -44,19 +44,38 @@ func CreateLike(c *gin.Context) {
 	valid, err := ValidateToken(c, &claims)
 
 	if valid == true {
-		var M Match
-		M.IdTo, _ = strconv.Atoi(c.Param("id"))
-		prin("ID_TO ==>", M.IdTo, "|")
-		M.Action = strings.ToUpper(c.Param("action"))
-		prin("ACTION ==>> ", M.Action, "|")
-		prin("CLAIMS ==>> ", claims["id"], "|")
-		M.IdFrom = int(claims["id"].(float64))
-		prin("AFTER FROM ==>> ", M.IdFrom, "|")
-		if _, err = app.dbMatchs(M); err != nil {
+		var m Match
+		m.idTo, _ = strconv.Atoi(c.Param("id"))
+		m.action = strings.ToUpper(c.Param("action"))
+		m.idFrom = int(claims["id"].(float64))
+		if _, err = app.dbMatchs(m); err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
 			c.JSON(200, nil)
 		}
+		m.idFrom = int(claims["id"].(float64))
+		prin("AFTER FROM ==>> ", m.idFrom, "|")
+		app.dbMatchs(m)
+
+		action := c.Param("action")
+		switch action {
+		case "like":
+			if app.dbExistRel(m, match) {
+				newEvent(c, func(name string) string {
+					return "It's a match!!! With " + name
+				})
+			} else {
+				newEvent(c, func(name string) string {
+					return name + " " + action + " you!!!"
+				})
+			}
+			break
+		case "dislike":
+			newEvent(c, func(name string) string {
+				return name + " doesn't like you anymore 😱"
+			})
+		}
+
 	} else {
 		PrintHandlerLog("Token Not Valid", ErrorC)
 		fmt.Println("jwt error: ", err)
@@ -156,20 +175,9 @@ func GetPeople(c *gin.Context) {
 }
 
 func newVisit(c *gin.Context) {
-	n, _ := strconv.Atoi(c.Param("user_id"))
-	userId := int64(n)
-	claims := jwt.MapClaims{}
-	valid, _ := ValidateToken(c, &claims)
-	var authorId int64
-	if valid {
-		authorId = int64(claims["id"].(float64))
-	} else {
-		authorId = 0
-	}
-	u, _ := app.getUser(int(authorId), "")
-	message := u.Username + " has visited your profil page"
-	app.postNotification(message, userId, authorId, 0)
-	app.postEvent(message, userId, authorId, 0)
+	newEvent(c, func(name string) string {
+		return name + " has visited your profil page"
+	})
 	c.JSON(200, gin.H{})
 }
 

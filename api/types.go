@@ -100,9 +100,9 @@ type validationResponse struct {
 }
 
 type Match struct {
-	IdFrom int    `json:"id_from"`
-	IdTo   int    `json:"id_to"`
-	Action string `json:"action"`
+	idFrom int    `json:"id_from"`
+	idTo   int    `json:"id_to"`
+	action string `json:"action"`
 }
 
 type Notification struct {

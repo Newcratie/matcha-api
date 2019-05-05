@@ -27,7 +27,7 @@ func (app *App) routerAPI() {
 	api := app.R.Group("/api")
 	{
 		api.GET("/people", GetPeople)
-		api.PUT("/visit/:user_id", newVisit)
+		api.PUT("/visit/:id", newVisit)
 		api.PUT("/people/:id/:action", CreateLike)
 		api.GET("/matchs", GetMatchs)
 		api.GET("/kwal", func(c *gin.Context) {

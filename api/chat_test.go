@@ -18,12 +18,12 @@ func TestCreateLike(t *testing.T) {
 	//valid, err := ValidateToken(c, &claims)
 
 	var M Match
-	M.IdFrom = 201
-	prin("ID_TO ==>", M.IdFrom, "|")
-	M.IdTo = 6
-	prin("ID_TO ==>", M.IdTo, "|")
-	M.Action = "LIKE"
-	prin("ACTION ==>> ", M.Action, "|")
+	M.idFrom = 201
+	prin("ID_TO ==>", M.idFrom, "|")
+	M.idTo = 6
+	prin("ID_TO ==>", M.idTo, "|")
+	M.action = "LIKE"
+	prin("ACTION ==>> ", M.action, "|")
 	if valid, err := app.dbMatchs(M); valid != true || err != nil {
 		prin("VALID ==>", valid, "ERROR ==>", err, "|")
 	}
