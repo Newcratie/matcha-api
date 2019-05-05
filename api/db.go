@@ -101,25 +101,6 @@ func (app *App) updateUser(u User) {
 	executeStatement(st, MapOf(u))
 }
 
-//q := `MATCH (u:User) WHERE ID(u)={id} SET u.name = {username},
-//u.username = {username}, u.password = {password},
-//u.firstname = {firstname}, u.lastname = {lastname},
-//u.birthday = {birthday}, u.random_token = {random_token},
-//u.img1 = {img1}, u.img2 = {img2},
-//u.img3 = {img3}, u.img4 = {img4},
-//u.img5 = {img5}, u.biography = {biography},
-//u.genre = {genre}, u.interest = {interest},
-//u.city = {city}, u.zip = {zip},
-//u.country = {country}, u.latitude = {latitude},
-//u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
-//u.online = {online}, u.rating = {rating},
-//u.email = {email}, u.access_lvl = {access_lvl})`
-
-//MATCH (u:User), (n:User) WHERE ID(u) = 30 AND ID(n) = 238 return exists( (u)-[:LIKE]->(n) )
-//MATCH (u:User) WHERE ID(u) = 30 MATCH (n:User) WHERE ID(n) = 238 CREATE (n)<-[:LIKE]-(u) return u, n
-//MATCH (u)<-[r:LIKE]-(n) WHERE ID(u) = 30 AND ID(n) = 238 DELETE r
-//MATCH (n)-[r:LIKE]-(u) WHERE ID(u) = 30 AND ID(n) = 238 DETACH DELETE r
-
 func (app *App) getUser(Id int, Username string) (u User, err error) {
 
 	var q string
