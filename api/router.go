@@ -29,8 +29,6 @@ func (app *App) routerAPI() {
 		api.GET("/people", GetPeople)
 		api.PUT("/visit/:user_id", newVisit)
 		api.PUT("/people/:id/:action", CreateLike)
-		//Here handle action: like, dislike or block
-		//then return the same thing than GetPeople please
 		api.GET("/matchs", GetMatchs)
 		api.GET("/kwal", func(c *gin.Context) {
 			k := kwal.GetKeys()

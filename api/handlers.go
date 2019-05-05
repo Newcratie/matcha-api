@@ -52,7 +52,11 @@ func CreateLike(c *gin.Context) {
 		prin("CLAIMS ==>> ", claims["id"], "|")
 		M.IdFrom = int(claims["id"].(float64))
 		prin("AFTER FROM ==>> ", M.IdFrom, "|")
-		app.dbMatchs(M)
+		if _, err = app.dbMatchs(M); err != nil {
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			c.JSON(200, nil)
+		}
 	} else {
 		PrintHandlerLog("Token Not Valid", ErrorC)
 		fmt.Println("jwt error: ", err)

@@ -13,7 +13,6 @@ import (
 
 func (app *App) dbMatchs(M Match) (valid bool, err error) {
 
-	//fmt.Println("****IN DB MsssssssATCH****")
 	if app.dbExistBlocked(M) {
 		err = errors.New("Blocked Relation")
 		fmt.Println("****BLOCKED****")
@@ -26,7 +25,7 @@ func (app *App) dbMatchs(M Match) (valid bool, err error) {
 	} else if M.Action == "DISLIKE" {
 		app.dbCreateDislike(M)
 		fmt.Println("****DISLIKE****")
-	} else if M.Action == "BLOCKED" {
+	} else if M.Action == "BLOCK" {
 		app.dbCreateBlock(M)
 		fmt.Println("****BLOCKED****")
 	}
@@ -36,14 +35,13 @@ func (app *App) dbMatchs(M Match) (valid bool, err error) {
 func (app *App) dbExistBlocked(M Match) (valid bool) {
 
 	prin("MAP == ", MapOf(M), "|")
-	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` RETURN EXISTS( (u)-[:BLOCKED]-(n) )`
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` RETURN EXISTS( (u)-[:BLOCK]-(n) )`
 	data, _, _, err := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if err != nil {
 		prin("Err === ", err)
 	}
 	prin("DATA ===> ", data, "|")
 	if data[0][0] == false {
-		//err = errors.New("wrong username or password")
 		fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
@@ -56,7 +54,6 @@ func (app *App) dbCreateLike(M Match) (valid bool) {
 		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` CREATE (u)-[:LIKE]->(n)`
 		data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 		if err != nil {
-			//err = errors.New("wrong username or password")
 			fmt.Println("*** CreateLike Query returned an Error ***", data)
 			return false
 		}
@@ -82,7 +79,7 @@ func (app *App) dbSetMatch(M Match) (valid bool) {
 func (app *App) dbCreateBlock(M Match) (valid bool) {
 
 	app.dbDeleteRelation(M, "")
-	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` CREATE (u)-[:BLOCKED]->(n)`
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(M.IdFrom) + ` AND ID(n) = ` + strconv.Itoa(M.IdTo) + ` CREATE (u)-[:BLOCK]->(n)`
 	prin("QUERY ==>", MatchQuery, "|")
 	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
