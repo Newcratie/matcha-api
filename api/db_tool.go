@@ -8,6 +8,61 @@ import (
 	"time"
 )
 
+func setInterest(PeopleGenre string, PeopleInterest string, Id int) (valid bool) {
+
+	u, _ := app.getUser(Id, "")
+
+	switch u.Interest {
+	case "bi":
+		switch PeopleInterest {
+		case "hetero":
+			if PeopleGenre == u.Genre {
+				return false
+			}
+			break
+		case "homo":
+			if PeopleGenre != u.Genre {
+				return false
+			}
+			break
+		}
+		return true
+	case "hetero":
+		switch PeopleInterest {
+		case "homo":
+			return false
+		case "bi":
+			if PeopleGenre == u.Genre {
+				return false
+			}
+			break
+		case "hetero":
+			if PeopleGenre == u.Genre {
+				return false
+			}
+			break
+		}
+		break
+	case "homo":
+		switch PeopleInterest {
+		case "hetero":
+			return false
+		case "bi":
+			if PeopleGenre != u.Genre {
+				return false
+			}
+			break
+		case "homo":
+			if PeopleGenre != u.Genre {
+				return false
+			}
+			break
+		}
+		break
+	}
+	return true
+}
+
 func customQuery(Id int, Filter *Filters) (superQuery string) {
 	var cQuery string
 

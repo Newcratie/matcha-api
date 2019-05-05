@@ -187,10 +187,15 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 		for _, d := range data {
 			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
 			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
+			Genre, _ := d[0].(graph.Node).Properties["genre"].(string)
+			Interest, _ := d[0].(graph.Node).Properties["interest"].(string)
 			// Haversine will return the distance between 2 Lat/Lon in Kilometers
 
 			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
-				g = append(g, d[0].(graph.Node))
+				if valid := setInterest(Genre, Interest, Id); valid == true {
+					prin("ADDED == > ", valid, "|")
+					g = append(g, d[0].(graph.Node))
+				}
 			}
 		}
 		return g, err
