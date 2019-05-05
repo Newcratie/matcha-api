@@ -9,14 +9,6 @@ import (
 	"strconv"
 )
 
-type Notification struct {
-	Message   string `json:"message"`
-	Id        int64  `json:"id"`
-	UserId    int64  `json:"user_id"`
-	AuthorId  int64  `json:"author_id"`
-	SubjectId int64  `json:"subject_id"`
-}
-
 func (app *App) postNotification(message string, userId, authorId, subjectId int64) {
 	n := Notification{
 		message,
@@ -76,7 +68,6 @@ MATCH (n:Notif)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 
 func notificationsDeleteHandler(c *gin.Context) {
 	q := `MATCH (n:Notif)-[r]-(u) WHERE ID(n) = ` + c.Param("id") + ` DELETE r, n`
-	fmt.Println("id =============> " , q)
 	st := app.prepareStatement(q)
 	executeStatement(st, map[string]interface{}{})
 	c.JSON(200, nil)

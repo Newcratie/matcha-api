@@ -120,85 +120,6 @@ func (app *App) updateUser(u User) {
 //MATCH (u)<-[r:LIKE]-(n) WHERE ID(u) = 30 AND ID(n) = 238 DELETE r
 //MATCH (n)-[r:LIKE]-(u) WHERE ID(u) = 30 AND ID(n) = 238 DETACH DELETE r
 
-func (app *App) dbMatchs(IdFrom int, IdTo int, Relation string) (valid bool) {
-
-	//fmt.Println("****IN DB MsssssssATCH****")
-
-	if Relation != "" {
-		app.dbDeleteRelation(IdFrom, IdTo, Relation)
-	}
-
-	if app.dbExistLike(IdFrom, IdTo, "LIKE") == true {
-		if app.dbSetMatch(IdFrom, IdTo) == true {
-			app.dbDeleteRelation(IdFrom, IdTo, "LIKE")
-			return true
-		}
-	} else if app.dbCreateLike(IdFrom, IdTo) == false {
-		return false
-	}
-	return false
-}
-
-func (app *App) dbCreateLike(IdFrom int, IdTo int) (valid bool) {
-
-	if app.dbExistLike(IdFrom, IdTo, "DISLIKE") == false {
-		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:LIKE]->(n)`
-		data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
-		if err != nil {
-			//err = errors.New("wrong username or password")
-			fmt.Println("*** CreateLike Query returned an Error ***", data)
-			return false
-		}
-	}
-	return true
-}
-
-func (app *App) dbExistLike(IdFrom int, IdTo int, ExistRel string) (valid bool) {
-
-	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` RETURN EXISTS( (u)<-[:` + ExistRel + `]-(n) )`
-	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
-	if data[0][0] == false {
-		//err = errors.New("wrong username or password")
-		fmt.Println("*** Exist Query returned FALSE ***")
-		return false
-	}
-	return true
-}
-
-func (app *App) dbSetMatch(IdFrom int, IdTo int) (valid bool) {
-
-	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:MATCH]->(n)`
-	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
-	if err != nil {
-		//err = errors.New("wrong username or password")
-		fmt.Println("*** Set MatchQuery returned an Error ***", data)
-		return false
-	}
-	return true
-}
-
-func (app *App) dbDeleteRelation(IdFrom int, IdTo int, Rel string) (valid bool) {
-
-	if Rel == "DISLIKE" {
-		DeleteQuery := `MATCH (n)-[t]-(u) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE t CREATE (u)<-[r:DISLIKE]-(n)`
-		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
-		if err != nil {
-			//err = errors.New("wrong username or password")
-			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
-			return false
-		}
-	} else {
-		DeleteQuery := `MATCH (n)-[m:` + Rel + `]-(u)  WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE m`
-		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
-		if err != nil {
-			//err = errors.New("wrong username or password")
-			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
-			return false
-		}
-	}
-	return true
-}
-
 func (app *App) getUser(Id int, Username string) (u User, err error) {
 
 	var q string
@@ -278,7 +199,6 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 
 	data, _, _, err := app.Neo.QueryNeoAll(superQuery, nil)
 
-	fmt.Println("ERR ===> ", err)
 	if len(data) == 0 {
 		err = errors.New("err : filters doesn't match anyone")
 		return g, err

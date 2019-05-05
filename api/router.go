@@ -1,7 +1,7 @@
 package api
 
 import (
-	"encoding/json"
+	"github.com/Newcratie/matcha-api/api/kwal"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
@@ -39,7 +39,7 @@ func (app *App) routerAPI() {
 		api.GET("/messages", GetMessages)
 		api.GET("/user", UserHandler)
 		api.PUT("/user/:name", UserModify)
-		api.POST("/img/:n", UserImageHandler)
+		api.POST("/img/:n", userImageHandler)
 		api.GET("/notifications/history/:user", notificationsHistoryHandler)
 		api.DELETE("/notifications/:id", notificationsDeleteHandler)
 		api.GET("/notifications/websocket/:user", func(c *gin.Context) {
