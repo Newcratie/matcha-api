@@ -11,6 +11,9 @@ import (
 )
 
 func UserHandler(c *gin.Context) {
+
+	fmt.Println("IN USer handler")
+
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)
 
@@ -19,6 +22,9 @@ func UserHandler(c *gin.Context) {
 		g, err := app.dbGetUserProfile(Id)
 		tagList := app.dbGetTagList()
 		userTags := app.dbGetUserTags(claims["username"].(string))
+		fmt.Println("g ===>>", g)
+		fmt.Println("tagList ===>>", tagList)
+		fmt.Println("userTags ===>>", userTags)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
@@ -106,15 +112,18 @@ func UserModify(c *gin.Context) {
 		case "firstname":
 			updateFirstname(c, claims)
 			break
-		case "genre":
-			updateGenre(c, claims)
+		case "lastname":
+			updateLastname(c, claims)
 			break
-		case "email":
-			updateEmail(c, claims)
-			break
-		case "interest":
-			updateInterest(c, claims)
-			break
+			//case "genre":
+			//	updateGenre(c, claims)
+			//	break
+			//case "email":
+			//	updateEmail(c, claims)
+			//	break
+			//case "interest":
+			//	updateInterest(c, claims)
+			//	break
 			//case "lastname":
 			//	updateLastname(c, claims)
 			//	break
@@ -214,59 +223,59 @@ func updateEmail(c *gin.Context, claims jwt.MapClaims) {
 	}
 }
 
-func updateGenre(c *gin.Context, claims jwt.MapClaims) {
-
-	body := getBodymap(c)
-	genre := body["genre"].(string)
-
-	Id := claims["id"].(int)
-	fmt.Println("ID ==>>", Id)
-	u, err := app.getUser(Id, "")
-	if err != nil {
-		fmt.Println("IN Error getUser")
-		c.JSON(201, gin.H{"err": err.Error()})
-		return
-	}
-
-	fmt.Println("BIO ==> ", genre, "|")
-	if genre != "male" || genre != "female" {
-		err = errors.New("error : your gender must be male or female nothing else 'for the moment'")
-		c.JSON(201, gin.H{"err": err.Error()})
-	} else {
-		u.Genre = genre
-		fmt.Println("GENRE ==> ", u.Genre, "|")
-		app.updateUser(u)
-		fmt.Println("GENRE ==> UPDATED")
-		UserHandler(c)
-	}
-}
-
-func updateInterest(c *gin.Context, claims jwt.MapClaims) {
-
-	body := getBodymap(c)
-	interest := body["interest"].(string)
-
-	Id := claims["id"].(int)
-	fmt.Println("ID ==>>", Id)
-	u, err := app.getUser(Id, "")
-	if err != nil {
-		fmt.Println("IN Error getUser")
-		c.JSON(201, gin.H{"err": err.Error()})
-		return
-	}
-
-	fmt.Println("Interest ==> ", interest, "|")
-	if interest != "bi" || interest != "hetero" || interest != "homo" {
-		err = errors.New("error : your interest must be bi, hetero or homo")
-		c.JSON(201, gin.H{"err": err.Error()})
-	} else {
-		u.Interest = interest
-		fmt.Println("Interest ==> ", u.Interest, "|")
-		app.updateUser(u)
-		fmt.Println("GENRE ==> UPDATED")
-		UserHandler(c)
-	}
-}
+//func updateGenre(c *gin.Context, claims jwt.MapClaims) {
+//
+//	body := getBodymap(c)
+//	genre := body["genre"].(string)
+//
+//	Id := claims["id"].(int)
+//	fmt.Println("ID ==>>", Id)
+//	u, err := app.getUser(Id, "")
+//	if err != nil {
+//		fmt.Println("IN Error getUser")
+//		c.JSON(201, gin.H{"err": err.Error()})
+//		return
+//	}
+//
+//	fmt.Println("BIO ==> ", genre, "|")
+//	if genre != "male" || genre != "female" {
+//		err = errors.New("error : your gender must be male or female nothing else 'for the moment'")
+//		c.JSON(201, gin.H{"err": err.Error()})
+//	} else {
+//		u.Genre = genre
+//		fmt.Println("GENRE ==> ", u.Genre, "|")
+//		app.updateUser(u)
+//		fmt.Println("GENRE ==> UPDATED")
+//		UserHandler(c)
+//	}
+//}
+//
+//func updateInterest(c *gin.Context, claims jwt.MapClaims) {
+//
+//	body := getBodymap(c)
+//	interest := body["interest"].(string)
+//
+//	Id := claims["id"].(int)
+//	fmt.Println("ID ==>>", Id)
+//	u, err := app.getUser(Id, "")
+//	if err != nil {
+//		fmt.Println("IN Error getUser")
+//		c.JSON(201, gin.H{"err": err.Error()})
+//		return
+//	}
+//
+//	fmt.Println("Interest ==> ", interest, "|")
+//	if interest != "bi" || interest != "hetero" || interest != "homo" {
+//		err = errors.New("error : your interest must be bi, hetero or homo")
+//		c.JSON(201, gin.H{"err": err.Error()})
+//	} else {
+//		u.Interest = interest
+//		fmt.Println("Interest ==> ", u.Interest, "|")
+//		app.updateUser(u)
+//		fmt.Println("GENRE ==> UPDATED")
+//		UserHandler(c)
+//	}
+//}
 
 func addTag(c *gin.Context, claims jwt.MapClaims) {
 

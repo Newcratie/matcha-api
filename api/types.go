@@ -52,6 +52,7 @@ type User struct {
 	Token       string    `json:"token" db:"token"`
 	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
 	Tags        []string  `json:"tags" db:"tags"`
+	LastConn    time.Time `json:"last_conn" db:"last_conn"`
 }
 
 type Tag struct {
@@ -94,4 +95,18 @@ type validationResponse struct {
 	Birthday  ErrorField `json:"birthday"`
 	Other     ErrorField `json:"other"`
 	Type      string     `json:"type"`
+}
+
+type Match struct {
+	IdFrom int    `json:"id_from"`
+	IdTo   int    `json:"id_to"`
+	Action string `json:"action"`
+}
+
+type Notification struct {
+	Message   string `json:"message"`
+	Id        int64  `json:"id"`
+	UserId    int64  `json:"user_id"`
+	AuthorId  int64  `json:"author_id"`
+	SubjectId int64  `json:"subject_id"`
 }

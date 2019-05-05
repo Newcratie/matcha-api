@@ -6,6 +6,7 @@ import (
 	"github.com/Newcratie/matcha-api/api/hash"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 const (
@@ -84,6 +85,7 @@ func userFactory(rf registerForm) (u User, err error) {
 	u.LastName = rf.Lastname
 	u.FirstName = rf.Firstname
 	u.Birthday = rf.Birthday
+	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
 	u.RandomToken = newToken()
 	u.Img1 = "http://localhost:8080/src/public/img/blank-profile.png"
 	u.Img2 = "http://localhost:8080/src/public/img/blank-profile.png"

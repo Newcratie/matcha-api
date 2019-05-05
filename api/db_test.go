@@ -15,5 +15,5 @@ func TestGlobal(t *testing.T) {
 	driver := bolt.NewDriver()
 	host := os.Getenv("NEO_HOST")
 	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
-	app.dbGetTagList()
+	TestCreateLike(t)
 }

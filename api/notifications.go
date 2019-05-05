@@ -6,14 +6,6 @@ import (
 	"strconv"
 )
 
-type Notification struct {
-	Message   string `json:"message"`
-	Id        int64  `json:"id"`
-	UserId    int64  `json:"user_id"`
-	AuthorId  int64  `json:"author_id"`
-	SubjectId int64  `json:"subject_id"`
-}
-
 func (app *App) postNotification(n Notification, msg []byte) {
 	id := strconv.FormatInt(n.UserId, 10)
 	url := "/api/notifications/websocket/" + id
