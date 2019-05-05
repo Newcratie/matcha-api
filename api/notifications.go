@@ -26,7 +26,7 @@ func (app *App) postNotification(message string, userId, authorId, subjectId int
 		subjectId,
 	}
 	msg, _ := json.Marshal(n)
-	id := strconv.FormatInt(34, 10)
+	id := strconv.FormatInt(userId, 10)
 	url := "/api/notifications/websocket/" + id
 
 	app.dbInsertNotification(msg)
@@ -73,8 +73,10 @@ MATCH (n:Notif)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 	}
 	c.JSON(200, ntfs)
 }
+
 func notificationsDeleteHandler(c *gin.Context) {
-	q := `MATCH (n:Notif) WHERE ID(n) = ` + c.Param("id") + ` DELETE n`
+	q := `MATCH (n:Notif)-[r]-(u) WHERE ID(n) = ` + c.Param("id") + ` DELETE r, n`
+	fmt.Println("id =============> " , q)
 	st := app.prepareStatement(q)
 	executeStatement(st, map[string]interface{}{})
 	c.JSON(200, nil)

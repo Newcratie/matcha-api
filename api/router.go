@@ -5,7 +5,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
-	"strconv"
 	"time"
 )
 
@@ -29,13 +28,7 @@ func (app *App) routerAPI() {
 	{
 		api.POST("/add_like", CreateLike)
 		api.GET("/people", GetPeople)
-		api.PUT("/visit/:user_id", func(c *gin.Context) {
-			n, _ := strconv.Atoi(c.Param("user_id"))
-			userId := int64(n)
-			authorId := int64(0)
-			app.postNotification("Someone had visited your profil page", userId, authorId, 0)
-			c.JSON(200, gin.H{"good": "sisi"})
-		})
+		api.PUT("/visit/:user_id", newVisit)
 		api.PUT("/people/:id/:action", func(c *gin.Context) {
 			//Here handle action: like, dislike or block      <------------------ XEN
 			//then return the same thing than GetPeople please
@@ -49,7 +42,7 @@ func (app *App) routerAPI() {
 		api.GET("/messages", GetMessages)
 		api.GET("/user", UserHandler)
 		api.PUT("/user/:name", UserModify)
-		api.POST("/img/:n", UserImageHandler)
+		api.POST("/img/:n", userImageHandler)
 		api.GET("/notifications/history/:user", notificationsHistoryHandler)
 		api.DELETE("/notifications/:id", notificationsDeleteHandler)
 		api.GET("/notifications/websocket/:user", func(c *gin.Context) {

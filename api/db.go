@@ -94,7 +94,8 @@ func (app *App) updateUser(u User) {
 	u.country = {country}, u.latitude = {latitude},
 	u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
 	u.online = {online}, u.rating = {rating},
-	u.email = {email}, u.access_lvl = {access_lvl}`
+	u.email = {email}, u.access_lvl = {access_lvl},
+	u.tags = {tags}`
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
 }

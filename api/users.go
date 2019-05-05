@@ -1,13 +1,25 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"io"
+	"os"
+	"strings"
 )
+
+type Request struct {
+	context *gin.Context
+	claims  jwt.MapClaims
+	user    User
+	body    map[string]interface{}
+	id      int
+}
 
 func UserModify(c *gin.Context) {
 	var req Request
@@ -29,6 +41,9 @@ func UserModify(c *gin.Context) {
 			break
 		case "username":
 			req.updateUsername()
+			break
+		case "usertags":
+			req.userTags()
 			break
 		case "tag":
 			req.addTag()
@@ -121,6 +136,20 @@ func (req Request) updateInterest() {
 func (req Request) addTag() {
 }
 
+func (req Request) userTags() {
+	tab := req.body["tags"].([]interface{})
+	var userTags []string
+	for _, tag := range tab {
+		userTags = append(userTags, tag.(string))
+	}
+	fmt.Println("1", req.user.Tags)
+	req.user.Tags = userTags
+	fmt.Println("2", req.user.Tags)
+
+	app.updateUser(req.user)
+	retUser(req)
+}
+
 func (req Request) updateEmail() {
 	newEmail := req.body["new_email"].(string)
 	if err := req.checkPassword(); err != nil {
@@ -174,34 +203,82 @@ func (req Request) updateLastname() {
 	}
 }
 
-func UserImageHandler(c *gin.Context) {
-	file := c.PostForm("file")
-	fmt.Printf("file  %s\n", file)
+var magicTable = map[string]string{
+	"\xff\xd8\xff":      "jpg",
+	"\x89PNG\r\n\x1a\n": "png",
+	"GIF87a":            "gif",
+	"GIF89a":            "gif",
+}
 
-	claims := jwt.MapClaims{}
-	valid, err := ValidateToken(c, &claims)
+func extFromIncipit(incipit []byte) (string, error) {
+	incipitStr := []byte(incipit)
+	for magic, mime := range magicTable {
+		if strings.HasPrefix(string(incipitStr), magic) {
+			return mime, nil
+		}
+	}
 
-	if valid == true {
-		Id := int(claims["id"].(float64))
-		g, err := app.dbGetUserProfile(Id)
-		tagList := app.dbGetTagList()
+	return "", errors.New("Wrong file")
+}
+func userImageHandler(c *gin.Context) {
+	mFile, _ := c.FormFile("file") // Get Multipart Header
+	file, _ := mFile.Open() // Create Reader
+	buf := bytes.NewBuffer(nil) // Init buffer
+	if _, err := io.Copy(buf, file); err != nil { // Read file
+		fmt.Println(err)
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		name := newToken() // Generate random Name
+		ext, err := extFromIncipit(buf.Bytes())
+		link := imageHost + "/" + name + "." + ext
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
+			fmt.Println(err)
 		} else {
-			c.JSON(200, gin.H{"user": g, "tagList": tagList})
+			fmt.Println("ext ========> ", ext)
+			f, _ := os.Create(imageSrc + "/" + name + "." + ext)  //create file
+			defer f.Close() //close after processing
+
+			f.Write(buf.Bytes()) // Write buffer on the file
+
+			claims := jwt.MapClaims{}
+			valid, err := ValidateToken(c, &claims)
+
+			if valid != true {
+				c.JSON(201, gin.H{"err": err.Error()})
+				fmt.Println(err)
+			} else {
+				var req Request
+				if err := req.prepareRequest(c); err != nil {
+					c.JSON(201, gin.H{"err": err.Error()})
+				} else {
+					fmt.Println("PARAM    ", c.Param("n"))
+					switch c.Param("n") {
+					case "img1":
+						req.user.Img1 = link
+						break
+					case "img2":
+						req.user.Img2 = link
+						break
+					case "img3":
+						fmt.Println("Ok     =========================")
+						req.user.Img3 = link
+						break
+					case "img4":
+						req.user.Img4 = link
+						break
+					case "img5":
+						req.user.Img5 = link
+						break
+					}
+					app.updateUser(req.user)
+					retUser(req)
+				}
+			}
 		}
-	} else {
-		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
 
-type Request struct {
-	context *gin.Context
-	claims  jwt.MapClaims
-	user    User
-	body    map[string]interface{}
-	id      int
-}
 
 func getBodyToMap(c *gin.Context) (body map[string]interface{}) {
 	r, _ := c.GetRawData()

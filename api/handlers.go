@@ -146,6 +146,14 @@ func GetPeople(c *gin.Context) {
 	}
 }
 
+func newVisit(c *gin.Context) {
+	n, _ := strconv.Atoi(c.Param("user_id"))
+	userId := int64(n)
+	authorId := int64(0)
+	app.postNotification("Someone had visited your profil page", userId, authorId, 0)
+	c.JSON(200, gin.H{"good": "sisi"})
+}
+
 func Login(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
