@@ -18,9 +18,9 @@ func TestCreateLike(t *testing.T) {
 	//valid, err := ValidateToken(c, &claims)
 
 	var M Match
-	M.IdFrom = 6
+	M.IdFrom = 201
 	prin("ID_TO ==>", M.IdFrom, "|")
-	M.IdTo = 201
+	M.IdTo = 6
 	prin("ID_TO ==>", M.IdTo, "|")
 	M.Action = "LIKE"
 	prin("ACTION ==>> ", M.Action, "|")

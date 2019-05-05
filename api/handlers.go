@@ -49,7 +49,9 @@ func CreateLike(c *gin.Context) {
 		prin("ID_TO ==>", M.IdTo, "|")
 		M.Action = strings.ToUpper(c.Param("action"))
 		prin("ACTION ==>> ", M.Action, "|")
-		M.IdFrom = claims["id"].(int)
+		prin("CLAIMS ==>> ", claims["id"], "|")
+		M.IdFrom = int(claims["id"].(float64))
+		prin("AFTER FROM ==>> ", M.IdFrom, "|")
 		app.dbMatchs(M)
 	} else {
 		PrintHandlerLog("Token Not Valid", ErrorC)
