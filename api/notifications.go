@@ -17,17 +17,18 @@ func (app *App) postNotification(message string, userId, authorId, subjectId int
 		authorId,
 		subjectId,
 	}
-	msg, _ := json.Marshal(n)
 	id := strconv.FormatInt(userId, 10)
 	url := "/api/notifications/websocket/" + id
+	msg, _ := json.Marshal(n)
+	n.Id = app.dbInsertNotification(msg)
+	msg, _ = json.Marshal(n)
 
-	app.dbInsertNotification(msg)
 	_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
 		return session.Request.URL.Path == url
 	})
 }
 
-func (app *App) dbInsertNotification(byt []byte) {
+func (app *App) dbInsertNotification(byt []byte) int64 {
 	var dat map[string]interface{}
 	if err := json.Unmarshal(byt, &dat); err != nil {
 		panic(err)
@@ -40,9 +41,11 @@ func (app *App) dbInsertNotification(byt []byte) {
 	q := `
 MATCH (a:User)
 WHERE ID(a)={user_id}
-CREATE (a)<-[s:TO]-(n:Notif {message:{message}, author_id: {author_id}, subject_id: {subject_id}})`
-	st := app.prepareStatement(q)
-	executeStatement(st, dat)
+CREATE (a)<-[s:TO]-(n:Notif {message:{message}, author_id: {author_id}, subject_id: {subject_id}})
+RETURN ID(n)
+`
+	data, _, _, _ := app.Neo.QueryNeoAll(q, dat)
+	return data[0][0].(int64)
 }
 
 func notificationsHistoryHandler(c *gin.Context) {
@@ -65,7 +68,6 @@ MATCH (n:Notif)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 	}
 	c.JSON(200, ntfs)
 }
-
 func notificationsDeleteHandler(c *gin.Context) {
 	q := `MATCH (n:Notif)-[r]-(u) WHERE ID(n) = ` + c.Param("id") + ` DELETE r, n`
 	st := app.prepareStatement(q)

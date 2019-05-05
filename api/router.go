@@ -40,6 +40,7 @@ func (app *App) routerAPI() {
 		api.GET("/user", UserHandler)
 		api.PUT("/user/:name", UserModify)
 		api.POST("/img/:n", userImageHandler)
+		api.GET("/events/history/:user", getHistoryHandler)
 		api.GET("/notifications/history/:user", notificationsHistoryHandler)
 		api.DELETE("/notifications/:id", notificationsDeleteHandler)
 		api.GET("/notifications/websocket/:user", func(c *gin.Context) {

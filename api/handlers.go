@@ -156,9 +156,19 @@ func GetPeople(c *gin.Context) {
 func newVisit(c *gin.Context) {
 	n, _ := strconv.Atoi(c.Param("user_id"))
 	userId := int64(n)
-	authorId := int64(0)
-	app.postNotification("Someone had visited your profil page", userId, authorId, 0)
-	c.JSON(200, gin.H{"good": "sisi"})
+	claims := jwt.MapClaims{}
+	valid, _ := ValidateToken(c, &claims)
+	var authorId int64
+	if valid {
+		authorId = int64(claims["id"].(float64))
+	} else {
+		authorId = 0
+	}
+	u, _ := app.getUser(int(authorId), "")
+	message := u.Username + " has visited your profil page"
+	app.postNotification(message, userId, authorId, 0)
+	app.postEvent(message, userId, authorId, 0)
+	c.JSON(200, gin.H{})
 }
 
 func Login(c *gin.Context) {
