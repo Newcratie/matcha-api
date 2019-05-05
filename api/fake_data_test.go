@@ -27,7 +27,7 @@ func newRandomMale() User {
 	}
 
 	return User{Username: gofakeit.Username(),
-		Password:  hash.Encrypt(hashKey, "fakepass"),
+		Password:  hash.Encrypt(hashKey, "'"),
 		FirstName: f.FirstName,
 		LastName:  f.LastName,
 		Email:     gofakeit.Email(),
@@ -71,7 +71,7 @@ func newRandomFemale() User {
 		tagtab[i] = gofakeit.Color()
 	}
 	return User{Username: gofakeit.Username(),
-		Password:  hash.Encrypt(hashKey, "fakepass"),
+		Password:  hash.Encrypt(hashKey, "'"),
 		FirstName: f.FirstName,
 		LastName:  f.LastName,
 		Email:     gofakeit.Email(),

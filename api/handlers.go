@@ -66,14 +66,16 @@ func CreateLike(c *gin.Context) {
 				})
 			} else {
 				newEvent(c, func(name string) string {
-					return name + " " + action + " you!!!"
+					return name + " " + action + " you!!! ❤️❤️"
 				})
 			}
 			break
 		case "dislike":
-			newEvent(c, func(name string) string {
-				return name + " doesn't like you anymore 😱"
-			})
+			if app.dbExistRel(m, like) {
+				newEvent(c, func(name string) string {
+					return name + " doesn't like you anymore 😱"
+				})
+			}
 		}
 
 	} else {
