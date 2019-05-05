@@ -27,15 +27,21 @@ func (app *App) routerAPI() {
 	api := app.R.Group("/api")
 	{
 		api.GET("/people", GetPeople)
+		api.PUT("/visit/:user_id", newVisit)
 		api.PUT("/people/:id/:action", CreateLike)
 		//Here handle action: like, dislike or block
 		//then return the same thing than GetPeople please
 		api.GET("/matchs", GetMatchs)
+		api.GET("/kwal", func(c *gin.Context) {
+			k := kwal.GetKeys()
+			c.JSON(200, k)
+		})
 		api.GET("/messages", GetMessages)
 		api.GET("/user", UserHandler)
 		api.PUT("/user/:name", UserModify)
 		api.POST("/img/:n", UserImageHandler)
 		api.GET("/notifications/history/:user", notificationsHistoryHandler)
+		api.DELETE("/notifications/:id", notificationsDeleteHandler)
 		api.GET("/notifications/websocket/:user", func(c *gin.Context) {
 			_ = app.M.HandleRequest(c.Writer, c.Request)
 		})
@@ -50,17 +56,4 @@ func (app *App) routerAPI() {
 			return session.Request.URL.Path == s.Request.URL.Path
 		})
 	})
-
-	for i := 0; i < 3000; i++ {
-		time.Sleep(time.Second * 2)
-		n := Notification{
-			"Ceci est une notifications test",
-			int64(i),
-			100,
-			23,
-			45,
-		}
-		msg, _ := json.Marshal(n)
-		app.postNotification(n, msg)
-	}
 }

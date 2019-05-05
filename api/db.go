@@ -8,6 +8,7 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
 	"strconv"
+	"time"
 )
 
 func (app *App) insertMessage(byt []byte) {
@@ -78,22 +79,124 @@ email: {email}, access_lvl: 1, last_conn: {last_conn}})`
 
 func (app *App) updateUser(u User) {
 	fmt.Println("USer ====>>", MapOf(u))
-	q := `MATCH (u:User) WHERE ID(u)=` + strconv.Itoa(int(u.Id)) + ` SET u.name = {username},
-u.username = {username}, u.password = {password},
-u.firstname = {firstname}, u.lastname = {lastname},
-u.birthday = {birthday}, u.random_token = {random_token},
-u.img1 = {img1}, u.img2 = {img2},
-u.img3 = {img3}, u.img4 = {img4},
-u.img5 = {img5}, u.biography = {biography},
-u.genre = {genre}, u.interest = {interest},
-u.city = {city}, u.zip = {zip},
-u.country = {country}, u.latitude = {latitude},
-u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
-u.online = {online}, u.rating = {rating},
-u.email = {email}, u.access_lvl = {access_lvl}, u.last_conn = {last_conn}`
+	var id string
+	id = strconv.FormatInt(u.Id, 10)
+	fmt.Println("id", id)
+	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.name = {username},
+	u.firstname = {firstname}, u.lastname = {lastname},
+	u.username = {username}, u.password = {password},
+	u.birthday = {birthday}, u.random_token = {random_token},
+	u.img1 = {img1}, u.img2 = {img2},
+	u.img3 = {img3}, u.img4 = {img4},
+	u.img5 = {img5}, u.biography = {biography},
+	u.genre = {genre}, u.interest = {interest},
+	u.city = {city}, u.zip = {zip},
+	u.country = {country}, u.latitude = {latitude},
+	u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
+	u.online = {online}, u.rating = {rating},
+	u.email = {email}, u.access_lvl = {access_lvl},
+	u.tags = {tags},  u.last_conn = {last_conn}`
 	st := app.prepareStatement(q)
 	fmt.Println("TATATA", st)
 	executeStatement(st, MapOf(u))
+}
+
+//q := `MATCH (u:User) WHERE ID(u)={id} SET u.name = {username},
+//u.username = {username}, u.password = {password},
+//u.firstname = {firstname}, u.lastname = {lastname},
+//u.birthday = {birthday}, u.random_token = {random_token},
+//u.img1 = {img1}, u.img2 = {img2},
+//u.img3 = {img3}, u.img4 = {img4},
+//u.img5 = {img5}, u.biography = {biography},
+//u.genre = {genre}, u.interest = {interest},
+//u.city = {city}, u.zip = {zip},
+//u.country = {country}, u.latitude = {latitude},
+//u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
+//u.online = {online}, u.rating = {rating},
+//u.email = {email}, u.access_lvl = {access_lvl})`
+
+//MATCH (u:User), (n:User) WHERE ID(u) = 30 AND ID(n) = 238 return exists( (u)-[:LIKE]->(n) )
+//MATCH (u:User) WHERE ID(u) = 30 MATCH (n:User) WHERE ID(n) = 238 CREATE (n)<-[:LIKE]-(u) return u, n
+//MATCH (u)<-[r:LIKE]-(n) WHERE ID(u) = 30 AND ID(n) = 238 DELETE r
+//MATCH (n)-[r:LIKE]-(u) WHERE ID(u) = 30 AND ID(n) = 238 DETACH DELETE r
+
+func (app *App) dbMatchs(IdFrom int, IdTo int, Relation string) (valid bool) {
+
+	//fmt.Println("****IN DB MsssssssATCH****")
+
+	if Relation != "" {
+		app.dbDeleteRelation(IdFrom, IdTo, Relation)
+	}
+
+	if app.dbExistLike(IdFrom, IdTo, "LIKE") == true {
+		if app.dbSetMatch(IdFrom, IdTo) == true {
+			app.dbDeleteRelation(IdFrom, IdTo, "LIKE")
+			return true
+		}
+	} else if app.dbCreateLike(IdFrom, IdTo) == false {
+		return false
+	}
+	return false
+}
+
+func (app *App) dbCreateLike(IdFrom int, IdTo int) (valid bool) {
+
+	if app.dbExistLike(IdFrom, IdTo, "DISLIKE") == false {
+		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:LIKE]->(n)`
+		data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+		if err != nil {
+			//err = errors.New("wrong username or password")
+			fmt.Println("*** CreateLike Query returned an Error ***", data)
+			return false
+		}
+	}
+	return true
+}
+
+func (app *App) dbExistLike(IdFrom int, IdTo int, ExistRel string) (valid bool) {
+
+	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` RETURN EXISTS( (u)<-[:` + ExistRel + `]-(n) )`
+	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
+	if data[0][0] == false {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** Exist Query returned FALSE ***")
+		return false
+	}
+	return true
+}
+
+func (app *App) dbSetMatch(IdFrom int, IdTo int) (valid bool) {
+
+	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` CREATE (u)-[:MATCH]->(n)`
+	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+	if err != nil {
+		//err = errors.New("wrong username or password")
+		fmt.Println("*** Set MatchQuery returned an Error ***", data)
+		return false
+	}
+	return true
+}
+
+func (app *App) dbDeleteRelation(IdFrom int, IdTo int, Rel string) (valid bool) {
+
+	if Rel == "DISLIKE" {
+		DeleteQuery := `MATCH (n)-[t]-(u) WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE t CREATE (u)<-[r:DISLIKE]-(n)`
+		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		if err != nil {
+			//err = errors.New("wrong username or password")
+			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			return false
+		}
+	} else {
+		DeleteQuery := `MATCH (n)-[m:` + Rel + `]-(u)  WHERE ID(u) = ` + strconv.Itoa(IdFrom) + ` AND ID(n) = ` + strconv.Itoa(IdTo) + ` DETACH DELETE m`
+		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		if err != nil {
+			//err = errors.New("wrong username or password")
+			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			return false
+		}
+	}
+	return true
 }
 
 func (app *App) getUser(Id int, Username string) (u User, err error) {
@@ -154,8 +257,6 @@ func (app *App) dbGetUserProfile(Id int) (graph.Node, error) {
 	var g = graph.Node{}
 	var err error
 
-	fmt.Println("IN DB GET USER PROFILE")
-
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE ID(n) = `+strconv.Itoa(Id)+` SET n.online = true RETURN  n`, nil)
 	if len(data) == 0 {
 		err = errors.New("Err : User Id doesn't exist")
@@ -172,6 +273,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	var err error
 
 	// A custom query with applied Filters
+	time.Sleep(500 * time.Millisecond)
 	superQuery := customQuery(Id, Filter)
 
 	data, _, _, err := app.Neo.QueryNeoAll(superQuery, nil)

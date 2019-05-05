@@ -37,7 +37,6 @@ func NewConn(host string) (bolt.Conn, error) {
 func Run() {
 	app.newApp()
 	host := os.Getenv("NEO_HOST")
-
 	app.Neo, _ = NewConn(host)
 	defer app.Neo.Close()
 
