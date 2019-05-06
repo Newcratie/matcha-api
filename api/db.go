@@ -191,6 +191,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 			m.idFrom = int(d[0].(graph.Node).NodeIdentity)
 			m.idTo = Id
 			d[0].(graph.Node).Properties["ilike"] = app.dbExistRel(m, m.action)
+			d[0].(graph.Node).Properties["relation"] = app.dbGetRelationType(m)
 			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
 			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
 			Genre, _ := d[0].(graph.Node).Properties["genre"].(string)
