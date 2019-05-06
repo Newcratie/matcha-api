@@ -44,6 +44,9 @@ func (app *App) routerAPI() {
 		api.GET("/notifications/websocket/:user", func(c *gin.Context) {
 			_ = app.M.HandleRequest(c.Writer, c.Request)
 		})
+		api.GET("/online/websocket/:user", func(c *gin.Context) {
+			_ = app.M.HandleRequest(c.Writer, c.Request)
+		})
 		api.GET("/ws/:user/:suitor", func(c *gin.Context) {
 			_ = app.M.HandleRequest(c.Writer, c.Request)
 		})
@@ -55,4 +58,6 @@ func (app *App) routerAPI() {
 			return session.Request.URL.Path == s.Request.URL.Path
 		})
 	})
+
+	go app.offlineWatcher()
 }

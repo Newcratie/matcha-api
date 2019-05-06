@@ -54,6 +54,7 @@ func CreateLike(c *gin.Context) {
 			c.JSON(200, nil)
 		}
 		m.idFrom = int(claims["id"].(float64))
+		app.onlineRefresh(strconv.Itoa(m.idFrom))
 		prin("AFTER FROM ==>> ", m.idFrom, "|")
 		app.dbMatchs(m)
 
@@ -119,6 +120,7 @@ func GetMatchs(c *gin.Context) {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
+		app.onlineRefresh(strconv.Itoa(id))
 		g, err := app.dbGetMatchs(id)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
@@ -140,6 +142,7 @@ func GetMessages(c *gin.Context) {
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
 		sui, _ := strconv.Atoi(suitorId)
+		app.onlineRefresh(strconv.Itoa(id))
 		msgs, err := app.dbGetMessages(id, sui)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
@@ -164,6 +167,9 @@ func GetPeople(c *gin.Context) {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if valid == true {
 		id := int(math.Round(claims["id"].(float64)))
+		str := strconv.Itoa(id)
+		app.onlineRefresh(str)
+		app.alertOnline(true, str)
 		g, err := app.dbGetPeople(id, &filters)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})

@@ -28,8 +28,8 @@ func NewConn(host string) (bolt.Conn, error) {
 			return conn, nil
 		}
 		retries = retries + 1
-		fmt.Println("neo4j not ready, waiting 1s and trying again ", retries)
-		time.Sleep(5 * time.Second)
+		fmt.Println("neo4j not ready, waiting 15s and trying again ", retries)
+		time.Sleep(15 * time.Second)
 	}
 	return nil, err
 }

@@ -6,8 +6,10 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
+	"github.com/pkg/errors"
 	"gopkg.in/olahol/melody.v1"
 	"strconv"
+	"time"
 )
 
 type format func(name string) (message string)
@@ -80,6 +82,45 @@ MATCH (n:Event)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 	}
 	c.JSON(200, ntfs)
 }
+
+func (app *App) onlineRefresh(id string) {
+	lastConn := time.Now().Format(time.RFC3339Nano)
+	fmt.Println("==------ online Refresh id: ", id, lastConn)
+	q := `MATCH (u:User) WHERE id(u)=` + id + ` set u.online = true, u.last_conn= "` + lastConn + `"`
+	app.Neo.QueryNeoAll(q, nil)
+	app.alertOnline(true, id)
+}
+
+func (app *App) offlineWatcher() {
+	for true {
+		fmt.Println("---------------New Watcher----------")
+		time.Sleep(time.Second * 10)
+		q := `MATCH (u:User{online: true}) return u`
+		data, _, _, _ := app.Neo.QueryNeoAll(q, nil)
+		for _, node := range data {
+			lc := node[0].(graph.Node).Properties["last_conn"]
+			tp, _ := time.Parse(time.RFC3339Nano, lc.(string))
+			if time.Since(tp).Seconds() > 15 {
+				s := strconv.FormatInt(node[0].(graph.Node).NodeIdentity, 10)
+				q := `MATCH (u:User) WHERE id(u)=` + s + ` set u.online = false`
+				fmt.Println("------------watcher close ", s, "-----------")
+				app.Neo.QueryNeoAll(q, nil)
+				app.alertOnline(false, s)
+			}
+		}
+	}
+}
+
+func (app *App) alertOnline(online bool, id string) {
+	url := "/api/online/websocket/" + id
+	msg, _ := json.Marshal(online)
+
+	fmt.Println("ALERT ONLINE =========> ", url, online)
+	_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
+		return session.Request.URL.Path == url
+	})
+}
+
 func (app *App) postNotification(message string, userId, authorId, subjectId int64) {
 	n := Notification{
 		message,
@@ -91,15 +132,20 @@ func (app *App) postNotification(message string, userId, authorId, subjectId int
 	id := strconv.FormatInt(userId, 10)
 	url := "/api/notifications/websocket/" + id
 	msg, _ := json.Marshal(n)
-	n.Id = app.dbInsertNotification(msg)
-	msg, _ = json.Marshal(n)
+	var err error
+	n.Id, err = app.dbInsertNotification(msg)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		msg, _ = json.Marshal(n)
 
-	_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
-		return session.Request.URL.Path == url
-	})
+		_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
+			return session.Request.URL.Path == url
+		})
+	}
 }
 
-func (app *App) dbInsertNotification(byt []byte) int64 {
+func (app *App) dbInsertNotification(byt []byte) (int64, error) {
 	var dat map[string]interface{}
 	if err := json.Unmarshal(byt, &dat); err != nil {
 		panic(err)
@@ -116,18 +162,22 @@ CREATE (a)<-[s:TO]-(n:Notif {message:{message}, author_id: {author_id}, subject_
 RETURN ID(n)
 `
 	data, _, _, _ := app.Neo.QueryNeoAll(q, dat)
-	return data[0][0].(int64)
+	if len(data) == 0 {
+		return 0, errors.New("error: dbInsertNotification Failed")
+	} else {
+		return data[0][0].(int64), nil
+	}
 }
 
 func notificationsHistoryHandler(c *gin.Context) {
-	n, _ := strconv.Atoi(c.Param("user"))
-	userId := int64(n)
-	fmt.Println(userId)
+	userId := c.Param("user")
+	fmt.Println("notifs History =======> ", userId)
 	q := `
-MATCH (n:Notif)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
+MATCH (n:Notif)-[:TO]-(u:User) where id(u)=` + string(userId) + ` RETURN n ORDER by ID(n)
 `
 	ntfs := make([]Notification, 0)
-	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{"user_id": userId})
+	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{})
+	fmt.Println("data", data)
 	for _, tab := range data {
 		ntfs = append(ntfs, Notification{
 			tab[0].(graph.Node).Properties["message"].(string),
@@ -137,8 +187,10 @@ MATCH (n:Notif)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 			tab[0].(graph.Node).Properties["subject_id"].(int64),
 		})
 	}
+	fmt.Println(ntfs)
 	c.JSON(200, ntfs)
 }
+
 func notificationsDeleteHandler(c *gin.Context) {
 	q := `MATCH (n:Notif)-[r]-(u) WHERE ID(n) = ` + c.Param("id") + ` DELETE r, n`
 	st := app.prepareStatement(q)

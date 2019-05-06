@@ -193,7 +193,6 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 
 			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
 				if valid := setInterest(Genre, Interest, Id); valid == true {
-					prin("ADDED == > ", valid, "|")
 					g = append(g, d[0].(graph.Node))
 				}
 			}
