@@ -55,6 +55,8 @@ func newRandomMale() User {
 		Tags: tagtab,
 		LastConn: gofakeit.DateRange(time.Date(2016, 01, 01, 00, 00, 00, 00, time.Local),
 			time.Date(2017, 01, 01, 00, 00, 00, 00, time.Local)),
+		Ilike:    false,
+		Relation: "none",
 	}
 }
 
@@ -99,6 +101,8 @@ func newRandomFemale() User {
 		Tags: tagtab,
 		LastConn: gofakeit.DateRange(time.Date(2016, 01, 01, 00, 00, 00, 00, time.Local),
 			time.Date(2017, 01, 01, 00, 00, 00, 00, time.Local)),
+		Ilike:    false,
+		Relation: "none",
 	}
 }
 

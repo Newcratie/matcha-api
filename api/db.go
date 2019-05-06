@@ -71,7 +71,8 @@ city:{city}, zip: {zip},
 country:{country}, latitude: {latitude},
 longitude:{longitude}, geo_allowed: {geo_allowed},
 online:{online}, rating: {rating},
-email: {email}, access_lvl: 1, last_conn: {last_conn}})`
+email: {email}, access_lvl: 1, last_conn: {last_conn},
+ilike: {ilike}, relation: {relation}})`
 	fmt.Println("Query == ", q)
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
@@ -139,7 +140,7 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 	var g = make([]graph.Node, 0)
 	var err error
 
-	superQuery := `MATCH (u)-[m:MATCH]-(n) WHERE ID(u) = ` + strconv.Itoa(Id) + ` return n`
+	superQuery := `MATCH (u)-[m:MATCHED]-(n) WHERE ID(u) = ` + strconv.Itoa(Id) + ` return n`
 
 	data, _, _, _ := app.Neo.QueryNeoAll(superQuery, nil)
 
@@ -174,6 +175,8 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	var g = make([]graph.Node, 0)
 	var err error
 
+	var m Match
+	m.action = like
 	// A custom query with applied Filters
 	time.Sleep(500 * time.Millisecond)
 	superQuery := customQuery(Id, Filter)
@@ -185,10 +188,15 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 		return g, err
 	} else {
 		for _, d := range data {
+			m.idFrom = int(d[0].(graph.Node).NodeIdentity)
+			m.idTo = Id
+			d[0].(graph.Node).Properties["ilike"] = app.dbExistRel(m, m.action)
 			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
 			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
 			Genre, _ := d[0].(graph.Node).Properties["genre"].(string)
 			Interest, _ := d[0].(graph.Node).Properties["interest"].(string)
+			delete(d[0].(graph.Node).Properties, "password")
+
 			// Haversine will return the distance between 2 Lat/Lon in Kilometers
 
 			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {

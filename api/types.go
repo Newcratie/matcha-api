@@ -53,8 +53,8 @@ type User struct {
 	AccessLvl   int       `json:"access_lvl" db:"access_lvl"`
 	Tags        []string  `json:"tags" db:"tags"`
 	LastConn    time.Time `json:"last_conn" db:"last_conn"`
-	Ilike       bool
-	IBlock      bool
+	Ilike       bool      `json:"ilike" db:"ilike"`
+	Relation    string    `json:"relation" db:"relation"`
 }
 
 type Tag struct {

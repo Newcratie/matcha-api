@@ -61,7 +61,7 @@ func CreateLike(c *gin.Context) {
 		action := c.Param("action")
 		switch action {
 		case "like":
-			if app.dbExistRel(m, match) {
+			if app.dbExistMatch(m) {
 				newEvent(c, func(name string) string {
 					return "It's a match!!! With " + name
 				})
