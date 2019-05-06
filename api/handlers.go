@@ -10,6 +10,7 @@ import (
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"math"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -23,7 +24,6 @@ const (
 
 func Token(c *gin.Context) {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User{random_token : "`+c.Param("token")+`"}) SET n.access_lvl = 1 RETURN n`, nil)
-	fmt.Println("data===>", data)
 	if len(data) == 0 {
 		c.JSON(201, gin.H{"err": "Wrong token"})
 	} else if data[0][0].(graph.Node).Properties["access_lvl"] == int64(1) {
@@ -44,7 +44,40 @@ func CreateLike(c *gin.Context) {
 	valid, err := ValidateToken(c, &claims)
 
 	if valid == true {
-		// prepare statement for relation ship on neo4j nodes
+		var m Match
+		m.idTo, _ = strconv.Atoi(c.Param("id"))
+		m.action = strings.ToUpper(c.Param("action"))
+		m.idFrom = int(claims["id"].(float64))
+		if _, err = app.dbMatchs(m); err != nil {
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			c.JSON(200, nil)
+		}
+		m.idFrom = int(claims["id"].(float64))
+		prin("AFTER FROM ==>> ", m.idFrom, "|")
+		app.dbMatchs(m)
+
+		action := c.Param("action")
+		switch action {
+		case "like":
+			if app.dbExistRel(m, match) {
+				newEvent(c, func(name string) string {
+					return "It's a match!!! With " + name
+				})
+			} else {
+				newEvent(c, func(name string) string {
+					return name + " " + action + " you!!! ❤️❤️"
+				})
+			}
+			break
+		case "dislike":
+			if app.dbExistRel(m, like) {
+				newEvent(c, func(name string) string {
+					return name + " doesn't like you anymore 😱"
+				})
+			}
+		}
+
 	} else {
 		PrintHandlerLog("Token Not Valid", ErrorC)
 		fmt.Println("jwt error: ", err)
@@ -58,7 +91,6 @@ func ValidateToken(c *gin.Context, claims jwt.Claims) (valid bool, err error) {
 	_, err = jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
-	fmt.Println(claims)
 	if err != nil {
 		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
@@ -83,7 +115,6 @@ func GetMatchs(c *gin.Context) {
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
-	fmt.Println(claims)
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
@@ -100,12 +131,10 @@ func GetMessages(c *gin.Context) {
 	tokenString := c.Request.Header["Authorization"][0]
 	suitorId := c.Request.Header["Suitor-Id"][0]
 
-	fmt.Println("SuitorId ====> ", suitorId)
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
-	fmt.Println(claims)
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
@@ -124,15 +153,10 @@ func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
 	var err error
 
-	//fmt.Println("****IN DB MATCH****")
-
-	//app.dbMatchs(0, 30, "")
-
 	filters := Filters{}
 	claims := jwt.MapClaims{}
 
 	valid, err := ValidateToken(c, &claims)
-	//UserPassChange(c, claims)
 	json.Unmarshal([]byte(filtersJson), &filters)
 
 	//fmt.Println(claims)
@@ -152,29 +176,18 @@ func GetPeople(c *gin.Context) {
 	}
 }
 
-func Self(c *gin.Context) {
-	tokenString := c.Request.Header["Authorization"][0]
-
-	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
+func newVisit(c *gin.Context) {
+	newEvent(c, func(name string) string {
+		return name + " has visited your profil page"
 	})
-	fmt.Println(claims)
-	if err != nil {
-		fmt.Println(err)
-		c.JSON(201, gin.H{"err": err.Error()})
-	} else if checkJwt(tokenString) {
-		id := int(math.Round(claims["id"].(float64)))
-		fmt.Println(id)
-	}
+	c.JSON(200, gin.H{})
 }
 
 func Login(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 
-	u, err := app.getUser(username)
-	fmt.Println(u, err)
+	u, err := app.getUser(-1, username)
 	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
 		c.JSON(201, gin.H{"err": "Wrong password or username"})
 	} else if u.AccessLvl == 0 {
@@ -184,6 +197,10 @@ func Login(c *gin.Context) {
 		if err != nil {
 			c.JSON(201, gin.H{"err": "Internal server error: " + err.Error()})
 		} else {
+			u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
+			fmt.Println("LastConn ===>>", u.LastConn)
+			u.Online = true
+			app.updateUser(u)
 			c.JSON(200, jwt)
 		}
 	}
@@ -191,6 +208,7 @@ func Login(c *gin.Context) {
 
 func Register(c *gin.Context) {
 	logprint.Title("Register")
+	fmt.Println("POST BIRTHDAY =========", c.PostForm("birthday"), "|")
 	bd, _ := time.Parse(time.RFC3339, c.PostForm("birthday"))
 
 	rf := registerForm{
@@ -202,12 +220,10 @@ func Register(c *gin.Context) {
 		c.PostForm("firstname"),
 		bd,
 	}
-	fmt.Println("Register Form ==> ", rf)
 	user, res := validateUser(rf)
 	if !res.Valid {
 		c.JSON(201, res)
 	} else {
-		fmt.Println("register success", user)
 		app.insertUser(user)
 		c.JSON(200, gin.H{})
 	}

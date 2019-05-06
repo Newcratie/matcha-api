@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/Newcratie/matcha-api/api/kwal"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
@@ -8,12 +9,11 @@ import (
 )
 
 func (app *App) routerAPI() {
-	m := melody.New()
+	app.M = melody.New()
 	app.R.Use(cors.New(cors.Config{
-		AllowAllOrigins:  true,
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
 		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
@@ -26,20 +26,31 @@ func (app *App) routerAPI() {
 	}
 	api := app.R.Group("/api")
 	{
-		api.POST("/add_like", CreateLike)
 		api.GET("/people", GetPeople)
+		api.PUT("/visit/:id", newVisit)
+		api.PUT("/people/:id/:action", CreateLike)
 		api.GET("/matchs", GetMatchs)
+		api.GET("/kwal", func(c *gin.Context) {
+			k := kwal.GetKeys()
+			c.JSON(200, k)
+		})
 		api.GET("/messages", GetMessages)
-		api.POST("/user", UserHandler)
+		api.GET("/user", UserHandler)
 		api.PUT("/user/:name", UserModify)
-		api.POST("/img/:n", UserImageHandler)
+		api.POST("/img/:n", userImageHandler)
+		api.GET("/events/history/:user", getHistoryHandler)
+		api.GET("/notifications/history/:user", notificationsHistoryHandler)
+		api.DELETE("/notifications/:id", notificationsDeleteHandler)
+		api.GET("/notifications/websocket/:user", func(c *gin.Context) {
+			_ = app.M.HandleRequest(c.Writer, c.Request)
+		})
 		api.GET("/ws/:user/:suitor", func(c *gin.Context) {
-			_ = m.HandleRequest(c.Writer, c.Request)
+			_ = app.M.HandleRequest(c.Writer, c.Request)
 		})
 	}
-	m.HandleMessage(func(s *melody.Session, msg []byte) {
+	app.M.HandleMessage(func(s *melody.Session, msg []byte) {
 		app.insertMessage(msg)
-		_ = m.BroadcastFilter(msg, func(session *melody.Session) bool {
+		_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
 			//AUth: verify if token is valid here.
 			return session.Request.URL.Path == s.Request.URL.Path
 		})

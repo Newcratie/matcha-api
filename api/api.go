@@ -10,6 +10,8 @@ import (
 
 const hashKey = "5c894d411c2f7445dbadb9b6"
 
+var prin = fmt.Println
+
 func (app *App) newApp() {
 	app.R = gin.Default()
 }
@@ -35,8 +37,8 @@ func NewConn(host string) (bolt.Conn, error) {
 func Run() {
 	app.newApp()
 	host := os.Getenv("NEO_HOST")
-
 	app.Neo, _ = NewConn(host)
+	defer app.Neo.Close()
 
 	go app.routerAPI()
 	app.R.Run(":81")

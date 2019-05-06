@@ -8,6 +8,61 @@ import (
 	"time"
 )
 
+func setInterest(PeopleGenre string, PeopleInterest string, Id int) (valid bool) {
+
+	u, _ := app.getUser(Id, "")
+
+	switch u.Interest {
+	case "bi":
+		switch PeopleInterest {
+		case "hetero":
+			if PeopleGenre == u.Genre {
+				return false
+			}
+			break
+		case "homo":
+			if PeopleGenre != u.Genre {
+				return false
+			}
+			break
+		}
+		return true
+	case "hetero":
+		switch PeopleInterest {
+		case "homo":
+			return false
+		case "bi":
+			if PeopleGenre == u.Genre {
+				return false
+			}
+			break
+		case "hetero":
+			if PeopleGenre == u.Genre {
+				return false
+			}
+			break
+		}
+		break
+	case "homo":
+		switch PeopleInterest {
+		case "hetero":
+			return false
+		case "bi":
+			if PeopleGenre != u.Genre {
+				return false
+			}
+			break
+		case "homo":
+			if PeopleGenre != u.Genre {
+				return false
+			}
+			break
+		}
+		break
+	}
+	return true
+}
+
 func customQuery(Id int, Filter *Filters) (superQuery string) {
 	var cQuery string
 
@@ -18,10 +73,9 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 		cQuery = setTagQuery(Filter)
 	}
 
-	superQuery += `MATCH (u:User) WHERE (u.rating >= ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating <= ` + strconv.Itoa(Filter.Score[1]) + `)
-	AND (u.birthday >= "` + maxAge + `" AND u.birthday <= "` + minAge + `") ` + cQuery + `
-	RETURN DISTINCT u`
-
+	superQuery += `MATCH (u:User) WHERE NOT Id(u)= ` + strconv.Itoa(Id) + ` AND NOT (u)-[:BLOCK]->() AND (u.rating >= ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating <= ` + strconv.Itoa(Filter.Score[1]) + `)
+	AND (u.birthday >= "` + maxAge + `" AND u.birthday <= "` + minAge + `") ` + cQuery + ` RETURN DISTINCT u`
+	prin("SUPERQUERY ==> ", superQuery, "|")
 	return
 }
 

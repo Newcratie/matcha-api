@@ -1,13 +1,25 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"io"
+	"os"
+	"strings"
 )
+
+type Request struct {
+	context *gin.Context
+	claims  jwt.MapClaims
+	user    User
+	body    map[string]interface{}
+	id      int
+}
 
 func UserModify(c *gin.Context) {
 	var req Request
@@ -18,17 +30,20 @@ func UserModify(c *gin.Context) {
 		req.user, _ = app.getUser(req.id, "")
 		mod := c.Param("name")
 		switch mod {
+		case "position":
+			req.updatePosition()
+			break
+		case "location":
+			req.updateLocation()
+			break
 		case "biography":
 			req.updateBio()
 			break
 		case "username":
 			req.updateUsername()
 			break
-		case "location":
-			req.updateLocation()
-			break
-		case "position":
-			req.updatePosition()
+		case "usertags":
+			req.userTags()
 			break
 		case "tag":
 			req.addTag()
@@ -52,11 +67,21 @@ func UserModify(c *gin.Context) {
 			req.updateInterest()
 			break
 		default:
+			c.JSON(202, gin.H{"err": "route not found"})
 		}
-		retUser(req)
 	}
 }
 
+func (req Request) updatePosition() {
+	pos := req.body["position"]
+	fmt.Println(pos)
+	retUser(req)
+}
+func (req Request) updateLocation() {
+	pos := req.body["location"]
+	fmt.Println(pos)
+	retUser(req)
+}
 func (req Request) updateBio() {
 	bio := req.body["biography"].(string)
 
@@ -66,6 +91,7 @@ func (req Request) updateBio() {
 	} else {
 		req.user.Biography = bio
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
@@ -79,30 +105,6 @@ func (req Request) checkPassword() error {
 	}
 }
 
-func (req Request) updateLocation() {
-	newUsername := req.body["new_username"].(string)
-	if err := req.checkPassword(); err != nil {
-		req.context.JSON(201, gin.H{"err": err.Error()})
-	} else if len(newUsername) < 6 || len(newUsername) > 20 {
-		err = errors.New("error : your username must be between 6 to 20 characters")
-		req.context.JSON(201, gin.H{"err": err.Error()})
-	} else {
-		req.user.Username = newUsername
-		app.updateUser(req.user)
-	}
-}
-func (req Request) updatePosition() {
-	newUsername := req.body["new_username"].(string)
-	if err := req.checkPassword(); err != nil {
-		req.context.JSON(201, gin.H{"err": err.Error()})
-	} else if len(newUsername) < 6 || len(newUsername) > 20 {
-		err = errors.New("error : your username must be between 6 to 20 characters")
-		req.context.JSON(201, gin.H{"err": err.Error()})
-	} else {
-		req.user.Username = newUsername
-		app.updateUser(req.user)
-	}
-}
 func (req Request) updateUsername() {
 	newUsername := req.body["new_username"].(string)
 	if err := req.checkPassword(); err != nil {
@@ -113,6 +115,7 @@ func (req Request) updateUsername() {
 	} else {
 		req.user.Username = newUsername
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
@@ -120,15 +123,31 @@ func (req Request) updateGenre() {
 	genre := req.body["genre"].(string)
 	req.user.Genre = genre
 	app.updateUser(req.user)
+	retUser(req)
 }
 
 func (req Request) updateInterest() {
 	interest := req.body["interest"].(string)
 	req.user.Interest = interest
 	app.updateUser(req.user)
+	retUser(req)
 }
 
 func (req Request) addTag() {
+}
+
+func (req Request) userTags() {
+	tab := req.body["tags"].([]interface{})
+	var userTags []string
+	for _, tag := range tab {
+		userTags = append(userTags, tag.(string))
+	}
+	fmt.Println("1", req.user.Tags)
+	req.user.Tags = userTags
+	fmt.Println("2", req.user.Tags)
+
+	app.updateUser(req.user)
+	retUser(req)
 }
 
 func (req Request) updateEmail() {
@@ -140,12 +159,13 @@ func (req Request) updateEmail() {
 	} else {
 		req.user.Email = newEmail
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
 func (req Request) updatePassword() {
 	newPassword := req.body["new_password"].(string)
-	confirmPassword := req.body["confirm_password"].(string)
+	confirmPassword := req.body["confirm"].(string)
 
 	if err := req.checkPassword(); err != nil {
 		req.context.JSON(201, gin.H{"err": err.Error()})
@@ -153,21 +173,21 @@ func (req Request) updatePassword() {
 		if err = verifyPassword(newPassword, confirmPassword); err != nil {
 			req.context.JSON(201, gin.H{"err": err.Error()})
 		} else {
-			fmt.Println("Password change::")
 			req.user.Password = hash.Encrypt(hashKey, newPassword)
+			app.updateUser(req.user)
+			retUser(req)
 		}
 	}
 }
 
 func (req Request) updateFirstname() {
-	fmt.Println("===========REQ=========== \n", req)
 	firstname := req.body["firstname"].(string)
-	fmt.Println("===========>  ", firstname)
 	if len(firstname) < 2 || len(firstname) > 20 {
 		req.context.JSON(201, gin.H{"err": "error : your firstname must be between 2 to 20 characters"})
 	} else {
 		req.user.FirstName = firstname
 		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
@@ -178,49 +198,87 @@ func (req Request) updateLastname() {
 		req.context.JSON(201, gin.H{"err": err.Error()})
 	} else {
 		req.user.LastName = lastname
+		app.updateUser(req.user)
+		retUser(req)
 	}
 }
 
-func UserImageHandler(c *gin.Context) {
-	file := c.PostForm("file")
-	fmt.Printf("file  %s\n", file)
+var magicTable = map[string]string{
+	"\xff\xd8\xff":      "jpg",
+	"\x89PNG\r\n\x1a\n": "png",
+	"GIF87a":            "gif",
+	"GIF89a":            "gif",
+}
 
-	claims := jwt.MapClaims{}
-	valid, err := ValidateToken(c, &claims)
+func extFromIncipit(incipit []byte) (string, error) {
+	incipitStr := []byte(incipit)
+	for magic, mime := range magicTable {
+		if strings.HasPrefix(string(incipitStr), magic) {
+			return mime, nil
+		}
+	}
 
-	if valid == true {
-		Id := int64(claims["id"].(float64))
-		g, err := app.dbGetUserFromId(Id)
-		tagList := app.dbGetTagList()
+	return "", errors.New("Wrong file")
+}
+func userImageHandler(c *gin.Context) {
+	mFile, _ := c.FormFile("file") // Get Multipart Header
+	file, _ := mFile.Open() // Create Reader
+	buf := bytes.NewBuffer(nil) // Init buffer
+	if _, err := io.Copy(buf, file); err != nil { // Read file
+		fmt.Println(err)
+		c.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		name := newToken() // Generate random Name
+		ext, err := extFromIncipit(buf.Bytes())
+		link := imageHost + "/" + name + "." + ext
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
+			fmt.Println(err)
 		} else {
-			c.JSON(200, gin.H{"user": g, "tagList": tagList})
+			fmt.Println("ext ========> ", ext)
+			f, _ := os.Create(imageSrc + "/" + name + "." + ext)  //create file
+			defer f.Close() //close after processing
+
+			f.Write(buf.Bytes()) // Write buffer on the file
+
+			claims := jwt.MapClaims{}
+			valid, err := ValidateToken(c, &claims)
+
+			if valid != true {
+				c.JSON(201, gin.H{"err": err.Error()})
+				fmt.Println(err)
+			} else {
+				var req Request
+				if err := req.prepareRequest(c); err != nil {
+					c.JSON(201, gin.H{"err": err.Error()})
+				} else {
+					fmt.Println("PARAM    ", c.Param("n"))
+					switch c.Param("n") {
+					case "img1":
+						req.user.Img1 = link
+						break
+					case "img2":
+						req.user.Img2 = link
+						break
+					case "img3":
+						fmt.Println("Ok     =========================")
+						req.user.Img3 = link
+						break
+					case "img4":
+						req.user.Img4 = link
+						break
+					case "img5":
+						req.user.Img5 = link
+						break
+					}
+					app.updateUser(req.user)
+					retUser(req)
+				}
+			}
 		}
-	} else {
-		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
 
-type Request struct {
-	context *gin.Context
-	claims  jwt.MapClaims
-	user    User
-	body    map[string]interface{}
-	id      int64
-}
-
-func retUser(req Request) {
-	g, err := app.dbGetUserFromId(req.id)
-	tagList := app.dbGetTagList()
-	userTags := app.dbGetUserTags(req.user.Username)
-	fmt.Println("retUser / user / taglist / usertags / err ====> ",  g, tagList, userTags, err)
-	if err != nil {
-		req.context.JSON(201, gin.H{"err": err.Error()})
-	} else {
-		req.context.JSON(200, gin.H{"user": g, "tagList": tagList, "userTags": userTags})
-	}
-}
 
 func getBodyToMap(c *gin.Context) (body map[string]interface{}) {
 	r, _ := c.GetRawData()
@@ -236,23 +294,29 @@ func (req *Request) prepareRequest(c *gin.Context) error {
 	req.claims = jwt.MapClaims{}
 	valid, err := ValidateToken(c, &req.claims)
 	if valid == true {
-		req.id = int64(req.claims["id"].(float64))
-		req.user, _ = app.dbGetUserFromId(req.id)
-		fmt.Println("REQUEST PREPARED ==> ", req)
-		return nil
+		req.id = int(req.claims["id"].(float64))
+		req.user, _ = app.getUser(req.id, "")
 	} else {
-		fmt.Println("REQUEST PREPARED ==> ", req, err)
 		return err
 	}
-
+	return nil
 }
 
 func UserHandler(c *gin.Context) {
 	var req Request
-	err := req.prepareRequest(c)
-	if  err != nil {
-		//c.JSON(201, gin.H{"err": err.Error()})
+	if err := req.prepareRequest(c); err != nil {
+		c.JSON(201, gin.H{"err": err.Error()})
 	}
-	//retUser(req)
-	c.JSON(201, gin.H{"err": err.Error()})
+	retUser(req)
+}
+
+func retUser(req Request) {
+	g, err := app.dbGetUserProfile(req.id)
+	tagList := app.dbGetTagList()
+	userTags := app.dbGetUserTags(req.user.Username)
+	if err != nil {
+		req.context.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		req.context.JSON(200, gin.H{"user": g, "tagList": tagList, "userTags": userTags})
+	}
 }

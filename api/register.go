@@ -6,6 +6,7 @@ import (
 	"github.com/Newcratie/matcha-api/api/hash"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 const (
@@ -29,27 +30,20 @@ func validateUser(rf registerForm) (User, validationResponse) {
 		ErrorField{true, ""},
 		"REGISTER",
 	}
-	if app.usernameExist(rf) {
-		fmt.Println("HEEERRRRe")
+	if app.usernameExist(rf.Username) {
 		res.failure()
 		res.Username.Status = false
 		res.Username.Message = res.Username.Message + "Username already exist\n"
 	}
-	if app.emailExist(rf) {
-		fmt.Println("HEEERRRRe")
+	if app.emailExist(rf.Email) {
 		res.failure()
 		res.Email.Status = false
 		res.Email.Message = res.Email.Message + "Email already exist\n"
 	}
-	if len(rf.Password) < passMin || len(rf.Password) > passMax {
+	if err := verifyPassword(rf.Password, rf.Confirm); err != nil {
 		res.failure()
 		res.Password.Status = false
-		res.Password.Message = "Password must contain between " + strconv.Itoa(passMin) + " and " + strconv.Itoa(passMax) + " characters\n"
-	}
-	if rf.Password != rf.Confirm {
-		res.failure()
-		res.Confirm.Status = false
-		res.Confirm.Message = "Passwords don't match\n"
+		res.Password.Message = err.Error()
 	}
 	if !emailIsValid(rf.Email) {
 		res.failure()
@@ -88,6 +82,7 @@ func userFactory(rf registerForm) (u User, err error) {
 	u.LastName = rf.Lastname
 	u.FirstName = rf.Firstname
 	u.Birthday = rf.Birthday
+	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
 	u.RandomToken = newToken()
 	u.Img1 = "http://localhost:8080/src/public/img/blank-profile.png"
 	u.Img2 = "http://localhost:8080/src/public/img/blank-profile.png"
