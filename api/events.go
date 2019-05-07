@@ -14,6 +14,17 @@ import (
 
 type format func(name string) (message string)
 
+func newEventMessage(msg []byte) {
+	var m Messages
+	_ = json.Unmarshal(msg, &m)
+	fmt.Println("----------------------- Event Message ==========================")
+	fmt.Println(m)
+	message := "x sended you a message"
+	fmt.Println("new Event Message ========> ", m)
+	app.postNotification(message, m.To, m.Author, 3)
+	app.postEvent(message, m.To, m.Author, 3)
+}
+
 func newEvent(c *gin.Context, fn format) {
 	claims := jwt.MapClaims{}
 	valid, _ := ValidateToken(c, &claims)

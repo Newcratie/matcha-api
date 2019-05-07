@@ -33,6 +33,7 @@ type Messages struct {
 	Author    int64  `json:"author"`
 	Message   string `json:"message"`
 	Timestamp int64  `json:"timestamp"`
+	To        int64  `json:"to"`
 }
 
 func (app *App) dbGetMessages(userId, suitorId int) ([]Messages, error) {
@@ -52,6 +53,7 @@ ORDER BY ID(n)
 			tab[0].(graph.Node).Properties["author"].(int64),
 			tab[0].(graph.Node).Properties["msg"].(string),
 			tab[0].(graph.Node).Properties["timestamp"].(int64),
+			int64(suitorId),
 		})
 	}
 	return msgs, nil

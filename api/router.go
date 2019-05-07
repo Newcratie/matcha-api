@@ -53,6 +53,7 @@ func (app *App) routerAPI() {
 	}
 	app.M.HandleMessage(func(s *melody.Session, msg []byte) {
 		app.insertMessage(msg)
+		newEventMessage(msg)
 		_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
 			//AUth: verify if token is valid here.
 			return session.Request.URL.Path == s.Request.URL.Path
