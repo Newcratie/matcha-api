@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/errors"
 	"strconv"
 )
@@ -33,7 +32,7 @@ func (app *App) dbExistBlocked(m Match) (valid bool) {
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:BLOCK]->(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
-		fmt.Println("*** Exist Query returned FALSE ***")
+		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -44,9 +43,9 @@ func (app *App) dbCreateLike(m Match) (valid bool) {
 	if app.dbExistRevLike(m) == false && app.dbExistMatch(m) == false {
 		app.dbDeleteDirectionalRelation(m, "")
 		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:LIKE]->(n)`
-		data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+		_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 		if err != nil {
-			fmt.Println("*** CreateLike Query returned an Error ***", data)
+			//fmt.Println("*** CreateLike Query returned an Error ***", data)
 			return false
 		}
 		return true
@@ -60,9 +59,9 @@ func (app *App) dbSetMatch(m Match) (valid bool) {
 
 	app.dbDeleteRelation(m, "")
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:MATCHED]->(n)`
-	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
-		fmt.Println("*** Set MatchQuery returned an Error ***", data)
+		//fmt.Println("*** Set MatchQuery returned an Error ***", data)
 		return false
 	}
 	return true
@@ -72,9 +71,9 @@ func (app *App) dbCreateBlock(m Match) (valid bool) {
 
 	app.dbDeleteDirectionalRelation(m, "")
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:BLOCK]->(n)`
-	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
-		fmt.Println("*** CreateLike Query returned an Error ***", data)
+		//fmt.Println("*** CreateLike Query returned an Error ***", data)
 		return false
 	}
 	return true
@@ -87,9 +86,9 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 	}
 	app.dbDeleteDirectionalRelation(m, "")
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:DISLIKE]->(n)`
-	data, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
+	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
-		fmt.Println("*** CreateLike Query returned an Error ***", data)
+		//fmt.Println("*** CreateLike Query returned an Error ***", data)
 		return false
 	}
 	return true
@@ -100,7 +99,7 @@ func (app *App) dbExistMatch(m Match) (valid bool) {
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:MATCHED]-(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
-		fmt.Println("*** Exist Query returned FALSE ***")
+		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -111,7 +110,7 @@ func (app *App) dbExistRel(m Match, Rel string) (valid bool) {
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:` + Rel + `]->(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
-		fmt.Println("*** Exist Query returned FALSE ***")
+		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -122,7 +121,7 @@ func (app *App) dbExistRevLike(m Match) (valid bool) {
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)<-[:LIKE]-(n) )`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if data[0][0] == false {
-		fmt.Println("*** Exist Query returned FALSE ***")
+		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -132,16 +131,16 @@ func (app *App) dbDeleteDirectionalRelation(m Match, Rel string) (valid bool) {
 
 	if Rel != "" {
 		DeleteQuery := `MATCH (u)-[t:` + Rel + `]->(n) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE t`
-		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	} else {
 		DeleteQuery := `MATCH (u:User)-[r]->(n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE r`
-		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	}
@@ -152,16 +151,16 @@ func (app *App) dbDeleteRelation(m Match, Rel string) (valid bool) {
 
 	if Rel != "" {
 		DeleteQuery := `MATCH (n)-[r:` + Rel + `]-(u) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE r`
-		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	} else {
 		DeleteQuery := `MATCH (u:User)-[r]-(n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE r`
-		data, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
+		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			fmt.Println("*** DeleteRelation Query returned an Error ***", data)
+			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	}

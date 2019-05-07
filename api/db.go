@@ -97,6 +97,8 @@ func (app *App) updateUser(u User) {
 	u.online = {online}, u.rating = {rating},
 	u.email = {email}, u.access_lvl = {access_lvl},
 	u.tags = {tags},  u.last_conn = {last_conn}`
+
+	prin("UPDATE USER ==> ", q, "|")
 	st := app.prepareStatement(q)
 	fmt.Println("TATATA", st)
 	executeStatement(st, MapOf(u))

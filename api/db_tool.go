@@ -92,7 +92,7 @@ func setTagQuery(Filter *Filters) (customQuery string) {
 	return
 }
 
-//func setContent()
+//func rating()
 
 func ageConvert(Age int) (birthYear string) {
 

@@ -43,11 +43,14 @@ func CreateLike(c *gin.Context) {
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)
 
+	id := int(math.Round(claims["id"].(float64)))
+	//UpdateLastConn(id)
+
 	if valid == true {
 		var m Match
 		m.idTo, _ = strconv.Atoi(c.Param("id"))
 		m.action = strings.ToUpper(c.Param("action"))
-		m.idFrom = int(claims["id"].(float64))
+		m.idFrom = id
 		if _, err = app.dbMatchs(m); err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
@@ -116,10 +119,13 @@ func GetMatchs(c *gin.Context) {
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
+
+	id := int(math.Round(claims["id"].(float64)))
+	//UpdateLastConn(id)
+
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
-		id := int(math.Round(claims["id"].(float64)))
 		app.onlineRefresh(strconv.Itoa(id))
 		g, err := app.dbGetMatchs(id)
 		if err != nil {
@@ -137,10 +143,13 @@ func GetMessages(c *gin.Context) {
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(hashKey), nil
 	})
+
+	id := int(math.Round(claims["id"].(float64)))
+	//UpdateLastConn(id)
+
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if checkJwt(tokenString) {
-		id := int(math.Round(claims["id"].(float64)))
 		sui, _ := strconv.Atoi(suitorId)
 		app.onlineRefresh(strconv.Itoa(id))
 		msgs, err := app.dbGetMessages(id, sui)
@@ -162,11 +171,12 @@ func GetPeople(c *gin.Context) {
 	valid, err := ValidateToken(c, &claims)
 	json.Unmarshal([]byte(filtersJson), &filters)
 
+	id := int(math.Round(claims["id"].(float64)))
+	//UpdateLastConn(id)
 	//fmt.Println(claims)
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if valid == true {
-		id := int(math.Round(claims["id"].(float64)))
 		str := strconv.Itoa(id)
 		app.onlineRefresh(str)
 		app.alertOnline(true, str)
@@ -189,6 +199,13 @@ func newVisit(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
+//func UpdateLastConn(Id int) {
+//	u, _ := app.getUser(Id, "")
+//	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
+//	u.Online = true
+//	app.updateUser(u)
+//}
+
 func Login(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
@@ -203,10 +220,6 @@ func Login(c *gin.Context) {
 		if err != nil {
 			c.JSON(201, gin.H{"err": "Internal server error: " + err.Error()})
 		} else {
-			u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
-			fmt.Println("LastConn ===>>", u.LastConn)
-			u.Online = true
-			app.updateUser(u)
 			c.JSON(200, jwt)
 		}
 	}

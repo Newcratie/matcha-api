@@ -25,6 +25,7 @@ func newEvent(c *gin.Context, fn format) {
 	} else {
 		authorId = 0
 	}
+	//UpdateLastConn(int(authorId))
 	u, _ := app.getUser(int(authorId), "")
 	message := fn(u.Username)
 	app.postNotification(message, userId, authorId, 0)
