@@ -8,6 +8,29 @@ import (
 	"time"
 )
 
+func UpdateRating(Id int, Relation string) {
+
+	switch Relation {
+	case "LIKE":
+		q := `MATCH (n:User) WHERE ID(n)= ` + strconv.Itoa(Id) + ` SET n.rating = n.rating + 1`
+		app.Neo.QueryNeoAll(q, nil)
+		break
+	case "DISLIKE":
+		q := `MATCH (n:User) WHERE ID(n)= ` + strconv.Itoa(Id) + ` SET n.rating = n.rating - 1`
+		app.Neo.QueryNeoAll(q, nil)
+		break
+	case "MATCHED":
+		q := `MATCH (n:User) WHERE ID(n)= ` + strconv.Itoa(Id) + ` SET n.rating = n.rating + 2`
+		app.Neo.QueryNeoAll(q, nil)
+		break
+	case "BLOCK":
+		q := `MATCH (n:User) WHERE ID(n)= ` + strconv.Itoa(Id) + ` SET n.rating = n.rating - 2`
+		app.Neo.QueryNeoAll(q, nil)
+		break
+	}
+	return
+}
+
 func setInterest(PeopleGenre string, PeopleInterest string, Id int) (valid bool) {
 
 	u, _ := app.getUser(Id, "")
@@ -75,7 +98,7 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 
 	superQuery += `MATCH (u:User) WHERE NOT Id(u)= ` + strconv.Itoa(Id) + ` AND NOT (u)-[:BLOCK]->() AND (u.rating >= ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating <= ` + strconv.Itoa(Filter.Score[1]) + `)
 	AND (u.birthday >= "` + maxAge + `" AND u.birthday <= "` + minAge + `") ` + cQuery + ` RETURN DISTINCT u`
-	prin("SUPERQUERY ==> ", superQuery, "|")
+	//prin("SUPERQUERY ==> ", superQuery, "|")
 	return
 }
 
@@ -91,8 +114,6 @@ func setTagQuery(Filter *Filters) (customQuery string) {
 	}
 	return
 }
-
-//func rating()
 
 func ageConvert(Age int) (birthYear string) {
 
@@ -130,14 +151,3 @@ func getFloat(unk interface{}) (float64, error) {
 	fv := v.Convert(floatType)
 	return fv.Float(), nil
 }
-
-// Create link between User and TAG
-//MATCH (n:User {name: 'Yundt7209'}) MATCH (t:TAG {name: 'css'}) CREATE (n)-[:TAGGED]->(t)
-
-// Delete link between User and TAG
-//MATCH (n:User {name: 'Yundt7209'}) MATCH (t:TAG {name: 'css'}) MATCH (n)-[l:TAGGED]-(t) DELETE l
-
-// Sample of a query with tag
-//MATCH (u:User) WHERE (u.rating > 0 AND u.rating < 51) MATCH (u) WHERE (u.birthday > "1899-04-18T17:18:43.342718527Z" AND u.birthday < "2003-04-18T17:18:43.342712091Z") MATCH (t:TAG {name: 'css'})-[]-(u) RETURN u
-
-//MATCH (t:TAG)-[]-(u) WHERE t.name='design' OR t.name='HTML' RETURN u

@@ -43,8 +43,8 @@ func CreateLike(c *gin.Context) {
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)
 
-	id := int(math.Round(claims["id"].(float64)))
-	//UpdateLastConn(id)
+	id := int(claims["id"].(float64))
+	UpdateLastConn(id)
 
 	if valid == true {
 		var m Match
@@ -121,7 +121,7 @@ func GetMatchs(c *gin.Context) {
 	})
 
 	id := int(math.Round(claims["id"].(float64)))
-	//UpdateLastConn(id)
+	UpdateLastConn(id)
 
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
@@ -145,7 +145,7 @@ func GetMessages(c *gin.Context) {
 	})
 
 	id := int(math.Round(claims["id"].(float64)))
-	//UpdateLastConn(id)
+	UpdateLastConn(id)
 
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
@@ -171,9 +171,8 @@ func GetPeople(c *gin.Context) {
 	valid, err := ValidateToken(c, &claims)
 	json.Unmarshal([]byte(filtersJson), &filters)
 
-	id := int(math.Round(claims["id"].(float64)))
-	//UpdateLastConn(id)
-	//fmt.Println(claims)
+	id := int(claims["id"].(float64))
+
 	if err != nil {
 		c.JSON(202, gin.H{"err": err.Error()})
 	} else if valid == true {
@@ -184,6 +183,7 @@ func GetPeople(c *gin.Context) {
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
+			UpdateLastConn(id)
 			c.JSON(200, g)
 		}
 	} else {
@@ -199,12 +199,13 @@ func newVisit(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-//func UpdateLastConn(Id int) {
-//	u, _ := app.getUser(Id, "")
-//	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
-//	u.Online = true
-//	app.updateUser(u)
-//}
+func UpdateLastConn(Id int) {
+	u, _ := app.getUser(Id, "")
+	u.Id = int64(Id)
+	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
+	u.Online = true
+	app.updateLastConn(u)
+}
 
 func Login(c *gin.Context) {
 	username := c.PostForm("username")

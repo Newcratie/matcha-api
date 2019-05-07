@@ -13,7 +13,7 @@ import (
 
 func newRandomMale() User {
 	var f *gofakeit.PersonInfo
-	max := 4
+	max := 1
 	f = gofakeit.Person()
 	interest := make([]string, 3)
 	interest[0] = "bi"
@@ -62,7 +62,7 @@ func newRandomMale() User {
 
 func newRandomFemale() User {
 	var f *gofakeit.PersonInfo
-	max := 4
+	max := 1
 	f = gofakeit.Person()
 	interest := make([]string, 3)
 	interest[0] = "bi"
