@@ -2,11 +2,11 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
-	"github.com/pkg/errors"
 	"gopkg.in/olahol/melody.v1"
 	"strconv"
 	"time"
