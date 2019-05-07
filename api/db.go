@@ -39,8 +39,8 @@ type Messages struct {
 func (app *App) dbGetMessages(userId, suitorId int) ([]Messages, error) {
 	q := `
 MATCH (a:User)-[]-(n:Message)-[]-(b:User) 
-WHERE ID(a)={user_id} AND ID(b)={suitor_id}
-RETURN n
+WHERE ID(a)={user_id} AND ID(b)={suitor_id} 
+RETURN n 
 ORDER BY ID(n)
 `
 	msgs := make([]Messages, 0)
@@ -60,7 +60,7 @@ ORDER BY ID(n)
 }
 
 func (app *App) insertUser(u User) {
-	fmt.Println(MapOf(u))
+	//fmt.Println(MapOf(u))
 	q := `CREATE (u:User{name: {username},
 username:{username}, password:{password},
 firstname:{firstname}, lastname:{lastname},
@@ -75,16 +75,17 @@ longitude:{longitude}, geo_allowed: {geo_allowed},
 online:{online}, rating: {rating},
 email: {email}, access_lvl: 1, last_conn: {last_conn},
 ilike: {ilike}, relation: {relation}})`
-	fmt.Println("Query == ", q)
+	//fmt.Println("Query == ", q)
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
+	return
 }
 
 func (app *App) updateUser(u User) {
-	fmt.Println("USer ====>>", MapOf(u))
+	//fmt.Println("USer ====>>", MapOf(u))
 	var id string
-	id = strconv.FormatInt(u.Id, 10)
-	fmt.Println("id", id)
+	id = strconv.Itoa(int(u.Id))
+	//fmt.Println("id", id)
 	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.name = {username},
 	u.firstname = {firstname}, u.lastname = {lastname},
 	u.username = {username}, u.password = {password},
@@ -99,11 +100,20 @@ func (app *App) updateUser(u User) {
 	u.online = {online}, u.rating = {rating},
 	u.email = {email}, u.access_lvl = {access_lvl},
 	u.tags = {tags},  u.last_conn = {last_conn}`
-
-	prin("UPDATE USER ==> ", q, "|")
+	//prin("UPDATE USER ==> ", q, "|")
 	st := app.prepareStatement(q)
-	fmt.Println("TATATA", st)
+	//fmt.Println("TATATA", st)
 	executeStatement(st, MapOf(u))
+	return
+}
+
+func (app *App) updateLastConn(u User) {
+	prin("**** IN UPDATE CONN ****")
+	id := strconv.Itoa(int(u.Id))
+	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.online = {online}, u.last_conn = {last_conn}`
+	st := app.prepareStatement(q)
+	executeStatement(st, MapOf(u))
+	return
 }
 
 func (app *App) getUser(Id int, Username string) (u User, err error) {
@@ -222,8 +232,6 @@ func (app *App) usernameExist(Username string) bool {
 		return true
 	}
 }
-
-//data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {email: {email}}) RETURN n`, map[string]interface{}{"email": rf.Email})
 
 func (app *App) emailExist(Email string) bool {
 	data, _, _, _ := app.Neo.QueryNeoAll(`MATCH (n:User {email: {email}}) RETURN n`, map[string]interface{}{"email": Email})

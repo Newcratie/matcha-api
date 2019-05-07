@@ -26,6 +26,7 @@ func UserModify(c *gin.Context) {
 	if err := req.prepareRequest(c); err != nil {
 		c.JSON(201, gin.H{"err": err.Error()})
 	} else {
+		UpdateLastConn(req.id)
 		req.body = getBodyToMap(c)
 		req.user, _ = app.getUser(req.id, "")
 		mod := c.Param("name")
@@ -221,9 +222,9 @@ func extFromIncipit(incipit []byte) (string, error) {
 	return "", errors.New("Wrong file")
 }
 func userImageHandler(c *gin.Context) {
-	mFile, _ := c.FormFile("file") // Get Multipart Header
-	file, _ := mFile.Open() // Create Reader
-	buf := bytes.NewBuffer(nil) // Init buffer
+	mFile, _ := c.FormFile("file")                // Get Multipart Header
+	file, _ := mFile.Open()                       // Create Reader
+	buf := bytes.NewBuffer(nil)                   // Init buffer
 	if _, err := io.Copy(buf, file); err != nil { // Read file
 		fmt.Println(err)
 		c.JSON(201, gin.H{"err": err.Error()})
@@ -236,8 +237,8 @@ func userImageHandler(c *gin.Context) {
 			fmt.Println(err)
 		} else {
 			fmt.Println("ext ========> ", ext)
-			f, _ := os.Create(imageSrc + "/" + name + "." + ext)  //create file
-			defer f.Close() //close after processing
+			f, _ := os.Create(imageSrc + "/" + name + "." + ext) //create file
+			defer f.Close()                                      //close after processing
 
 			f.Write(buf.Bytes()) // Write buffer on the file
 
@@ -279,7 +280,6 @@ func userImageHandler(c *gin.Context) {
 	}
 }
 
-
 func getBodyToMap(c *gin.Context) (body map[string]interface{}) {
 	r, _ := c.GetRawData()
 	err := json.Unmarshal(r, &body)
@@ -317,6 +317,7 @@ func retUser(req Request) {
 	if err != nil {
 		req.context.JSON(201, gin.H{"err": err.Error()})
 	} else {
+		UpdateLastConn(req.id)
 		req.context.JSON(200, gin.H{"user": g, "tagList": tagList, "userTags": userTags})
 	}
 }

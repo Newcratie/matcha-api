@@ -42,6 +42,7 @@ func (app *App) dbCreateLike(m Match) (valid bool) {
 
 	if app.dbExistRevLike(m) == false && app.dbExistMatch(m) == false {
 		app.dbDeleteDirectionalRelation(m, "")
+		UpdateRating(m.idTo, "LIKE")
 		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:LIKE]->(n)`
 		_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 		if err != nil {
@@ -50,6 +51,7 @@ func (app *App) dbCreateLike(m Match) (valid bool) {
 		}
 		return true
 	} else {
+		UpdateRating(m.idTo, "LIKE")
 		app.dbSetMatch(m)
 	}
 	return false
@@ -58,6 +60,8 @@ func (app *App) dbCreateLike(m Match) (valid bool) {
 func (app *App) dbSetMatch(m Match) (valid bool) {
 
 	app.dbDeleteRelation(m, "")
+	UpdateRating(m.idTo, "MATCHED")
+	UpdateRating(m.idFrom, "MATCHED")
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:MATCHED]->(n)`
 	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
@@ -70,6 +74,7 @@ func (app *App) dbSetMatch(m Match) (valid bool) {
 func (app *App) dbCreateBlock(m Match) (valid bool) {
 
 	app.dbDeleteDirectionalRelation(m, "")
+	UpdateRating(m.idTo, "BLOCK")
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:BLOCK]->(n)`
 	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
@@ -85,6 +90,7 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 		app.dbDeleteRelation(m, matched)
 	}
 	app.dbDeleteDirectionalRelation(m, "")
+	UpdateRating(m.idTo, "DISLIKE")
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:DISLIKE]->(n)`
 	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {

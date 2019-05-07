@@ -97,7 +97,7 @@ MATCH (n:Event)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 
 func (app *App) onlineRefresh(id string) {
 	lastConn := time.Now().Format(time.RFC3339Nano)
-	fmt.Println("==------ online Refresh id: ", id, lastConn)
+	//fmt.Println("==------ online Refresh id: ", id, lastConn)
 	q := `MATCH (u:User) WHERE id(u)=` + id + ` set u.online = true, u.last_conn= "` + lastConn + `"`
 	app.Neo.QueryNeoAll(q, nil)
 	app.alertOnline(true, id)
@@ -105,7 +105,7 @@ func (app *App) onlineRefresh(id string) {
 
 func (app *App) offlineWatcher() {
 	for true {
-		fmt.Println("---------------New Watcher----------")
+		//fmt.Println("---------------New Watcher----------")
 		time.Sleep(time.Second * 10)
 		q := `MATCH (u:User{online: true}) return u`
 		data, _, _, _ := app.Neo.QueryNeoAll(q, nil)
@@ -115,7 +115,7 @@ func (app *App) offlineWatcher() {
 			if time.Since(tp).Seconds() > 15 {
 				s := strconv.FormatInt(node[0].(graph.Node).NodeIdentity, 10)
 				q := `MATCH (u:User) WHERE id(u)=` + s + ` set u.online = false`
-				fmt.Println("------------watcher close ", s, "-----------")
+				//fmt.Println("------------watcher close ", s, "-----------")
 				app.Neo.QueryNeoAll(q, nil)
 				app.alertOnline(false, s)
 			}
@@ -127,7 +127,7 @@ func (app *App) alertOnline(online bool, id string) {
 	url := "/api/online/websocket/" + id
 	msg, _ := json.Marshal(online)
 
-	fmt.Println("ALERT ONLINE =========> ", url, online)
+	//fmt.Println("ALERT ONLINE =========> ", url, online)
 	_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
 		return session.Request.URL.Path == url
 	})
@@ -162,7 +162,7 @@ func (app *App) dbInsertNotification(byt []byte) (int64, error) {
 	if err := json.Unmarshal(byt, &dat); err != nil {
 		panic(err)
 	}
-	fmt.Println(dat)
+	//fmt.Println(dat)
 	dat["message"] = dat["message"].(string)
 	dat["author_id"] = int64(dat["author_id"].(float64))
 	dat["user_id"] = int64(dat["user_id"].(float64))
@@ -183,7 +183,7 @@ RETURN ID(n)
 
 func notificationsHistoryHandler(c *gin.Context) {
 	userId := c.Param("user")
-	fmt.Println("notifs History =======> ", userId)
+	//fmt.Println("notifs History =======> ", userId)
 	q := `
 MATCH (n:Notif)-[:TO]-(u:User) where id(u)=` + string(userId) + ` RETURN n ORDER by ID(n)
 `

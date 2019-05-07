@@ -17,6 +17,7 @@ const (
 )
 
 func validateUser(rf registerForm) (User, validationResponse) {
+	prin("REGISTER FORM ===> ", rf, "|")
 	res := validationResponse{
 		true,
 		false,
@@ -83,6 +84,7 @@ func userFactory(rf registerForm) (u User, err error) {
 	u.FirstName = rf.Firstname
 	u.Birthday = rf.Birthday
 	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
+	prin("REGISTER LAST CON ====> ", u.LastConn, "|")
 	u.RandomToken = newToken()
 	u.Img1 = "http://localhost:8080/src/public/img/blank-profile.png"
 	u.Img2 = "http://localhost:8080/src/public/img/blank-profile.png"
