@@ -60,7 +60,7 @@ ORDER BY ID(n)
 }
 
 func (app *App) insertUser(u User) {
-	//fmt.Println(MapOf(u))
+	fmt.Println(MapOf(u))
 	q := `CREATE (u:User{name: {username},
 username:{username}, password:{password},
 firstname:{firstname}, lastname:{lastname},
@@ -82,10 +82,9 @@ ilike: {ilike}, relation: {relation}})`
 }
 
 func (app *App) updateUser(u User) {
-	//fmt.Println("USer ====>>", MapOf(u))
+	//fmt.Println(MapOf(u))
 	var id string
 	id = strconv.Itoa(int(u.Id))
-	//fmt.Println("id", id)
 	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.name = {username},
 	u.firstname = {firstname}, u.lastname = {lastname},
 	u.username = {username}, u.password = {password},
@@ -100,9 +99,7 @@ func (app *App) updateUser(u User) {
 	u.online = {online}, u.rating = {rating},
 	u.email = {email}, u.access_lvl = {access_lvl},
 	u.tags = {tags},  u.last_conn = {last_conn}`
-	//prin("UPDATE USER ==> ", q, "|")
 	st := app.prepareStatement(q)
-	//fmt.Println("TATATA", st)
 	executeStatement(st, MapOf(u))
 	return
 }
@@ -196,7 +193,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	superQuery := customQuery(Id, Filter)
 
 	data, _, _, err := app.Neo.QueryNeoAll(superQuery, nil)
-
+	u, _ := app.getUser(Id, "")
 	if len(data) == 0 {
 		err = errors.New("err : filters doesn't match anyone")
 		return g, err
@@ -214,7 +211,7 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 
 			// Haversine will return the distance between 2 Lat/Lon in Kilometers
 
-			if Haversine(0, 0, lonTo, latTo) <= Filter.Location[1] {
+			if Haversine(u.Longitude, u.Latitude, lonTo, latTo) <= Filter.Location[1] {
 				if valid := setInterest(Genre, Interest, Id); valid == true {
 					g = append(g, d[0].(graph.Node))
 				}
@@ -243,7 +240,8 @@ func (app *App) emailExist(Email string) bool {
 }
 
 func (app *App) prepareStatement(query string) bolt.Stmt {
-	st, err := app.Neo.PrepareNeo(query)
+	conn, err := app.Db.OpenPool()
+	st, err := conn.PrepareNeo(query)
 	handleError(err)
 	return st
 }
@@ -255,6 +253,7 @@ func executeStatement(st bolt.Stmt, m map[string]interface{}) {
 	handleError(err)
 
 	st.Close()
+
 }
 func handleError(err error) {
 	if err != nil {

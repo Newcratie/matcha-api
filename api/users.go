@@ -77,30 +77,20 @@ func (req Request) updatePosition() {
 
 	prin("POSITION ==> ", req.body, "|")
 
-	var lat string
-	var lon string
-
 	if req.body["type"] == "ip" {
-		lat, lon, _ = getPositionFromIp(req.body["position"].(string))
-		prin("LAAAAAT ==> ", lat, "LOOOON ==> ", lon, "|")
+		req.user.Latitude, req.user.Longitude = getPositionFromIp(req.body["position"].(string))
+		prin("IP POSS LAT ==> ", req.user.Latitude, "LON ==> ", req.user.Longitude, "|")
+		app.updateUser(req.user)
 	} else if req.body["type"] == "gps" {
-		prin("OOOOOOOOOOOO")
+		req.user.Latitude = req.body["position"].(map[string]interface{})["lat"].(float64)
+		req.user.Longitude = req.body["position"].(map[string]interface{})["long"].(float64)
+		app.updateUser(req.user)
 	}
-
-	//Ip := net.ParseIP(req.body["position"].(string))
-	//
-	//if Ip == nil {
-	//	lat = req.body["lat"].(string)
-	//	long = req.body["long"].(string)
-	//	prin("LAT ==> ", lat, "| LONG ==> ", long, "|")
-	//} else {
-	//	getPositionFromIp(Ip)
-	//}
 	retUser(req)
 }
 func (req Request) updateLocation() {
 	pos := req.body["location"]
-	fmt.Println(pos)
+	fmt.Println("LOCATION MODIF USER ==> ", pos, "|")
 	retUser(req)
 }
 func (req Request) updateBio() {

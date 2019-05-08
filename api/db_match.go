@@ -96,6 +96,7 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 
 	if app.dbExistMatch(m) == true {
 		app.dbDeleteRelation(m, matched)
+
 	}
 	if app.dbExistRel(m, "LIKE") {
 		newEvent(m.c, func(name string) string {
@@ -116,8 +117,10 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 func (app *App) dbExistMatch(m Match) (valid bool) {
 
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:MATCHED]-(n) )`
-	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
-	if data[0][0] == false {
+	data, _, _, err := app.Neo.QueryNeoAll(ExistQuery, nil)
+	if err != nil {
+		return false
+	} else if len(data) != 0 && data[0][0] == false {
 		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
@@ -127,8 +130,10 @@ func (app *App) dbExistMatch(m Match) (valid bool) {
 func (app *App) dbExistRel(m Match, Rel string) (valid bool) {
 
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:` + Rel + `]->(n) )`
-	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
-	if data[0][0] == false {
+	data, _, _, err := app.Neo.QueryNeoAll(ExistQuery, nil)
+	if err != nil {
+		return false
+	} else if len(data) != 0 && data[0][0] == false {
 		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
@@ -138,8 +143,10 @@ func (app *App) dbExistRel(m Match, Rel string) (valid bool) {
 func (app *App) dbExistRevLike(m Match) (valid bool) {
 
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)<-[:LIKE]-(n) )`
-	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
-	if data[0][0] == false {
+	data, _, _, err := app.Neo.QueryNeoAll(ExistQuery, nil)
+	if err != nil {
+		return false
+	} else if len(data) != 0 && data[0][0] == false {
 		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
