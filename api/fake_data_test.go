@@ -111,10 +111,10 @@ func newRandomFemale() User {
 }
 
 func TestAddFakeData(t *testing.T) {
-	const max = 80
-	driver := bolt.NewDriver()
+	const max = 100
 	host := os.Getenv("NEO_HOST")
-	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
+	app.Db, _ = bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
+	app.Neo, _ = app.Db.OpenPool()
 	for i := 0; i < max; i++ {
 		s := gofakeit.Color()
 		s = strings.ToLower(s)
@@ -128,6 +128,7 @@ func TestAddFakeData(t *testing.T) {
 		app.insertUser(u)
 		AddTagRelation(u)
 	}
+
 }
 
 func AddTagRelation(u User) {

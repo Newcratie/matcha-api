@@ -70,23 +70,18 @@ func verifyPassword(newPassword string, confirmPassword string) error {
 	return nil
 }
 
-type Location struct {
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-}
-
 func getJson(url string, target interface{}) {
 	r, _ := http.Get(url)
+
 	defer r.Body.Close()
 
 	bd, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(bd, target)
 }
 
-func getPositionFromIp(Ip string) (lat string, lon string, err error) {
+func getPositionFromIp(Ip string) (Latitude, longitude float64) {
+	var pos Location
 	url := "http://api.ipstack.com/" + Ip + "?access_key=12895141d055409cac451e1a526764a7&format=1"
-	target := Location{}
-	getJson(url, &target)
-	prin("BODYYYYYY ===> ", "|", target)
-	return
+	getJson(url, &pos)
+	return pos.Latitude, pos.Longitude
 }

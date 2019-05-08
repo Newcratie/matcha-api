@@ -17,13 +17,14 @@ func (app *App) newApp() {
 }
 
 func NewConn(host string) (bolt.Conn, error) {
-	DB, err := bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
+	var err error
+	app.Db, err = bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
 	if err != nil {
 		return nil, err
 	}
 	retries := 0
 	for retries < 300 {
-		conn, _ := DB.OpenPool()
+		conn, _ := app.Db.OpenPool()
 		if conn != nil {
 			return conn, nil
 		}

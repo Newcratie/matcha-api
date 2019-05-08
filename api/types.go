@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"gopkg.in/olahol/melody.v1"
@@ -12,10 +11,10 @@ import (
 var app App
 
 type App struct {
-	Db  *sqlx.DB
 	R   *gin.Engine
 	Neo bolt.Conn
 	M   *melody.Melody
+	Db  bolt.DriverPool
 }
 
 type ResStart struct {
@@ -55,6 +54,11 @@ type User struct {
 	LastConn    time.Time `json:"last_conn" db:"last_conn"`
 	Ilike       bool      `json:"ilike" db:"ilike"`
 	Relation    string    `json:"relation" db:"relation"`
+}
+
+type Location struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
 }
 
 type Tag struct {
