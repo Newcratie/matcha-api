@@ -29,7 +29,7 @@ CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, id:{id}, tim
 }
 
 type Messages struct {
-	Id        int64  `json:"id"`
+	Id        string `json:"id"`
 	Author    int64  `json:"author"`
 	Message   string `json:"message"`
 	Timestamp int64  `json:"timestamp"`
@@ -49,7 +49,7 @@ ORDER BY ID(n)
 	fmt.Println(data)
 	for _, tab := range data {
 		msgs = append(msgs, Messages{
-			int64(tab[0].(graph.Node).Properties["id"].(float64)),
+			tab[0].(graph.Node).Properties["id"].(string),
 			tab[0].(graph.Node).Properties["author"].(int64),
 			tab[0].(graph.Node).Properties["msg"].(string),
 			tab[0].(graph.Node).Properties["timestamp"].(int64),

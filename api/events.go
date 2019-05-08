@@ -19,7 +19,8 @@ func newEventMessage(msg []byte) {
 	_ = json.Unmarshal(msg, &m)
 	fmt.Println("----------------------- Event Message ==========================")
 	fmt.Println(m)
-	message := "x sended you a message"
+	u, _ := app.dbGetUserProfile(int(m.Author))
+	message := u.Properties["username"].(string) + " sended you a message"
 	fmt.Println("new Event Message ========> ", m)
 	app.postNotification(message, m.To, m.Author, 3)
 	app.postEvent(message, m.To, m.Author, 3)
@@ -157,6 +158,7 @@ func (app *App) postNotification(message string, userId, authorId, subjectId int
 	} else {
 		msg, _ = json.Marshal(n)
 
+		time.Sleep(time.Second * 1)
 		_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
 			return session.Request.URL.Path == url
 		})

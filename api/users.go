@@ -10,7 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 )
 
 type Request struct {
@@ -31,6 +33,9 @@ func UserModify(c *gin.Context) {
 		req.user, _ = app.getUser(req.id, "")
 		mod := c.Param("name")
 		switch mod {
+		case "birthday":
+			req.updateBirthday()
+			break
 		case "position":
 			req.updatePosition()
 			break
@@ -103,6 +108,25 @@ func (req Request) updateLocation() {
 	fmt.Println(pos)
 	retUser(req)
 }
+func (req Request) updateBirthday() {
+	day := strconv.FormatInt(int64(req.body["day"].(float64)), 10)
+	month := strconv.FormatInt(int64(req.body["month"].(float64)), 10)
+	year := strconv.FormatInt(int64(req.body["year"].(float64)), 10)
+	if len(day) == 1 {
+		day = "0" + day
+	}
+	if len(month) == 1 {
+		month = "0" + month
+	}
+	s := year + "-" + month + "-" + day
+	fmt.Println(s)
+	date, _ := time.Parse("2006-01-02", s)
+
+	req.user.Birthday = date
+	app.updateUser(req.user)
+	retUser(req)
+}
+
 func (req Request) updateBio() {
 	bio := req.body["biography"].(string)
 
