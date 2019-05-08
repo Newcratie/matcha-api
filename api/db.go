@@ -163,7 +163,6 @@ func (app *App) dbGetMatchs(Id int) ([]graph.Node, error) {
 			g = append(g, d[0].(graph.Node))
 		}
 		return g, err
-
 	}
 }
 

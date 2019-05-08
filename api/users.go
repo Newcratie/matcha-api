@@ -75,11 +75,8 @@ func UserModify(c *gin.Context) {
 
 func (req Request) updatePosition() {
 
-	prin("POSITION ==> ", req.body, "|")
-
 	if req.body["type"] == "ip" {
 		req.user.Latitude, req.user.Longitude = getPositionFromIp(req.body["position"].(string))
-		prin("IP POSS LAT ==> ", req.user.Latitude, "LON ==> ", req.user.Longitude, "|")
 		app.updateUser(req.user)
 	} else if req.body["type"] == "gps" {
 		req.user.Latitude = req.body["position"].(map[string]interface{})["lat"].(float64)
@@ -89,10 +86,14 @@ func (req Request) updatePosition() {
 	retUser(req)
 }
 func (req Request) updateLocation() {
-	pos := req.body["location"]
-	fmt.Println("LOCATION MODIF USER ==> ", pos, "|")
+
+	pos := req.body["position"]
+	req.user.Latitude = pos.(map[string]interface{})["Latitude"].(float64)
+	req.user.Longitude = pos.(map[string]interface{})["Longitude"].(float64)
+	app.updateUser(req.user)
 	retUser(req)
 }
+
 func (req Request) updateBio() {
 	bio := req.body["biography"].(string)
 
