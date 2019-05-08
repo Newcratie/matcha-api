@@ -131,9 +131,9 @@ func GetMessages(c *gin.Context) {
 	}
 }
 
-func getMatchPeople(c *gin.Context) {
-
-}
+//func getMatchPeople(g []graph.Node) []graph.Node {
+//	sort.Sort()
+//}
 
 func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
@@ -154,6 +154,7 @@ func GetPeople(c *gin.Context) {
 		app.onlineRefresh(str)
 		app.alertOnline(true, str)
 		g, err := app.dbGetPeople(id, &filters)
+		//g = getMatchPeople(g)
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
