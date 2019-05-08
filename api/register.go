@@ -77,14 +77,19 @@ func validateUser(rf registerForm) (User, validationResponse) {
 }
 
 func userFactory(rf registerForm) (u User, err error) {
+
+	now := time.Now()
+	now = now.AddDate(-(18), 0, 0)
+
 	u.Username = rf.Username
 	u.Email = rf.Email
 	u.Password = hash.Encrypt(hashKey, rf.Password)
 	u.LastName = rf.Lastname
 	u.FirstName = rf.Firstname
-	u.Birthday = rf.Birthday
+	u.Birthday, _ = time.Parse(time.RFC3339, now.Format(time.RFC3339Nano))
 	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
-	prin("REGISTER LAST CON ====> ", u.LastConn, "|")
+	u.Interest = "bi"
+	u.Genre = "female"
 	u.RandomToken = newToken()
 	u.Img1 = "http://localhost:8080/src/public/img/blank-profile.png"
 	u.Img2 = "http://localhost:8080/src/public/img/blank-profile.png"
