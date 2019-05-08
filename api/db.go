@@ -70,7 +70,8 @@ country:{country}, latitude: {latitude},
 longitude:{longitude}, geo_allowed: {geo_allowed},
 online:{online}, rating: {rating},
 email: {email}, access_lvl: 1, last_conn: {last_conn},
-ilike: {ilike}, relation: {relation}})`
+ilike: {ilike}, relation: {relation}, tags: {tags}})`
+	//fmt.Println("Query == ", q)
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
 	return
@@ -92,7 +93,7 @@ func (app *App) updateUser(u User) {
 	u.longitude = {longitude}, u.geo_allowed = {geo_allowed},
 	u.online = {online}, u.rating = {rating},
 	u.email = {email}, u.access_lvl = {access_lvl},
-	u.tags = {tags},  u.last_conn = {last_conn}`
+	u.tags = {tags},  u.last_conn = {last_conn}, u.tags = {tags} `
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
 	return

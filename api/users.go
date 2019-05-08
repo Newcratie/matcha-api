@@ -182,6 +182,8 @@ func (req Request) addNewTag() {
 		Tags.Text = "#" + strings.Title(Tags.Value)
 		app.insertTag(Tags, req.user.Id)
 	}
+	req.user.Tags = append(req.user.Tags, Tags.Value)
+	app.updateUser(req.user)
 	retUser(req)
 }
 
@@ -194,7 +196,7 @@ func (req Request) userSetOldTags() {
 			app.createTagRelation(int(req.user.Id), tag.(string))
 		}
 	}
-	req.user.Tags = userTags
+	req.user.Tags = append(req.user.Tags, userTags...)
 	app.updateUser(req.user)
 	retUser(req)
 }

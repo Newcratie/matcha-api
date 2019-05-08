@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/brianvoe/gofakeit"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
@@ -19,7 +20,7 @@ func newRandomMale() User {
 	interest[0] = "bi"
 	interest[1] = "hetero"
 	interest[2] = "homo"
-	tagtab := make([]string, 4)
+	tagtab := make([]string, 1)
 	//tagg := []Tag
 	for i := 0; i < max; i++ {
 		tagtab[i] = gofakeit.Color()
@@ -72,7 +73,7 @@ func newRandomFemale() User {
 	interest[0] = "bi"
 	interest[1] = "hetero"
 	interest[2] = "homo"
-	tagtab := make([]string, 4)
+	tagtab := make([]string, 1)
 	for i := 0; i < max; i++ {
 		tagtab[i] = gofakeit.Color()
 	}
@@ -116,6 +117,7 @@ func TestAddFakeData(t *testing.T) {
 	host := os.Getenv("NEO_HOST")
 	app.Db, _ = bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
 	app.Neo, _ = app.Db.OpenPool()
+	defer app.Neo.Close()
 	for i := 0; i < max; i++ {
 		s := gofakeit.Color()
 		s = strings.ToLower(s)
@@ -124,10 +126,10 @@ func TestAddFakeData(t *testing.T) {
 	for i := 0; i < max; i++ {
 		prin("----------")
 		u := newRandomMale()
-		app.insertUser(u)
+		app.insertFakeUser(u)
 		AddTagRelation(u)
 		u = newRandomFemale()
-		app.insertUser(u)
+		app.insertFakeUser(u)
 		AddTagRelation(u)
 	}
 
@@ -141,4 +143,32 @@ func AddTagRelation(u User) {
 		st := app.prepareStatement(q)
 		executeStatement(st, MapOf(u))
 	}
+}
+
+func (app *App) insertFakeUser(u User) {
+	fmt.Println(MapOf(u))
+	q := `CREATE (u:User{name: {username},
+username:{username}, password:{password},
+firstname:{firstname}, lastname:{lastname},
+birthday:{birthday}, random_token: {random_token},
+img1:{img1}, img2: {img2},
+img3:{img3}, img4: {img4},
+img5:{img5}, biography: {biography},
+genre:{genre}, interest: {interest},
+city:{city}, zip: {zip},
+country:{country}, latitude: {latitude},
+longitude:{longitude}, geo_allowed: {geo_allowed},
+online:{online}, rating: {rating},
+email: {email}, access_lvl: 1, last_conn: {last_conn},
+ilike: {ilike}, relation: {relation}, tags: {tags}})`
+	//fmt.Println("Query == ", q)
+	st := app.prepareFakeStatement(q)
+	executeStatement(st, MapOf(u))
+	return
+}
+
+func (app *App) prepareFakeStatement(query string) bolt.Stmt {
+	st, err := app.Neo.PrepareNeo(query)
+	handleError(err)
+	return st
 }
