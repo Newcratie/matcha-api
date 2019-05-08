@@ -28,6 +28,8 @@ func (app *App) routerAPI() {
 	{
 		api.GET("/people", GetPeople)
 		api.PUT("/visit/:id", newVisit)
+		api.POST("/send_token", Forgot)
+		api.PUT("/reset_password", ResetPassword)
 		api.PUT("/people/:id/:action", CreateLike)
 		api.GET("/matchs", GetMatchs)
 		api.GET("/kwal", func(c *gin.Context) {
