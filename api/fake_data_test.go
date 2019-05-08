@@ -111,7 +111,8 @@ func newRandomFemale() User {
 }
 
 func TestAddFakeData(t *testing.T) {
-	const max = 50
+	const max = 260
+
 	host := os.Getenv("NEO_HOST")
 	app.Db, _ = bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
 	app.Neo, _ = app.Db.OpenPool()
@@ -121,6 +122,7 @@ func TestAddFakeData(t *testing.T) {
 		app.Neo.QueryNeoAll(`MERGE (t:TAG {key: "`+s+`", text: "#`+strings.Title(s)+`", value: "`+s+`"}) `, nil)
 	}
 	for i := 0; i < max; i++ {
+		prin("----------")
 		u := newRandomMale()
 		app.insertUser(u)
 		AddTagRelation(u)
@@ -132,7 +134,8 @@ func TestAddFakeData(t *testing.T) {
 }
 
 func AddTagRelation(u User) {
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 1; i++ {
+		prin("++++++++++++")
 		tag := strings.ToLower(u.Tags[i])
 		q := `MATCH (u:User) WHERE u.username = {username} MATCH (n:TAG) WHERE n.value = "` + tag + `" CREATE (u)-[g:TAGGED]->(n) return n`
 		st := app.prepareStatement(q)

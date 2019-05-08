@@ -136,6 +136,10 @@ func GetMessages(c *gin.Context) {
 	}
 }
 
+func getMatchPeople(c *gin.Context) {
+
+}
+
 func GetPeople(c *gin.Context) {
 	filtersJson := c.Request.Header["Filters"][0]
 	var err error
