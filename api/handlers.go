@@ -250,5 +250,17 @@ func ResetPassword(c *gin.Context) {
 	confirm := c.PostForm("confirm")
 	username := c.PostForm("username")
 
+	u, err := app.getUser(-1, username)
+	if err != nil || u.RandomToken != token {
+		c.JSON(201, gin.H{"err": "Wrong username or token"})
+	} else {
+		if err = verifyPassword(password, confirm); err != nil {
+			c.JSON(201, gin.H{"err": err.Error()})
+		} else {
+			u.Password = hash.Encrypt(hashKey, password)
+			app.updateUser(u)
+		}
+	}
+
 	fmt.Println("TOOOEKEKEKE ==> ", token, password, confirm, username, "|")
 }
