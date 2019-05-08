@@ -51,36 +51,13 @@ func CreateLike(c *gin.Context) {
 		m.idTo, _ = strconv.Atoi(c.Param("id"))
 		m.action = strings.ToUpper(c.Param("action"))
 		m.idFrom = id
+		m.c = c
 		if _, err = app.dbMatchs(m); err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
 			c.JSON(200, nil)
 		}
-		m.idFrom = int(claims["id"].(float64))
 		app.onlineRefresh(strconv.Itoa(m.idFrom))
-		prin("AFTER FROM ==>> ", m.idFrom, "|")
-		app.dbMatchs(m)
-
-		action := c.Param("action")
-		switch action {
-		case "like":
-			if app.dbExistMatch(m) {
-				newEvent(c, func(name string) string {
-					return "It's a match!!! With " + name
-				})
-			} else {
-				newEvent(c, func(name string) string {
-					return name + " " + action + " you!!! ❤️❤️"
-				})
-			}
-			break
-		case "dislike":
-			if app.dbExistRel(m, like) {
-				newEvent(c, func(name string) string {
-					return name + " doesn't like you anymore 😱"
-				})
-			}
-		}
 
 	} else {
 		PrintHandlerLog("Token Not Valid", ErrorC)

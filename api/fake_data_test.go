@@ -26,6 +26,8 @@ func newRandomMale() User {
 		//tagg.
 	}
 
+	Latitude, _ := gofakeit.LatitudeInRange(42.490627, 50.264989)
+	Longitude, _ := gofakeit.LongitudeInRange(-3.396493, 9.517944)
 	return User{Username: gofakeit.Username(),
 		Password:  hash.Encrypt(hashKey, "'"),
 		FirstName: f.FirstName,
@@ -47,8 +49,8 @@ func newRandomMale() User {
 		City:       gofakeit.City(),
 		Zip:        gofakeit.Zip(),
 		Country:    gofakeit.Country(),
-		Latitude:   gofakeit.Latitude(),
-		Longitude:  gofakeit.Longitude(),
+		Latitude:   Latitude,
+		Longitude:  Longitude,
 		GeoAllowed: gofakeit.Bool(),
 		CreatedAt: gofakeit.DateRange(time.Date(1900, 01, 01, 00, 00, 00, 00, time.Local),
 			time.Date(2017, 01, 01, 00, 00, 00, 00, time.Local)),
@@ -61,6 +63,8 @@ func newRandomMale() User {
 }
 
 func newRandomFemale() User {
+	Latitude, _ := gofakeit.LatitudeInRange(42.490627, 50.264989)
+	Longitude, _ := gofakeit.LongitudeInRange(-3.396493, 9.517944)
 	var f *gofakeit.PersonInfo
 	max := 1
 	f = gofakeit.Person()
@@ -93,8 +97,8 @@ func newRandomFemale() User {
 		City:       gofakeit.City(),
 		Zip:        gofakeit.Zip(),
 		Country:    gofakeit.Country(),
-		Latitude:   gofakeit.Latitude(),
-		Longitude:  gofakeit.Longitude(),
+		Latitude:   Latitude,
+		Longitude:  Longitude,
 		GeoAllowed: gofakeit.Bool(),
 		CreatedAt: gofakeit.DateRange(time.Date(1900, 01, 01, 00, 00, 00, 00, time.Local),
 			time.Date(2017, 01, 01, 00, 00, 00, 00, time.Local)),
@@ -107,7 +111,7 @@ func newRandomFemale() User {
 }
 
 func TestAddFakeData(t *testing.T) {
-	const max = 80
+	const max = 300
 	driver := bolt.NewDriver()
 	host := os.Getenv("NEO_HOST")
 	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")

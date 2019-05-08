@@ -26,7 +26,7 @@ func (app *App) routerAPI() {
 	}
 	api := app.R.Group("/api")
 	{
-		api.GET("/people", GetPeople)
+		api.GET("/people/:param", GetPeople)
 		api.PUT("/visit/:id", newVisit)
 		api.PUT("/people/:id/:action", CreateLike)
 		api.GET("/matchs", GetMatchs)

@@ -49,6 +49,9 @@ func (app *App) dbCreateLike(m Match) (valid bool) {
 			//fmt.Println("*** CreateLike Query returned an Error ***", data)
 			return false
 		}
+		newEvent(m.c, func(name string) string {
+			return name + " like you!!! ❤️❤️"
+		})
 		return true
 	} else {
 		UpdateRating(m.idTo, "LIKE")
@@ -68,6 +71,9 @@ func (app *App) dbSetMatch(m Match) (valid bool) {
 		//fmt.Println("*** Set MatchQuery returned an Error ***", data)
 		return false
 	}
+	newEvent(m.c, func(name string) string {
+		return "It's a match!!! With " + name
+	})
 	return true
 }
 
@@ -97,6 +103,9 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 		//fmt.Println("*** CreateLike Query returned an Error ***", data)
 		return false
 	}
+	newEvent(m.c, func(name string) string {
+		return name + " doesn't like you anymore 😱"
+	})
 	return true
 }
 

@@ -100,9 +100,10 @@ type validationResponse struct {
 }
 
 type Match struct {
-	idFrom int    `json:"id_from"`
-	idTo   int    `json:"id_to"`
-	action string `json:"action"`
+	idFrom int          `json:"id_from"`
+	idTo   int          `json:"id_to"`
+	action string       `json:"action"`
+	c      *gin.Context `json:"c"`
 }
 
 type Notification struct {
