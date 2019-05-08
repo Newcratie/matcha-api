@@ -105,7 +105,7 @@ func (app *App) updateUser(u User) {
 }
 
 func (app *App) updateLastConn(u User) {
-	prin("**** IN UPDATE CONN ****")
+	//prin("**** IN UPDATE CONN ****")
 	id := strconv.Itoa(int(u.Id))
 	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.online = {online}, u.last_conn = {last_conn}`
 	st := app.prepareStatement(q)
@@ -137,7 +137,7 @@ func (app *App) getUser(Id int, Username string) (u User, err error) {
 
 func (app *App) getBasicUser(Id int) (u User, err error) {
 	data, _, _, err := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE id(n) = `+strconv.Itoa(Id)+` RETURN n`, nil)
-	fmt.Println("basic: ", data)
+	//fmt.Println("basic: ", data)
 	if len(data) == 0 || err != nil {
 		return
 	} else {

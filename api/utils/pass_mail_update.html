@@ -166,26 +166,17 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td class="content-block">
-                                        <h1>Welcome to Matcha42 {{.Name}}!</h1>
+                                        <h1>Hello {{.Name}}!</h1>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="content-block">
-                                        Thank you for signing up for Matcha42!.
-
-                                        <br/>
-                                        Your age has been set to Default, 18y/o, your sexual orientation to bisexual and
-                                        your gendre has a female, you can update these information on you profil
-                                        and don't forget to put a profil picture otherwise you will not be able to interact with other user.
-                                        <br/>
-                                        <br/>
-                                        Have a good time on 42Matcha.<br/>
-                                        Click on the link to confirm your email.
+                                        {{.Message}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="content-block action-block aligncenter" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
-                                        <a href="{{.URL}}" class="btn-primary" itemprop="url">Confirm email address</a>
+                                        <a href="{{.URL}}" class="btn-primary" itemprop="url">Go to Matcha</a>
                                     </td>
                                 </tr>
                             </table>

@@ -49,10 +49,10 @@ func UserModify(c *gin.Context) {
 			req.updateUsername()
 			break
 		case "usertags":
-			req.userTags()
+			req.userSetOldTags()
 			break
 		case "tag":
-			req.addTag()
+			req.addNewTag()
 			break
 		case "password":
 			req.updatePassword()
@@ -120,8 +120,8 @@ func (req Request) updateBirthday() {
 func (req Request) updateBio() {
 	bio := req.body["biography"].(string)
 
-	if len(bio) > 100 || len(bio) < 10 {
-		err := errors.New("error : your biography must be between 10 and 100 characters")
+	if len(bio) > 250 || len(bio) < 10 {
+		err := errors.New("error : your biography must be between 10 and 250 characters")
 		req.context.JSON(201, gin.H{"err": err.Error()})
 	} else {
 		req.user.Biography = bio
@@ -168,32 +168,52 @@ func (req Request) updateInterest() {
 	retUser(req)
 }
 
-func (req Request) addTag() {
+func (req Request) addNewTag() {
+	var Tags Tag
+
+	Tags.Value = req.body["tag"].(string)
+	if len(Tags.Value) < 1 || len(Tags.Value) > 20 {
+		err := errors.New("error : your Tag must be between 1 to 20 characters")
+		req.context.JSON(201, gin.H{"err": err.Error()})
+	} else if app.tagExist(Tags.Value) == true {
+		err := errors.New("error : The tag exist")
+		req.context.JSON(201, gin.H{"err": err.Error()})
+	} else {
+		Tags.Value = strings.ToLower(Tags.Value)
+		Tags.Key = Tags.Value
+		Tags.Text = "#" + strings.Title(Tags.Value)
+		app.insertTag(Tags, req.user.Id)
+	}
+	retUser(req)
 }
 
-func (req Request) userTags() {
+func (req Request) userSetOldTags() {
 	tab := req.body["tags"].([]interface{})
 	var userTags []string
 	for _, tag := range tab {
-		userTags = append(userTags, tag.(string))
+		if app.tagExist(tag.(string)) && app.tagRelationExist(int(req.user.Id), tag.(string)) == false {
+			userTags = append(userTags, tag.(string))
+			app.createTagRelation(int(req.user.Id), tag.(string))
+		}
 	}
-	fmt.Println("1", req.user.Tags)
 	req.user.Tags = userTags
-	fmt.Println("2", req.user.Tags)
-
 	app.updateUser(req.user)
 	retUser(req)
 }
 
 func (req Request) updateEmail() {
 	newEmail := req.body["new_email"].(string)
+	message := "Your mail address has been updated."
 	if err := req.checkPassword(); err != nil {
 		req.context.JSON(201, gin.H{"err": err.Error()})
 	} else if !emailIsValid(newEmail) {
 		req.context.JSON(201, gin.H{"err": "Email is invalid"})
+	} else if app.emailExist(newEmail) {
+		req.context.JSON(201, gin.H{"err": "Email already  exist"})
 	} else {
 		req.user.Email = newEmail
 		app.updateUser(req.user)
+		SendEmail("Email Update", req.user.Username, newEmail, message)
 		retUser(req)
 	}
 }
@@ -202,6 +222,7 @@ func (req Request) updatePassword() {
 	newPassword := req.body["new_password"].(string)
 	confirmPassword := req.body["confirm"].(string)
 
+	message := "Your password has been updated."
 	if err := req.checkPassword(); err != nil {
 		req.context.JSON(201, gin.H{"err": err.Error()})
 	} else {
@@ -210,6 +231,7 @@ func (req Request) updatePassword() {
 		} else {
 			req.user.Password = hash.Encrypt(hashKey, newPassword)
 			app.updateUser(req.user)
+			SendEmail("Email Update", req.user.Username, req.user.Email, message)
 			retUser(req)
 		}
 	}

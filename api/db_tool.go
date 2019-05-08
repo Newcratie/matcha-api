@@ -98,7 +98,7 @@ func customQuery(Id int, Filter *Filters) (superQuery string) {
 
 	superQuery += `MATCH (u:User) WHERE NOT Id(u)= ` + strconv.Itoa(Id) + ` AND NOT (u)<-[:BLOCK]-() AND (u.rating >= ` + strconv.Itoa(Filter.Score[0]) + ` AND u.rating <= ` + strconv.Itoa(Filter.Score[1]) + `)
 	AND (u.birthday >= "` + maxAge + `" AND u.birthday <= "` + minAge + `") ` + cQuery + ` RETURN DISTINCT u`
-	prin("SUPERQUERY ==> ", superQuery, "|")
+	//prin("SUPERQUERY ==> ", superQuery, "|")
 	return
 }
 
