@@ -111,7 +111,7 @@ func newRandomFemale() User {
 }
 
 func TestAddFakeData(t *testing.T) {
-	const max = 100
+	const max = 50
 	host := os.Getenv("NEO_HOST")
 	app.Db, _ = bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
 	app.Neo, _ = app.Db.OpenPool()

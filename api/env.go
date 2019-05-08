@@ -1,11 +1,10 @@
 package api
 
 const (
-	imageSrc  = "/public/img"
-	imageHost = "http://localhost:8080/src" + imageSrc
-	like      = "LIKE"
-	dislike   = "DISLIKE"
-	//block        = "BLOCK"
+	imageSrc     = "/public/"
+	imageHost    = "http://localhost:3000"
+	like         = "LIKE"
+	dislike      = "DISLIKE"
 	matched      = "MATCHED"
 	delayWatcher = 10
 )

@@ -271,8 +271,8 @@ func userImageHandler(c *gin.Context) {
 			fmt.Println(err)
 		} else {
 			fmt.Println("ext ========> ", ext)
-			f, _ := os.Create(imageSrc + "/" + name + "." + ext) //create file
-			defer f.Close()                                      //close after processing
+			f, _ := os.Create(imageSrc + name + "." + ext) //create file
+			defer f.Close()                                //close after processing
 
 			f.Write(buf.Bytes()) // Write buffer on the file
 
@@ -287,7 +287,6 @@ func userImageHandler(c *gin.Context) {
 				if err := req.prepareRequest(c); err != nil {
 					c.JSON(201, gin.H{"err": err.Error()})
 				} else {
-					fmt.Println("PARAM    ", c.Param("n"))
 					switch c.Param("n") {
 					case "img1":
 						req.user.Img1 = link
@@ -296,7 +295,6 @@ func userImageHandler(c *gin.Context) {
 						req.user.Img2 = link
 						break
 					case "img3":
-						fmt.Println("Ok     =========================")
 						req.user.Img3 = link
 						break
 					case "img4":

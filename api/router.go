@@ -13,7 +13,7 @@ func (app *App) routerAPI() {
 	app.R.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
-		AllowHeaders:     []string{"*"},
+		AllowHeaders:     []string{"*", "Authorization", "Filters", "Suitor-Id"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))

@@ -86,11 +86,11 @@ func userFactory(rf registerForm) (u User, err error) {
 	u.LastConn, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339Nano))
 	prin("REGISTER LAST CON ====> ", u.LastConn, "|")
 	u.RandomToken = newToken()
-	u.Img1 = "http://localhost:8080/src/public/img/blank-profile.png"
-	u.Img2 = "http://localhost:8080/src/public/img/blank-profile.png"
-	u.Img3 = "http://localhost:8080/src/public/img/blank-profile.png"
-	u.Img4 = "http://localhost:8080/src/public/img/blank-profile.png"
-	u.Img5 = "http://localhost:8080/src/public/img/blank-profile.png"
+	u.Img1 = imageHost + "/blank-profile.png"
+	u.Img2 = imageHost + "/blank-profile.png"
+	u.Img3 = imageHost + "/blank-profile.png"
+	u.Img4 = imageHost + "/blank-profile.png"
+	u.Img5 = imageHost + "/blank-profile.png"
 	err = SendEmailValidation(u.Username, u.Email, u.RandomToken)
 	return
 }
