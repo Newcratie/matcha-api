@@ -17,7 +17,6 @@ const (
 )
 
 func validateUser(rf registerForm) (User, validationResponse) {
-	prin("REGISTER FORM ===> ", rf, "|")
 	res := validationResponse{
 		true,
 		false,

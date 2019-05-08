@@ -14,9 +14,6 @@ func TestWebSocket(t *testing.T) {
 
 func TestCreateLike(t *testing.T) {
 
-	//claims := jwt.MapClaims{}
-	//valid, err := ValidateToken(c, &claims)
-
 	var M Match
 	M.idFrom = 201
 	prin("ID_TO ==>", M.idFrom, "|")
@@ -27,7 +24,5 @@ func TestCreateLike(t *testing.T) {
 	if valid, err := app.dbMatchs(M); valid != true || err != nil {
 		prin("VALID ==>", valid, "ERROR ==>", err, "|")
 	}
-	//fmt.Println("jwt error: ", err)
-	//c.JSON(201, gin.H{"err": err.Error()})
 
 }

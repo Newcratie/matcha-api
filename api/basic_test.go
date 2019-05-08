@@ -15,7 +15,6 @@ func TestNeo(t *testing.T) {
 	host := os.Getenv("NEO_HOST")
 	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
 	u, err := app.dbGetPeople(81, nil)
-	fmt.Println(err, u)
 }
 
 func testParseClaims(t *testing.T) {
@@ -29,9 +28,5 @@ func testParseClaims(t *testing.T) {
 
 	} else if checkJwt(tokenString) {
 		id := int(math.Round(claims["id"].(float64)))
-		fmt.Printf(" Type: %d\n", id)
 	}
-	//for key, val := range claims {
-	//	fmt.Printf("Key: %v, value: %v\n", key, val)
-	//}
 }

@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
@@ -17,11 +16,8 @@ type format func(name string) (message string)
 func newEventMessage(msg []byte) {
 	var m Messages
 	_ = json.Unmarshal(msg, &m)
-	fmt.Println("----------------------- Event Message ==========================")
-	fmt.Println(m)
 	u, _ := app.dbGetUserProfile(int(m.Author))
 	message := u.Properties["username"].(string) + " sended you a message"
-	fmt.Println("new Event Message ========> ", m)
 	app.postNotification(message, m.To, m.Author, 3)
 	app.postEvent(message, m.To, m.Author, 3)
 }
@@ -67,7 +63,6 @@ func (app *App) dbInsertEvent(byt []byte) {
 	if err := json.Unmarshal(byt, &dat); err != nil {
 		panic(err)
 	}
-	fmt.Println(dat)
 	dat["message"] = dat["message"].(string)
 	dat["author_id"] = int64(dat["author_id"].(float64))
 	dat["user_id"] = int64(dat["user_id"].(float64))
@@ -84,7 +79,6 @@ RETURN ID(n)
 func getHistoryHandler(c *gin.Context) {
 	n, _ := strconv.Atoi(c.Param("user"))
 	userId := int64(n)
-	fmt.Println(userId)
 	q := `
 MATCH (n:Event)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 `
@@ -104,7 +98,6 @@ MATCH (n:Event)-[:TO]-(u:User) WHERE ID(u) = {user_id} RETURN n ORDER by ID(n)
 
 func (app *App) onlineRefresh(id string) {
 	lastConn := time.Now().Format(time.RFC3339Nano)
-	//fmt.Println("==------ online Refresh id: ", id, lastConn)
 	q := `MATCH (u:User) WHERE id(u)=` + id + ` set u.online = true, u.last_conn= "` + lastConn + `"`
 	app.Neo.QueryNeoAll(q, nil)
 	app.alertOnline(true, id)
@@ -112,7 +105,6 @@ func (app *App) onlineRefresh(id string) {
 
 func (app *App) offlineWatcher() {
 	for true {
-		//fmt.Println("---------------New Watcher----------")
 		time.Sleep(time.Second * 10)
 		q := `MATCH (u:User{online: true}) return u`
 		data, _, _, _ := app.Neo.QueryNeoAll(q, nil)
@@ -122,7 +114,6 @@ func (app *App) offlineWatcher() {
 			if time.Since(tp).Seconds() > 15 {
 				s := strconv.FormatInt(node[0].(graph.Node).NodeIdentity, 10)
 				q := `MATCH (u:User) WHERE id(u)=` + s + ` set u.online = false`
-				//fmt.Println("------------watcher close ", s, "-----------")
 				app.Neo.QueryNeoAll(q, nil)
 				app.alertOnline(false, s)
 			}
@@ -134,7 +125,6 @@ func (app *App) alertOnline(online bool, id string) {
 	url := "/api/online/websocket/" + id
 	msg, _ := json.Marshal(online)
 
-	//fmt.Println("ALERT ONLINE =========> ", url, online)
 	_ = app.M.BroadcastFilter(msg, func(session *melody.Session) bool {
 		return session.Request.URL.Path == url
 	})
@@ -154,7 +144,6 @@ func (app *App) postNotification(message string, userId, authorId, subjectId int
 	var err error
 	n.Id, err = app.dbInsertNotification(msg)
 	if err != nil {
-		fmt.Println(err)
 	} else {
 		msg, _ = json.Marshal(n)
 
@@ -170,7 +159,6 @@ func (app *App) dbInsertNotification(byt []byte) (int64, error) {
 	if err := json.Unmarshal(byt, &dat); err != nil {
 		panic(err)
 	}
-	//fmt.Println(dat)
 	dat["message"] = dat["message"].(string)
 	dat["author_id"] = int64(dat["author_id"].(float64))
 	dat["user_id"] = int64(dat["user_id"].(float64))
@@ -191,13 +179,11 @@ RETURN ID(n)
 
 func notificationsHistoryHandler(c *gin.Context) {
 	userId := c.Param("user")
-	//fmt.Println("notifs History =======> ", userId)
 	q := `
 MATCH (n:Notif)-[:TO]-(u:User) where id(u)=` + string(userId) + ` RETURN n ORDER by ID(n)
 `
 	ntfs := make([]Notification, 0)
 	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{})
-	fmt.Println("data", data)
 	for _, tab := range data {
 		ntfs = append(ntfs, Notification{
 			tab[0].(graph.Node).Properties["message"].(string),
@@ -207,7 +193,6 @@ MATCH (n:Notif)-[:TO]-(u:User) where id(u)=` + string(userId) + ` RETURN n ORDER
 			tab[0].(graph.Node).Properties["subject_id"].(int64),
 		})
 	}
-	fmt.Println(ntfs)
 	c.JSON(200, ntfs)
 }
 

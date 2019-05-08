@@ -34,7 +34,6 @@ func (app *App) dbExistBlocked(m Match) bool {
 	if err != nil {
 		return false
 	} else if data[0][0] == false {
-		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -48,7 +47,6 @@ func (app *App) dbCreateLike(m Match) (valid bool) {
 		MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:LIKE]->(n)`
 		_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 		if err != nil {
-			//fmt.Println("*** CreateLike Query returned an Error ***", data)
 			return false
 		}
 		newEvent(m.c, func(name string) string {
@@ -70,7 +68,6 @@ func (app *App) dbSetMatch(m Match) (valid bool) {
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:MATCHED]->(n)`
 	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
-		//fmt.Println("*** Set MatchQuery returned an Error ***", data)
 		return false
 	}
 	newEvent(m.c, func(name string) string {
@@ -86,7 +83,6 @@ func (app *App) dbCreateBlock(m Match) (valid bool) {
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:BLOCK]->(n)`
 	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
-		//fmt.Println("*** CreateLike Query returned an Error ***", data)
 		return false
 	}
 	return true
@@ -108,7 +104,6 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:DISLIKE]->(n)`
 	_, _, _, err := app.Neo.QueryNeoAll(MatchQuery, nil)
 	if err != nil {
-		//fmt.Println("*** CreateLike Query returned an Error ***", data)
 		return false
 	}
 	return true
@@ -121,7 +116,6 @@ func (app *App) dbExistMatch(m Match) (valid bool) {
 	if err != nil {
 		return false
 	} else if len(data) != 0 && data[0][0] == false {
-		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -134,7 +128,6 @@ func (app *App) dbExistRel(m Match, Rel string) (valid bool) {
 	if err != nil {
 		return false
 	} else if len(data) != 0 && data[0][0] == false {
-		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -147,7 +140,6 @@ func (app *App) dbExistRevLike(m Match) (valid bool) {
 	if err != nil {
 		return false
 	} else if len(data) != 0 && data[0][0] == false {
-		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
 	return true
@@ -159,14 +151,12 @@ func (app *App) dbDeleteDirectionalRelation(m Match, Rel string) (valid bool) {
 		DeleteQuery := `MATCH (u)-[t:` + Rel + `]->(n) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE t`
 		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	} else {
 		DeleteQuery := `MATCH (u:User)-[r]->(n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE r`
 		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	}
@@ -179,14 +169,12 @@ func (app *App) dbDeleteRelation(m Match, Rel string) (valid bool) {
 		DeleteQuery := `MATCH (n)-[r:` + Rel + `]-(u) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE r`
 		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	} else {
 		DeleteQuery := `MATCH (u:User)-[r]-(n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` DETACH DELETE r`
 		_, _, _, err := app.Neo.QueryNeoAll(DeleteQuery, nil)
 		if err != nil {
-			//fmt.Println("*** DeleteRelation Query returned an Error ***", data)
 			return false
 		}
 	}

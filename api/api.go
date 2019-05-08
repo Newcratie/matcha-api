@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"os"
@@ -10,10 +9,9 @@ import (
 
 const hashKey = "5c894d411c2f7445dbadb9b6"
 
-var prin = fmt.Println
-
 func (app *App) newApp() {
 	app.R = gin.Default()
+	gin.SetMode(gin.ReleaseMode)
 }
 
 func NewConn(host string) (bolt.Conn, error) {
@@ -29,7 +27,6 @@ func NewConn(host string) (bolt.Conn, error) {
 			return conn, nil
 		}
 		retries = retries + 1
-		fmt.Println("neo4j not ready, waiting 15s and trying again ", retries)
 		time.Sleep(15 * time.Second)
 	}
 	return nil, err

@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -109,7 +108,6 @@ func (req Request) updateBirthday() {
 		month = "0" + month
 	}
 	s := year + "-" + month + "-" + day
-	fmt.Println(s)
 	date, _ := time.Parse("2006-01-02", s)
 
 	req.user.Birthday = date
@@ -282,7 +280,6 @@ func userImageHandler(c *gin.Context) {
 	file, _ := mFile.Open()                       // Create Reader
 	buf := bytes.NewBuffer(nil)                   // Init buffer
 	if _, err := io.Copy(buf, file); err != nil { // Read file
-		fmt.Println(err)
 		c.JSON(201, gin.H{"err": err.Error()})
 	} else {
 		name := newToken() // Generate random Name
@@ -290,9 +287,7 @@ func userImageHandler(c *gin.Context) {
 		link := imageHost + "/" + name + "." + ext
 		if err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
-			fmt.Println(err)
 		} else {
-			fmt.Println("ext ========> ", ext)
 			f, _ := os.Create(imageSrc + name + "." + ext) //create file
 			defer f.Close()                                //close after processing
 
@@ -303,7 +298,6 @@ func userImageHandler(c *gin.Context) {
 
 			if valid != true {
 				c.JSON(201, gin.H{"err": err.Error()})
-				fmt.Println(err)
 			} else {
 				var req Request
 				if err := req.prepareRequest(c); err != nil {

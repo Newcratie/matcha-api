@@ -1,7 +1,6 @@
 package kwal
 
 import (
-	"fmt"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	"os"
@@ -25,7 +24,6 @@ func newConn(host string) (bolt.Conn, error) {
 			return conn, nil
 		}
 		retries = retries + 1
-		fmt.Println("KWAL neo4j not ready, waiting 1s and trying again ", retries)
 		time.Sleep(5 * time.Second)
 	}
 	return nil, err
@@ -41,6 +39,5 @@ func GetKeys() (Keys []Key) {
 			node[0].(graph.Node).Properties["value"].(string),
 		})
 	}
-	fmt.Println("Keys: ", Keys)
 	return
 }

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +13,6 @@ func TokenValidate(c *gin.Context) (valid bool) {
 		return []byte(hashKey), nil
 	})
 	if err != nil {
-		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
 		return false
 	} else if checkJwt(tokenString) {

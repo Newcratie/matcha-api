@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/Newcratie/matcha-api/api/logprint"
 	"github.com/dgrijalva/jwt-go"
@@ -35,7 +34,6 @@ func Token(c *gin.Context) {
 
 func PrintHandlerLog(Err string, Color string) {
 	Err = Err + "\n"
-	fmt.Printf(Color, Err)
 }
 
 func createRelation(c *gin.Context) {
@@ -58,8 +56,6 @@ func createRelation(c *gin.Context) {
 			c.JSON(200, nil)
 		}
 	} else {
-		PrintHandlerLog("Token Not Valid", ErrorC)
-		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
@@ -71,7 +67,6 @@ func ValidateToken(c *gin.Context, claims jwt.Claims) (valid bool, err error) {
 		return []byte(hashKey), nil
 	})
 	if err != nil {
-		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
 		return false, err
 	} else if checkJwt(tokenString) {
@@ -166,7 +161,6 @@ func GetPeople(c *gin.Context) {
 			c.JSON(200, g)
 		}
 	} else {
-		fmt.Println("jwt error: ", err)
 		c.JSON(201, gin.H{"err": err.Error()})
 	}
 }
@@ -207,7 +201,6 @@ func Login(c *gin.Context) {
 
 func Register(c *gin.Context) {
 	logprint.Title("Register")
-	fmt.Println("POST BIRTHDAY =========", c.PostForm("birthday"), "|")
 	bd, _ := time.Parse(time.RFC3339, c.PostForm("birthday"))
 
 	rf := registerForm{
@@ -230,7 +223,6 @@ func Register(c *gin.Context) {
 }
 
 func Forgot(c *gin.Context) {
-	fmt.Println("IN SEND TOKEN")
 	username := c.PostForm("username")
 	u, err := app.getUser(-1, username)
 	if err != nil {
@@ -245,8 +237,6 @@ func Forgot(c *gin.Context) {
 }
 
 func ResetPassword(c *gin.Context) {
-	fmt.Println("IN RSET PASSWORD")
-
 	token := c.PostForm("reset-token")
 	password := c.PostForm("password")
 	confirm := c.PostForm("confirm")
@@ -264,5 +254,4 @@ func ResetPassword(c *gin.Context) {
 		}
 	}
 
-	fmt.Println("TOOOEKEKEKE ==> ", token, password, confirm, username, "|")
 }

@@ -35,7 +35,6 @@ func SendEmail(Title, username, email, Message string) error {
 	title := Title
 	body, err := ParseTemplate("./api/utils/pass_mail_update.html", templateData)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -58,7 +57,6 @@ func SendEmail(Title, username, email, Message string) error {
 
 	conn, err := net.Dial("tcp", smtpHost+":"+strconv.Itoa(smtpPort))
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -74,15 +72,12 @@ func SendEmail(Title, username, email, Message string) error {
 
 	client, err := smtp.NewClient(conn, smtpHost)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
 	hasStartTLS, _ := client.Extension("STARTTLS")
 	if useStartTls && hasStartTLS {
-		fmt.Println("STARTTLS ...")
 		if err = client.StartTLS(tlsconfig); err != nil {
-			fmt.Println(err)
 			return err
 		}
 	}
@@ -96,40 +91,30 @@ func SendEmail(Title, username, email, Message string) error {
 
 	if ok, _ := client.Extension("AUTH"); ok {
 		if err := client.Auth(auth); err != nil {
-			fmt.Printf("Error during AUTH %s\n", err)
 			return err
 		}
 	}
-	fmt.Println("AUTH done")
 
 	if err := client.Mail(from.Address); err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
-	fmt.Println("FROM done")
 
 	if err := client.Rcpt(to.Address); err != nil {
-		fmt.Printf("Error: %s\n", err)
-		fmt.Printf("Address: %s\n", to.Address)
 		return err
 	}
-	fmt.Println("TO done")
 
 	w, err := client.Data()
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 
 	_, err = w.Write([]byte(message))
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 
 	err = w.Close()
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 	client.Quit()
@@ -156,7 +141,6 @@ func SendEmailValidation(username, email, token string) error {
 	title := "Validate your address"
 	body, err := ParseTemplate("./api/utils/confirm_email.html", templateData)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -179,7 +163,6 @@ func SendEmailValidation(username, email, token string) error {
 
 	conn, err := net.Dial("tcp", smtpHost+":"+strconv.Itoa(smtpPort))
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -195,15 +178,12 @@ func SendEmailValidation(username, email, token string) error {
 
 	client, err := smtp.NewClient(conn, smtpHost)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
 	hasStartTLS, _ := client.Extension("STARTTLS")
 	if useStartTls && hasStartTLS {
-		fmt.Println("STARTTLS ...")
 		if err = client.StartTLS(tlsconfig); err != nil {
-			fmt.Println(err)
 			return err
 		}
 	}
@@ -217,40 +197,30 @@ func SendEmailValidation(username, email, token string) error {
 
 	if ok, _ := client.Extension("AUTH"); ok {
 		if err := client.Auth(auth); err != nil {
-			fmt.Printf("Error during AUTH %s\n", err)
 			return err
 		}
 	}
-	fmt.Println("AUTH done")
 
 	if err := client.Mail(from.Address); err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
-	fmt.Println("FROM done")
 
 	if err := client.Rcpt(to.Address); err != nil {
-		fmt.Printf("Error: %s\n", err)
-		fmt.Printf("Address: %s\n", to.Address)
 		return err
 	}
-	fmt.Println("TO done")
 
 	w, err := client.Data()
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 
 	_, err = w.Write([]byte(message))
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 
 	err = w.Close()
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 	client.Quit()
@@ -277,7 +247,6 @@ func SendEmailPasswordForgot(username, email, token string) error {
 	title := "Password Changed"
 	body, err := ParseTemplate("./api/utils/pass_change.html", templateData)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -300,7 +269,6 @@ func SendEmailPasswordForgot(username, email, token string) error {
 
 	conn, err := net.Dial("tcp", smtpHost+":"+strconv.Itoa(smtpPort))
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -316,15 +284,12 @@ func SendEmailPasswordForgot(username, email, token string) error {
 
 	client, err := smtp.NewClient(conn, smtpHost)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
 	hasStartTLS, _ := client.Extension("STARTTLS")
 	if useStartTls && hasStartTLS {
-		fmt.Println("STARTTLS ...")
 		if err = client.StartTLS(tlsconfig); err != nil {
-			fmt.Println(err)
 			return err
 		}
 	}
@@ -338,40 +303,30 @@ func SendEmailPasswordForgot(username, email, token string) error {
 
 	if ok, _ := client.Extension("AUTH"); ok {
 		if err := client.Auth(auth); err != nil {
-			fmt.Printf("Error during AUTH %s\n", err)
 			return err
 		}
 	}
-	fmt.Println("AUTH done")
 
 	if err := client.Mail(from.Address); err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
-	fmt.Println("FROM done")
 
 	if err := client.Rcpt(to.Address); err != nil {
-		fmt.Printf("Error: %s\n", err)
-		fmt.Printf("Address: %s\n", to.Address)
 		return err
 	}
-	fmt.Println("TO done")
 
 	w, err := client.Data()
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 
 	_, err = w.Write([]byte(message))
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 
 	err = w.Close()
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return err
 	}
 	client.Quit()

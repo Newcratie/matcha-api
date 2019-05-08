@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver/structures/graph"
 	_ "github.com/lib/pq"
@@ -16,7 +15,6 @@ func (app *App) insertMessage(byt []byte) {
 	if err := json.Unmarshal(byt, &dat); err != nil {
 		panic(err)
 	}
-	fmt.Println(dat)
 	dat["author"] = int64(dat["author"].(float64))
 	dat["to"] = int64(dat["to"].(float64))
 	dat["timestamp"] = int64(dat["timestamp"].(float64))
@@ -46,7 +44,6 @@ ORDER BY ID(n)
 	msgs := make([]Messages, 0)
 
 	data, _, _, _ := app.Neo.QueryNeoAll(q, map[string]interface{}{"user_id": userId, "suitor_id": suitorId})
-	fmt.Println(data)
 	for _, tab := range data {
 		msgs = append(msgs, Messages{
 			tab[0].(graph.Node).Properties["id"].(string),
@@ -60,7 +57,6 @@ ORDER BY ID(n)
 }
 
 func (app *App) insertUser(u User) {
-	fmt.Println(MapOf(u))
 	q := `CREATE (u:User{name: {username},
 username:{username}, password:{password},
 firstname:{firstname}, lastname:{lastname},
@@ -75,14 +71,12 @@ longitude:{longitude}, geo_allowed: {geo_allowed},
 online:{online}, rating: {rating},
 email: {email}, access_lvl: 1, last_conn: {last_conn},
 ilike: {ilike}, relation: {relation}})`
-	//fmt.Println("Query == ", q)
 	st := app.prepareStatement(q)
 	executeStatement(st, MapOf(u))
 	return
 }
 
 func (app *App) updateUser(u User) {
-	//fmt.Println(MapOf(u))
 	var id string
 	id = strconv.Itoa(int(u.Id))
 	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.name = {username},
@@ -137,7 +131,6 @@ func (app *App) getUser(Id int, Username string) (u User, err error) {
 
 func (app *App) getBasicUser(Id int) (u User, err error) {
 	data, _, _, err := app.Neo.QueryNeoAll(`MATCH (n:User) WHERE id(n) = `+strconv.Itoa(Id)+` RETURN n`, nil)
-	//fmt.Println("basic: ", data)
 	if len(data) == 0 || err != nil {
 		return
 	} else {
