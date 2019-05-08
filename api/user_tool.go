@@ -1,10 +1,10 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/oschwald/geoip2-golang"
-	"net"
-	"strconv"
+	"io/ioutil"
+	"net/http"
 	"strings"
 	"unicode"
 )
@@ -37,6 +37,7 @@ func verifyPassword(newPassword string, confirmPassword string) error {
 			passLen++
 		}
 	}
+
 	appendError := func(err string) {
 		if len(strings.TrimSpace(errorString)) != 0 {
 			errorString += ", " + err
@@ -69,16 +70,23 @@ func verifyPassword(newPassword string, confirmPassword string) error {
 	return nil
 }
 
-func getPositionFromIp(Ip net.IP) (lat string, lon string, err error) {
-	db, err := geoip2.Open("GeoIP2-City.mmdb")
-	if err != nil {
-		return
-	}
-	defer db.Close()
-	record, err := db.City(Ip)
-	lat = strconv.FormatFloat(record.Location.Latitude, 'f', 6, 64)
-	lon = strconv.FormatFloat(record.Location.Longitude, 'f', 6, 64)
+type Location struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
 
-	fmt.Printf("Coordinates =======: %s, %s\n", record.Location.Latitude, record.Location.Longitude)
+func getJson(url string, target interface{}) {
+	r, _ := http.Get(url)
+	defer r.Body.Close()
+
+	bd, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(bd, target)
+}
+
+func getPositionFromIp(Ip string) (lat string, lon string, err error) {
+	url := "http://api.ipstack.com/" + Ip + "?access_key=12895141d055409cac451e1a526764a7&format=1"
+	target := Location{}
+	getJson(url, &target)
+	prin("BODYYYYYY ===> ", "|", target)
 	return
 }

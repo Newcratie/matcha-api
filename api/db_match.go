@@ -27,11 +27,13 @@ func (app *App) dbMatchs(m Match) (valid bool, err error) {
 	return true, nil
 }
 
-func (app *App) dbExistBlocked(m Match) (valid bool) {
+func (app *App) dbExistBlocked(m Match) bool {
 
 	ExistQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN EXISTS( (u)-[:BLOCK]->(n) )`
-	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
-	if data[0][0] == false {
+	data, _, _, err := app.Neo.QueryNeoAll(ExistQuery, nil)
+	if err != nil {
+		return false
+	} else if data[0][0] == false {
 		//fmt.Println("*** Exist Query returned FALSE ***")
 		return false
 	}
@@ -95,6 +97,11 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 	if app.dbExistMatch(m) == true {
 		app.dbDeleteRelation(m, matched)
 	}
+	if app.dbExistRel(m, "LIKE") {
+		newEvent(m.c, func(name string) string {
+			return name + " doesn't like you anymore 😱"
+		})
+	}
 	app.dbDeleteDirectionalRelation(m, "")
 	UpdateRating(m.idTo, "DISLIKE")
 	MatchQuery := `MATCH (u:User), (n:User) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` CREATE (u)-[:DISLIKE]->(n)`
@@ -103,9 +110,6 @@ func (app *App) dbCreateDislike(m Match) (valid bool) {
 		//fmt.Println("*** CreateLike Query returned an Error ***", data)
 		return false
 	}
-	newEvent(m.c, func(name string) string {
-		return name + " doesn't like you anymore 😱"
-	})
 	return true
 }
 
@@ -184,7 +188,7 @@ func (app *App) dbDeleteRelation(m Match, Rel string) (valid bool) {
 
 func (app *App) dbGetRelationType(m Match) (relation string) {
 
-	ExistQuery := `MATCH (u)-[r]->(n) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN TYPE(r)`
+	ExistQuery := `MATCH (u)<-[r]-(n) WHERE ID(u) = ` + strconv.Itoa(m.idFrom) + ` AND ID(n) = ` + strconv.Itoa(m.idTo) + ` RETURN TYPE(r)`
 	data, _, _, _ := app.Neo.QueryNeoAll(ExistQuery, nil)
 	if len(data) != 0 {
 		return data[0][0].(string)

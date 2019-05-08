@@ -38,7 +38,7 @@ func PrintHandlerLog(Err string, Color string) {
 	fmt.Printf(Color, Err)
 }
 
-func CreateLike(c *gin.Context) {
+func createRelation(c *gin.Context) {
 
 	claims := jwt.MapClaims{}
 	valid, err := ValidateToken(c, &claims)
@@ -57,8 +57,6 @@ func CreateLike(c *gin.Context) {
 		} else {
 			c.JSON(200, nil)
 		}
-		app.onlineRefresh(strconv.Itoa(m.idFrom))
-
 	} else {
 		PrintHandlerLog("Token Not Valid", ErrorC)
 		fmt.Println("jwt error: ", err)

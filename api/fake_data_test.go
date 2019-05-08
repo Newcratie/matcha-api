@@ -111,7 +111,7 @@ func newRandomFemale() User {
 }
 
 func TestAddFakeData(t *testing.T) {
-	const max = 300
+	const max = 80
 	driver := bolt.NewDriver()
 	host := os.Getenv("NEO_HOST")
 	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
