@@ -74,9 +74,29 @@ func UserModify(c *gin.Context) {
 }
 
 func (req Request) updatePosition() {
-	pos := req.body["position"]
-	fmt.Println(pos)
-	retUser(req)
+	//prin("POSITION ==> ", req.body, "|")
+	//
+	//var lat string
+	//var lon string
+	//
+	//if req.body["type"] == "ip" {
+	//	ip := net.ParseIP(req.body["position"].(string))
+	//	lat, lon, _ = getPositionFromIp(ip)
+	//	prin("LAAAAAT ==> ", lat, "LOOOON ==> ", lon, "|")
+	//} else if req.body["type"] == "gps" {
+	//	prin("OOOOOOOOOOOO")
+	//}
+
+	//Ip := net.ParseIP(req.body["position"].(string))
+	//
+	//if Ip == nil {
+	//	lat = req.body["lat"].(string)
+	//	long = req.body["long"].(string)
+	//	prin("LAT ==> ", lat, "| LONG ==> ", long, "|")
+	//} else {
+	//	getPositionFromIp(Ip)
+	//}
+	//retUser(req)
 }
 func (req Request) updateLocation() {
 	pos := req.body["location"]

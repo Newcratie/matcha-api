@@ -2,6 +2,9 @@ package api
 
 import (
 	"fmt"
+	"github.com/oschwald/geoip2-golang"
+	"net"
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -64,4 +67,18 @@ func verifyPassword(newPassword string, confirmPassword string) error {
 		return fmt.Errorf(errorString)
 	}
 	return nil
+}
+
+func getPositionFromIp(Ip net.IP) (lat string, lon string, err error) {
+	db, err := geoip2.Open("GeoIP2-City.mmdb")
+	if err != nil {
+		return
+	}
+	defer db.Close()
+	record, err := db.City(Ip)
+	lat = strconv.FormatFloat(record.Location.Latitude, 'f', 6, 64)
+	lon = strconv.FormatFloat(record.Location.Longitude, 'f', 6, 64)
+
+	fmt.Printf("Coordinates =======: %s, %s\n", record.Location.Latitude, record.Location.Longitude)
+	return
 }
