@@ -130,7 +130,7 @@ func (req Request) updateBio() {
 
 func (req Request) checkPassword() error {
 	pass := req.body["old_password"].(string)
-	truePass := hash.Decrypt(hashKey, req.user.Password)
+	truePass := hash.Decrypt(HashKey, req.user.Password)
 	if pass != truePass {
 		return errors.New("Wrong password")
 	} else {
@@ -229,7 +229,7 @@ func (req Request) updatePassword() {
 		if err = verifyPassword(newPassword, confirmPassword); err != nil {
 			req.context.JSON(201, gin.H{"err": err.Error()})
 		} else {
-			req.user.Password = hash.Encrypt(hashKey, newPassword)
+			req.user.Password = hash.Encrypt(HashKey, newPassword)
 			app.updateUser(req.user)
 			SendEmail("Email Update", req.user.Username, req.user.Email, message)
 			retUser(req)

@@ -10,7 +10,7 @@ func TokenValidate(c *gin.Context) (valid bool) {
 
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
+		return []byte(HashKey), nil
 	})
 	if err != nil {
 		c.JSON(201, gin.H{"err": err.Error()})

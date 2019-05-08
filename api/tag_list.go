@@ -37,8 +37,8 @@ func (app *App) dbGetUserTags(username string) (ret []Tag) {
 
 func (app *App) insertTag(t Tag, Id int64) {
 	q := `MATCH (u:User) WHERE ID(u) = ` + strconv.Itoa(int(Id)) + ` CREATE (t:TAG{key: {key}, text:{text}, value:{value}})<-[:TAGGED]-(u)`
-	st := app.prepareStatement(q)
-	executeStatement(st, MapOf(t))
+	st := app.PrepareStatement(q)
+	ExecuteStatement(st, MapOf(t))
 }
 
 func (app *App) tagExist(value string) bool {

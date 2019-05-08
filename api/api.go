@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const hashKey = "5c894d411c2f7445dbadb9b6"
+const HashKey = "5c894d411c2f7445dbadb9b6"
 
 func (app *App) newApp() {
 	app.R = gin.Default()

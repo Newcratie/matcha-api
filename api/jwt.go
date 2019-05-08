@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var key = []byte(hashKey)
+var key = []byte(HashKey)
 
 func (user User) GenerateJwt() (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -27,7 +27,7 @@ func (user User) GenerateJwt() (string, error) {
 
 func checkJwt(tokenString string) bool {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
+		return []byte(HashKey), nil
 	})
 
 	if token.Valid {

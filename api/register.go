@@ -82,7 +82,7 @@ func userFactory(rf registerForm) (u User, err error) {
 
 	u.Username = rf.Username
 	u.Email = rf.Email
-	u.Password = hash.Encrypt(hashKey, rf.Password)
+	u.Password = hash.Encrypt(HashKey, rf.Password)
 	u.LastName = rf.Lastname
 	u.FirstName = rf.Firstname
 	u.Birthday, _ = time.Parse(time.RFC3339, now.Format(time.RFC3339Nano))

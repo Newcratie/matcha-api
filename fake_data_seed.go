@@ -1,18 +1,20 @@
-package api
+package main
 
 import (
-	"fmt"
+	"github.com/Newcratie/matcha-api/api"
 	"github.com/Newcratie/matcha-api/api/hash"
 	"github.com/brianvoe/gofakeit"
 	bolt "github.com/johnnadratowski/golang-neo4j-bolt-driver"
-	"os"
 	"strconv"
 	"strings"
-	"testing"
 	"time"
 )
 
-func newRandomMale() User {
+type App api.App
+
+var app *App
+
+func newRandomMale() api.User {
 	var f *gofakeit.PersonInfo
 	max := 1
 	f = gofakeit.Person()
@@ -29,8 +31,8 @@ func newRandomMale() User {
 
 	Latitude, _ := gofakeit.LatitudeInRange(42.490627, 50.264989)
 	Longitude, _ := gofakeit.LongitudeInRange(-3.396493, 9.517944)
-	return User{Username: gofakeit.Username(),
-		Password:  hash.Encrypt(hashKey, "'"),
+	return api.User{Username: gofakeit.Username(),
+		Password:  hash.Encrypt(api.HashKey, "'"),
 		FirstName: f.FirstName,
 		LastName:  f.LastName,
 		Email:     gofakeit.Email(),
@@ -63,7 +65,7 @@ func newRandomMale() User {
 	}
 }
 
-func newRandomFemale() User {
+func newRandomFemale() api.User {
 	Latitude, _ := gofakeit.LatitudeInRange(42.490627, 50.264989)
 	Longitude, _ := gofakeit.LongitudeInRange(-3.396493, 9.517944)
 	var f *gofakeit.PersonInfo
@@ -77,8 +79,8 @@ func newRandomFemale() User {
 	for i := 0; i < max; i++ {
 		tagtab[i] = gofakeit.Color()
 	}
-	return User{Username: gofakeit.Username(),
-		Password:  hash.Encrypt(hashKey, "'"),
+	return api.User{Username: gofakeit.Username(),
+		Password:  hash.Encrypt(api.HashKey, "'"),
 		FirstName: f.FirstName,
 		LastName:  f.LastName,
 		Email:     gofakeit.Email(),
@@ -111,11 +113,10 @@ func newRandomFemale() User {
 	}
 }
 
-func TestAddFakeData(t *testing.T) {
+func main() {
 	const max = 260
 
-	host := os.Getenv("NEO_HOST")
-	app.Db, _ = bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
+	app.Db, _ = bolt.NewDriverPool("bolt://neo4j:secret@neo4j:7687", 1000)
 	app.Neo, _ = app.Db.OpenPool()
 	defer app.Neo.Close()
 	for i := 0; i < max; i++ {
@@ -124,7 +125,6 @@ func TestAddFakeData(t *testing.T) {
 		app.Neo.QueryNeoAll(`MERGE (t:TAG {key: "`+s+`", text: "#`+strings.Title(s)+`", value: "`+s+`"}) `, nil)
 	}
 	for i := 0; i < max; i++ {
-		prin("----------")
 		u := newRandomMale()
 		app.insertFakeUser(u)
 		AddTagRelation(u)
@@ -135,18 +135,16 @@ func TestAddFakeData(t *testing.T) {
 
 }
 
-func AddTagRelation(u User) {
+func AddTagRelation(u api.User) {
 	for i := 0; i < 1; i++ {
-		prin("++++++++++++")
 		tag := strings.ToLower(u.Tags[i])
 		q := `MATCH (u:User) WHERE u.username = {username} MATCH (n:TAG) WHERE n.value = "` + tag + `" CREATE (u)-[g:TAGGED]->(n) return n`
-		st := app.prepareStatement(q)
-		executeStatement(st, MapOf(u))
+		st := app.prepareFakeStatement(q)
+		api.ExecuteStatement(st, api.MapOf(u))
 	}
 }
 
-func (app *App) insertFakeUser(u User) {
-	fmt.Println(MapOf(u))
+func (app *App) insertFakeUser(u api.User) {
 	q := `CREATE (u:User{name: {username},
 username:{username}, password:{password},
 firstname:{firstname}, lastname:{lastname},
@@ -163,12 +161,12 @@ email: {email}, access_lvl: 1, last_conn: {last_conn},
 ilike: {ilike}, relation: {relation}, tags: {tags}})`
 	//fmt.Println("Query == ", q)
 	st := app.prepareFakeStatement(q)
-	executeStatement(st, MapOf(u))
+	api.ExecuteStatement(st, api.MapOf(u))
 	return
 }
 
 func (app *App) prepareFakeStatement(query string) bolt.Stmt {
 	st, err := app.Neo.PrepareNeo(query)
-	handleError(err)
+	api.HandleError(err)
 	return st
 }

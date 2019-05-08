@@ -22,8 +22,8 @@ func (app *App) insertMessage(byt []byte) {
 MATCH (a:User),(b:User)
 WHERE ID(a)={author} AND ID(b)={to}
 CREATE (a)-[s:SAYS]->(message:Message {msg:{msg}, author: {author}, id:{id}, timestamp:{timestamp}})-[t:TO]->(b)`
-	st := app.prepareStatement(q)
-	executeStatement(st, dat)
+	st := app.PrepareStatement(q)
+	ExecuteStatement(st, dat)
 }
 
 type Messages struct {
@@ -72,8 +72,8 @@ online:{online}, rating: {rating},
 email: {email}, access_lvl: 1, last_conn: {last_conn},
 ilike: {ilike}, relation: {relation}, tags: {tags}})`
 	//fmt.Println("Query == ", q)
-	st := app.prepareStatement(q)
-	executeStatement(st, MapOf(u))
+	st := app.PrepareStatement(q)
+	ExecuteStatement(st, MapOf(u))
 	return
 }
 
@@ -94,8 +94,8 @@ func (app *App) updateUser(u User) {
 	u.online = {online}, u.rating = {rating},
 	u.email = {email}, u.access_lvl = {access_lvl},
 	u.tags = {tags},  u.last_conn = {last_conn}, u.tags = {tags} `
-	st := app.prepareStatement(q)
-	executeStatement(st, MapOf(u))
+	st := app.PrepareStatement(q)
+	ExecuteStatement(st, MapOf(u))
 	return
 }
 
@@ -103,8 +103,8 @@ func (app *App) updateLastConn(u User) {
 	//prin("**** IN UPDATE CONN ****")
 	id := strconv.Itoa(int(u.Id))
 	q := `MATCH (u:User) WHERE ID(u) = ` + id + ` SET u.online = {online}, u.last_conn = {last_conn}`
-	st := app.prepareStatement(q)
-	executeStatement(st, MapOf(u))
+	st := app.PrepareStatement(q)
+	ExecuteStatement(st, MapOf(u))
 	return
 }
 
@@ -289,23 +289,23 @@ func (app *App) emailExist(Email string) bool {
 	}
 }
 
-func (app *App) prepareStatement(query string) bolt.Stmt {
+func (app *App) PrepareStatement(query string) bolt.Stmt {
 	conn, err := app.Db.OpenPool()
 	st, err := conn.PrepareNeo(query)
-	handleError(err)
+	HandleError(err)
 	return st
 }
 
-func executeStatement(st bolt.Stmt, m map[string]interface{}) {
+func ExecuteStatement(st bolt.Stmt, m map[string]interface{}) {
 	result, err := st.ExecNeo(m)
-	handleError(err)
+	HandleError(err)
 	_, err = result.RowsAffected()
-	handleError(err)
+	HandleError(err)
 
 	st.Close()
 
 }
-func handleError(err error) {
+func HandleError(err error) {
 	if err != nil {
 		panic(err)
 	}

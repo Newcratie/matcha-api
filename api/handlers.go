@@ -64,7 +64,7 @@ func ValidateToken(c *gin.Context, claims jwt.Claims) (valid bool, err error) {
 	tokenString := c.Request.Header["Authorization"][0]
 
 	_, err = jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
+		return []byte(HashKey), nil
 	})
 	if err != nil {
 		c.JSON(201, gin.H{"err": err.Error()})
@@ -87,7 +87,7 @@ func GetMatchs(c *gin.Context) {
 
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
+		return []byte(HashKey), nil
 	})
 
 	id := int(math.Round(claims["id"].(float64)))
@@ -111,7 +111,7 @@ func GetMessages(c *gin.Context) {
 
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(hashKey), nil
+		return []byte(HashKey), nil
 	})
 
 	id := int(math.Round(claims["id"].(float64)))
@@ -186,7 +186,7 @@ func Login(c *gin.Context) {
 	password := c.PostForm("password")
 
 	u, err := app.getUser(-1, username)
-	if err != nil || password != hash.Decrypt(hashKey, u.Password) {
+	if err != nil || password != hash.Decrypt(HashKey, u.Password) {
 		c.JSON(201, gin.H{"err": "Wrong password or username"})
 	} else if u.AccessLvl == 0 {
 		c.JSON(201, gin.H{"err": "You must validate your Email first"})
@@ -250,7 +250,7 @@ func ResetPassword(c *gin.Context) {
 		if err = verifyPassword(password, confirm); err != nil {
 			c.JSON(201, gin.H{"err": err.Error()})
 		} else {
-			u.Password = hash.Encrypt(hashKey, password)
+			u.Password = hash.Encrypt(HashKey, password)
 			app.updateUser(u)
 		}
 	}

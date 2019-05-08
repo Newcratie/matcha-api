@@ -198,7 +198,7 @@ MATCH (n:Notif)-[:TO]-(u:User) where id(u)=` + string(userId) + ` RETURN n ORDER
 
 func notificationsDeleteHandler(c *gin.Context) {
 	q := `MATCH (n:Notif)-[r]-(u) WHERE ID(n) = ` + c.Param("id") + ` DELETE r, n`
-	st := app.prepareStatement(q)
-	executeStatement(st, map[string]interface{}{})
+	st := app.PrepareStatement(q)
+	ExecuteStatement(st, map[string]interface{}{})
 	c.JSON(200, nil)
 }
