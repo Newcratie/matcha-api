@@ -26,6 +26,7 @@ func newEventMessage(msg []byte) {
 }
 
 func newEvent(c *gin.Context, fn format) {
+	var m Match
 	claims := jwt.MapClaims{}
 	valid, _ := ValidateToken(c, &claims)
 	n, _ := strconv.Atoi(c.Param("id"))
@@ -36,11 +37,16 @@ func newEvent(c *gin.Context, fn format) {
 	} else {
 		authorId = 0
 	}
-	//UpdateLastConn(int(authorId))
+	m.idFrom = int(userId)
+	m.idTo = int(authorId)
+	if app.dbExistBlocked(m) == true {
+		return
+	}
 	u, _ := app.getUser(int(authorId), "")
 	message := fn(u.Username)
 	app.postNotification(message, userId, authorId, 0)
 	app.postEvent(message, userId, authorId, 0)
+	UpdateLastConn(int(authorId))
 }
 
 func (app *App) postEvent(message string, userId, authorId, subjectId int64) {

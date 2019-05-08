@@ -226,3 +226,29 @@ func Register(c *gin.Context) {
 	}
 	logprint.End()
 }
+
+func Forgot(c *gin.Context) {
+	fmt.Println("IN SEND TOKEN")
+	username := c.PostForm("username")
+	u, err := app.getUser(-1, username)
+	if err != nil {
+		c.JSON(201, gin.H{"err": "Wrong username"})
+		return
+	} else {
+		u.RandomToken = newToken()
+		app.updateUser(u)
+		SendEmailPasswordForgot(username, u.Email, u.RandomToken)
+	}
+	return
+}
+
+func ResetPassword(c *gin.Context) {
+	fmt.Println("IN RSET PASSWORD")
+
+	token := c.PostForm("reset-token")
+	password := c.PostForm("password")
+	confirm := c.PostForm("confirm")
+	username := c.PostForm("username")
+
+	fmt.Println("TOOOEKEKEKE ==> ", token, password, confirm, username, "|")
+}
