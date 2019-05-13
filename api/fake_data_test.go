@@ -12,18 +12,29 @@ import (
 	"time"
 )
 
+func stringInArray(Tab []string, str string) bool {
+
+	for _, elem := range Tab {
+		if str == elem {
+			return true
+		}
+	}
+	return false
+}
+
 func newRandomMale() User {
 	var f *gofakeit.PersonInfo
-	max := 1
+	max := 2
 	f = gofakeit.Person()
 	interest := make([]string, 3)
 	interest[0] = "bi"
 	interest[1] = "hetero"
 	interest[2] = "homo"
-	tagtab := make([]string, 1)
-	//tagg := []Tag
+	tagtab := make([]string, 2)
 	for i := 0; i < max; i++ {
-		tagtab[i] = gofakeit.Color()
+		if Color := gofakeit.Color(); !stringInArray(tagtab, Color) {
+			tagtab[i] = strings.ToLower(Color)
+		}
 		//tagg.
 	}
 
@@ -67,15 +78,17 @@ func newRandomFemale() User {
 	Latitude, _ := gofakeit.LatitudeInRange(42.490627, 50.264989)
 	Longitude, _ := gofakeit.LongitudeInRange(-3.396493, 9.517944)
 	var f *gofakeit.PersonInfo
-	max := 1
+	max := 2
 	f = gofakeit.Person()
 	interest := make([]string, 3)
 	interest[0] = "bi"
 	interest[1] = "hetero"
 	interest[2] = "homo"
-	tagtab := make([]string, 1)
+	tagtab := make([]string, 2)
 	for i := 0; i < max; i++ {
-		tagtab[i] = gofakeit.Color()
+		if Color := gofakeit.Color(); !stringInArray(tagtab, Color) {
+			tagtab[i] = strings.ToLower(Color)
+		}
 	}
 	return User{Username: gofakeit.Username(),
 		Password:  hash.Encrypt(hashKey, "'"),
@@ -112,7 +125,7 @@ func newRandomFemale() User {
 }
 
 func TestAddFakeData(t *testing.T) {
-	const max = 260
+	const max = 255
 
 	host := os.Getenv("NEO_HOST")
 	app.Db, _ = bolt.NewDriverPool("bolt://neo4j:secret@"+host+":7687", 1000)
@@ -124,29 +137,34 @@ func TestAddFakeData(t *testing.T) {
 		app.Neo.QueryNeoAll(`MERGE (t:TAG {key: "`+s+`", text: "#`+strings.Title(s)+`", value: "`+s+`"}) `, nil)
 	}
 	for i := 0; i < max; i++ {
-		prin("----------")
 		u := newRandomMale()
 		app.insertFakeUser(u)
 		AddTagRelation(u)
 		u = newRandomFemale()
 		app.insertFakeUser(u)
 		AddTagRelation(u)
+		fmt.Println("***** EeeeNDEDddd *****")
 	}
-
+	return
+	fmt.Println("***** ENDED *****")
 }
 
 func AddTagRelation(u User) {
-	for i := 0; i < 1; i++ {
-		prin("++++++++++++")
+	fmt.Println("=== IN TAG RELATION ===")
+	for i := 0; i < 2; i++ {
+		fmt.Println("TAGG == ", u.Tags)
 		tag := strings.ToLower(u.Tags[i])
 		q := `MATCH (u:User) WHERE u.username = {username} MATCH (n:TAG) WHERE n.value = "` + tag + `" CREATE (u)-[g:TAGGED]->(n) return n`
 		st := app.prepareStatement(q)
 		executeStatement(st, MapOf(u))
+		fmt.Println("=== END STATEMENT i === ", i)
 	}
+	fmt.Println("=== ENDED TAG RELATION ===")
+	return
 }
 
 func (app *App) insertFakeUser(u User) {
-	fmt.Println(MapOf(u))
+	//fmt.Println(MapOf(u))
 	q := `CREATE (u:User{name: {username},
 username:{username}, password:{password},
 firstname:{firstname}, lastname:{lastname},

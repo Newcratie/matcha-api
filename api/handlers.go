@@ -131,8 +131,10 @@ func GetMessages(c *gin.Context) {
 	}
 }
 
-//func getMatchPeople(g []graph.Node) []graph.Node {
-//	sort.Sort()
+//func GetMatching(c *gin.Context) {
+//	page, _ := strconv.Atoi(c.Param("page"))
+//
+//	skip := page * 50
 //}
 
 func GetPeople(c *gin.Context) {

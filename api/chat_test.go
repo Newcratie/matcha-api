@@ -12,17 +12,17 @@ func TestWebSocket(t *testing.T) {
 	app.Neo, _ = driver.OpenNeo("bolt://neo4j:secret@" + host + ":7687")
 }
 
-func TestCreateLike(t *testing.T) {
-
-	var M Match
-	M.idFrom = 201
-	prin("ID_TO ==>", M.idFrom, "|")
-	M.idTo = 6
-	prin("ID_TO ==>", M.idTo, "|")
-	M.action = "LIKE"
-	prin("ACTION ==>> ", M.action, "|")
-	if valid, err := app.dbMatchs(M); valid != true || err != nil {
-		prin("VALID ==>", valid, "ERROR ==>", err, "|")
-	}
-
-}
+//func TestCreateLike(t *testing.T) {
+//
+//	var M Match
+//	M.idFrom = 201
+//	prin("ID_TO ==>", M.idFrom, "|")
+//	M.idTo = 6
+//	prin("ID_TO ==>", M.idTo, "|")
+//	M.action = "LIKE"
+//	prin("ACTION ==>> ", M.action, "|")
+//	if valid, err := app.dbMatchs(M); valid != true || err != nil {
+//		prin("VALID ==>", valid, "ERROR ==>", err, "|")
+//	}
+//
+//}

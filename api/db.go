@@ -214,14 +214,17 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 	}
 }
 
-//func (app *App) dbGetPeople(Id int, Filter *Filters, Param bool) ([]graph.Node, error) {
+//
+//func (app *App) dbGetMatching(Id int, Filter *Filters, Param bool) ([]graph.Node, error) {
+//	var err error
+//
+//}
+
+//func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 //	var g = make([]graph.Node, 0)
 //	var err error
 //
 //	var m Match
-//	var Overall int
-//	var boorev bool
-//	var rating int
 //	m.action = like
 //	// A custom query with applied Filters
 //	time.Sleep(500 * time.Millisecond)
@@ -236,33 +239,20 @@ func (app *App) dbGetPeople(Id int, Filter *Filters) ([]graph.Node, error) {
 //		for _, d := range data {
 //			m.idFrom = int(d[0].(graph.Node).NodeIdentity)
 //			m.idTo = Id
-//			boo := app.dbExistRel(m, m.action)
-//			d[0].(graph.Node).Properties["ilike"] = boo
+//			d[0].(graph.Node).Properties["ilike"] = app.dbExistRel(m, m.action)
 //			d[0].(graph.Node).Properties["relation"] = app.dbGetRelationType(m)
 //			lonTo, _ := getFloat(d[0].(graph.Node).Properties["longitude"])
 //			latTo, _ := getFloat(d[0].(graph.Node).Properties["latitude"])
 //			Genre, _ := d[0].(graph.Node).Properties["genre"].(string)
 //			Interest, _ := d[0].(graph.Node).Properties["interest"].(string)
 //			delete(d[0].(graph.Node).Properties, "password")
-//			if Param == false {
-//				boorev = app.dbExistRevLike(m)
-//				rating = d[0].(graph.Node).Properties["rating"].(int)
-//				if boo == true {
-//					Overall += 25
-//				} else if boorev == true {
-//					Overall -= 25
-//				}
-//				Overall += rating/2
-//			}
-//			distance := Haversine(u.Longitude, u.Latitude, lonTo, latTo);
-//			if distance < 100 {
-//				Overall += distance/4
-//			}
-//			//d[0].(graph.Node).Properties["distance"] = distance
+//
 //			// Haversine will return the distance between 2 Lat/Lon in Kilometers
-//			if ()
-//			if valid := setInterest(Genre, Interest, Id); valid == true {
-//				g = append(g, d[0].(graph.Node))
+//
+//			if Haversine(u.Longitude, u.Latitude, lonTo, latTo) <= Filter.Location[1] {
+//				if valid := setInterest(Genre, Interest, Id); valid == true {
+//					g = append(g, d[0].(graph.Node))
+//				}
 //			}
 //		}
 //		return g, err
